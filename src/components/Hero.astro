@@ -1,6 +1,8 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { site } from '../config';
-import { useTranslations, type Lang } from '../i18n/ui';
+import { getProjects } from '../lib/projects';
+import { certs, skills, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -8,27 +10,102 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+// Commands shown by `help` and as quick buttons under the prompt
+const commands = ['help', 'whoami', 'about', 'skills', 'projects', 'certs', 'contact', 'lang', 'clear'] as const;
+const quickCommands = ['help', 'projects', 'skills', 'contact'];
+
+// Everything the terminal can print, read by scripts/terminal.ts
+const terminalData = {
+  otherLangUrl: getRelativeLocaleUrl(lang === 'en' ? 'es' : 'en'),
+  name: site.name,
+  role: t('hero.role'),
+  about: [t('about.p1'), t('about.p2'), t('about.p3')],
+  skills: [
+    { title: t('skills.security'), items: skills.security },
+    { title: t('skills.systems'), items: skills.systems },
+    { title: t('skills.cloud'), items: skills.cloud },
+  ],
+  projects: (await getProjects(lang)).map(({ data }) => ({
+    title: data.title,
+    tools: data.tools,
+    demo: data.demo,
+    repo: data.repo,
+  })),
+  certs: certs.map((cert) => ({ ...cert, label: t(`certs.status.${cert.status}`) })),
+  contact: { email: site.email, github: site.github, linkedin: site.linkedin },
+  help: commands.map((name) => ({ name, text: t(`term.help.${name}`) })),
+  text: {
+    helpTitle: t('term.help.title'),
+    notFound: t('term.notFound'),
+    sudo: t('term.sudo'),
+    switching: t('term.switching'),
+    demo: t('projects.demo'),
+    repo: t('projects.repo'),
+  },
+};
+
+// Safe to embed inside <script>: no "</script>" can sneak in
+const terminalJson = JSON.stringify(terminalData).replace(/</g, '\\u003c');
 ---
 
-<section class="hero">
+<section class="hero" data-hero>
   <div class="container">
     <div class="terminal">
       <div class="bar" aria-hidden="true">
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="bar-title">steven@msquintana: ~</span>
       </div>
       <div class="body">
-        <p class="cmd"><span class="prompt">$</span> whoami</p>
-        <h1>{site.name}</h1>
-        <p class="role">{t('hero.role')}</p>
-        <p class="tagline">{t('hero.tagline')}</p>
-        <div class="actions">
+        <!-- The script types `whoami`, then shows each line in order -->
+        <p class="cmd">
+          <span class="prompt">$</span> <span data-hero-cmd>whoami</span><span class="cursor" data-hero-cursor aria-hidden="true"></span>
+        </p>
+        <h1 class="line" data-hero-line>{site.name}</h1>
+        <p class="role line" data-hero-line>{t('hero.role')}</p>
+        <p class="tagline line" data-hero-line>{t('hero.tagline')}</p>
+        <div class="actions line" data-hero-line>
           <a class="btn btn-primary" href="#projects">{t('hero.cta.projects')}</a>
           <a class="btn" href="#contact">{t('hero.cta.contact')}</a>
+        </div>
+
+        <!-- Interactive terminal: needs JS, so it stays hidden without it -->
+        <div class="term line" data-hero-line data-term hidden>
+          <div class="term-log" data-term-log aria-live="polite"></div>
+          <form class="term-form" data-term-form>
+            <label class="prompt" for="term-input">$</label>
+            <input
+              id="term-input"
+              class="term-input"
+              data-term-input
+              type="text"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label={t('term.label')}
+              placeholder={t('term.placeholder')}
+            />
+          </form>
+          <div class="term-quick">
+            <span class="term-hint">{t('term.hint')}</span>
+            {
+              quickCommands.map((cmd) => (
+                <button type="button" class="term-chip" data-term-run={cmd}>
+                  {cmd}
+                </button>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <script type="application/json" id="terminal-data" set:html={terminalJson} />
 </section>
+
+<script>
+  import '../scripts/terminal';
+</script>
 
 <style>
   .hero {
@@ -40,10 +117,16 @@ const t = useTranslations(lang);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .terminal:hover {
+    border-color: var(--blue);
   }
 
   .bar {
     display: flex;
+    align-items: center;
     gap: 8px;
     padding: 12px 16px;
     border-bottom: 1px solid var(--line);
@@ -54,6 +137,13 @@ const t = useTranslations(lang);
     height: 12px;
     border-radius: 50%;
     background: var(--line);
+  }
+
+  .bar-title {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink);
   }
 
   .body {
@@ -88,9 +178,149 @@ const t = useTranslations(lang);
     gap: 12px;
   }
 
+  /* --- Interactive terminal --- */
+  .term {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .term[hidden] {
+    display: none;
+  }
+
+  .term-log {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .term-log:empty {
+    display: none;
+  }
+
+  .term-log :global(.out) {
+    margin: 0 0 4px;
+    max-width: none;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .term-log :global(.out-cmd) {
+    color: var(--ink-strong);
+    margin-top: 12px;
+  }
+
+  .term-log :global(.out-cmd:first-child) {
+    margin-top: 0;
+  }
+
+  .term-log :global(.out-title) {
+    color: var(--ink-strong);
+  }
+
+  .term-log :global(.out-key) {
+    display: inline-block;
+    min-width: 10ch;
+    color: var(--cyan);
+  }
+
+  .term-log :global(.out-tag) {
+    color: var(--purple);
+  }
+
+  .term-log :global(.out-error) {
+    color: var(--red);
+  }
+
+  .term-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .term-input {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink-strong);
+    font: inherit;
+    caret-color: var(--green);
+    outline: none;
+  }
+
+  .term-input::placeholder {
+    color: var(--ink);
+    opacity: 0.75;
+  }
+
+  .term-form:focus-within {
+    outline: 1px solid var(--line);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .term-quick {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .term-hint {
+    color: var(--ink);
+    font-size: 0.8rem;
+  }
+
+  .term-chip {
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--purple);
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .term-chip:hover {
+    border-color: var(--purple);
+  }
+
+  /* Hidden until the typing intro reveals them (only when JS runs) */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .line {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+    }
+
+    :global(.js) .line.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Avoid a flash of the full command before typing starts */
+    :global(.js) [data-hero-cmd]:not([data-typing]) {
+      visibility: hidden;
+    }
+  }
+
   @media (max-width: 480px) {
     .body {
       padding: 24px 16px;
+    }
+
+    .bar-title {
+      display: none;
     }
   }
 </style>

@@ -1,5 +1,6 @@
 ---
 // Section heading styled as a terminal path: ~/projects
+// The name is typed out when the heading scrolls into view (see scripts/motion.ts).
 interface Props {
   text: string;
 }
@@ -7,4 +8,26 @@ interface Props {
 const { text } = Astro.props;
 ---
 
-<h2><span class="prompt" aria-hidden="true">~/</span>{text}</h2>
+<h2 class="section-title" aria-label={`~/${text}`}>
+  <span class="prompt" aria-hidden="true">~/</span><span data-type-on-view aria-hidden="true">{text}</span><span
+    class="cursor"
+    aria-hidden="true"></span>
+</h2>
+
+<style>
+  /* The cursor only blinks while the name is being typed */
+  .cursor {
+    display: none;
+  }
+
+  .section-title:global(.is-typing) .cursor {
+    display: inline-block;
+  }
+
+  /* Keep the name hidden until it is typed, so it doesn't flash in full first */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) [data-type-on-view]:not([data-typing]) {
+      visibility: hidden;
+    }
+  }
+</style>

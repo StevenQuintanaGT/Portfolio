@@ -20,6 +20,8 @@ const t = useTranslations(lang);
     <title>{t('meta.title')}</title>
     <meta name="description" content={t('meta.description')} />
     <meta name="theme-color" content="#282c34" />
+    <!-- Lets CSS hide animated elements only when the script that shows them will run -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {
       Object.keys(languages).map((l) => (
@@ -35,5 +37,8 @@ const t = useTranslations(lang);
   </head>
   <body>
     <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

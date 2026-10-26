@@ -1,7 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
 import SectionTitle from './SectionTitle.astro';
 import ProjectCard from './ProjectCard.astro';
+import { getProjects } from '../lib/projects';
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -11,9 +11,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const projects = (
-  await getCollection('projects', ({ id, data }) => id.startsWith(`${lang}/`) && !data.draft)
-).sort((a, b) => a.data.order - b.data.order);
+const projects = await getProjects(lang);
 ---
 
 <section id="projects" class="section">

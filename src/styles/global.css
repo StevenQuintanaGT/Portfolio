@@ -134,6 +134,71 @@ button:focus-visible {
   margin: 0;
 }
 
+/* Cards lift slightly and get a blue border on hover.
+   Cards draw their border with var(--card-border), so scoped styles don't override it.
+   Uses `translate` so it doesn't fight the reveal's `transform`. */
+.hover-lift {
+  transition:
+    border-color 0.2s ease,
+    translate 0.2s ease;
+}
+
+.hover-lift:hover {
+  --card-border: var(--blue);
+  translate: 0 -4px;
+}
+
+/* Blinking terminal cursor */
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -0.1em;
+  background: var(--green);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Motion: only when JS runs (html.js) and the visitor hasn't asked for less motion.
+   Without JS everything is visible from the start. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    /* Keeps the hover-lift transitions, without the stagger delay */
+    transition:
+      opacity 0.6s ease var(--delay, 0ms),
+      transform 0.6s ease var(--delay, 0ms),
+      border-color 0.2s ease,
+      translate 0.2s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cursor {
+    animation: none;
+  }
+
+  .hover-lift:hover {
+    translate: none;
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

@@ -22,7 +22,7 @@ const groups = [
     <div class="grid">
       {
         groups.map((group) => (
-          <div class="card">
+          <div class="card hover-lift">
             <h3>{group.title}</h3>
             <ul>
               {group.items.map((item) => (
@@ -47,7 +47,7 @@ const groups = [
 
   .card {
     background: var(--surface);
-    border: 1px solid var(--line);
+    border: 1px solid var(--card-border, var(--line));
     border-radius: var(--radius-lg);
     padding: 24px;
   }

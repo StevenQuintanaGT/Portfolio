@@ -15,7 +15,7 @@ const { lang, title, problem, result, tools, repo, demo } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<article class="card">
+<article class="card hover-lift">
   <h3>{title}</h3>
   <dl>
     <dt>{t('projects.problem')}</dt>
@@ -51,7 +51,7 @@ const t = useTranslations(lang);
     flex-direction: column;
     gap: 16px;
     background: var(--surface-deep);
-    border: 1px solid var(--line);
+    border: 1px solid var(--card-border, var(--line));
     border-radius: var(--radius-lg);
     padding: 24px;
   }

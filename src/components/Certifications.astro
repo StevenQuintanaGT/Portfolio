@@ -16,7 +16,7 @@ const t = useTranslations(lang);
     <ul class="list">
       {
         certs.map((cert) => (
-          <li class="item">
+          <li class="item hover-lift">
             <span class={`status status-${cert.status}`}>{t(`certs.status.${cert.status}`)}</span>
             <span class="name">{cert.name}</span>
             <span class="issuer">{cert.issuer}</span>
@@ -43,7 +43,7 @@ const t = useTranslations(lang);
     gap: 12px;
     padding: 16px;
     background: var(--surface);
-    border: 1px solid var(--line);
+    border: 1px solid var(--card-border, var(--line));
     border-radius: var(--radius-md);
     font-family: var(--font-mono);
     font-size: 0.9rem;
