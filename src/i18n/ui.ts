@@ -50,7 +50,7 @@ export const ui = {
     'about.p1':
       'Information Systems Engineering student at Universidad Mariano Gálvez de Guatemala (Jutiapa campus), focused on cybersecurity, networking and infrastructure.',
     'about.p2':
-      'I like understanding how networks and systems work so I can keep them secure. I run Arch Linux daily and manage my own domain and email on Cloudflare.',
+      'I like understanding how networks and systems work so I can keep them secure. I have experience working with Linux and Windows Server, and I manage my own domain and email on Cloudflare.',
     'about.p3': 'Next step: accepted into the IRSI scholarship program, starting in 2027.',
 
     'skills.title': 'skills',
@@ -131,7 +131,7 @@ export const ui = {
     'about.p1':
       'Estudiante de Ingeniería en Sistemas de Información en la Universidad Mariano Gálvez de Guatemala (Campus Jutiapa), enfocado en ciberseguridad, redes e infraestructura.',
     'about.p2':
-      'Me gusta entender cómo funcionan las redes y los sistemas para poder protegerlos. Uso Arch Linux a diario y administro mi propio dominio y correo en Cloudflare.',
+      'Me gusta entender cómo funcionan las redes y los sistemas para poder protegerlos. Tengo experiencia trabajando con Linux y Windows Server, y administro mi propio dominio y correo en Cloudflare.',
     'about.p3': 'Siguiente paso: fui aceptado en la beca IRSI, que inicia en 2027.',
 
     'skills.title': 'habilidades',
@@ -184,7 +184,7 @@ export function useTranslations(lang: Lang) {
 // Skills are tool names, so they are the same in both languages.
 export const skills = {
   security: ['Nmap', 'Cisco Packet Tracer'],
-  systems: ['Linux (Arch / Hyprland)', 'Bash', 'Docker', 'Git & GitHub'],
+  systems: ['Linux (Ubuntu, Fedora, Arch)', 'Windows Server', 'Bash', 'Docker', 'Git & GitHub'],
   cloud: ['Cloudflare (DNS, domain, email)', 'AWS'],
 } as const;
 
