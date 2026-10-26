@@ -11,7 +11,9 @@ const projects = defineCollection({
     problem: z.string(),
     result: z.string(),
     tools: z.array(z.string()),
-    link: z.string().url().optional(),
+    // Source code and live site/download. Each one shows as a button when set.
+    repo: z.string().url().optional(),
+    demo: z.string().url().optional(),
     order: z.number().default(99),
     // Drafts stay hidden until you fill them in.
     draft: z.boolean().default(false),

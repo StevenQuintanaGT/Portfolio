@@ -29,12 +29,11 @@ export const ui = {
     'hero.cta.contact': 'Contact',
 
     'about.title': 'about',
-    // TODO: add your university name and confirm the IRSI 2027 sentence.
     'about.p1':
-      'Systems Engineering student in Guatemala, focused on cybersecurity, networking and infrastructure.',
+      'Information Systems Engineering student at Universidad Mariano Gálvez de Guatemala (Jutiapa campus), focused on cybersecurity, networking and infrastructure.',
     'about.p2':
       'I like understanding how networks and systems work so I can keep them secure. I run Arch Linux daily and manage my own domain and email on Cloudflare.',
-    'about.p3': 'Next step: the IRSI 2027 scholarship.',
+    'about.p3': 'Next step: accepted into the IRSI scholarship program, starting in 2027.',
 
     'skills.title': 'skills',
     'skills.security': 'Security & networking',
@@ -45,7 +44,8 @@ export const ui = {
     'projects.problem': 'Problem',
     'projects.result': 'Result',
     'projects.tools': 'Tools',
-    'projects.link': 'View project',
+    'projects.demo': 'Live site',
+    'projects.repo': 'Source code',
 
     'certs.title': 'certifications & goals',
     'certs.status.done': 'earned',
@@ -77,10 +77,10 @@ export const ui = {
 
     'about.title': 'sobre-mí',
     'about.p1':
-      'Estudiante de Ingeniería en Sistemas en Guatemala, enfocado en ciberseguridad, redes e infraestructura.',
+      'Estudiante de Ingeniería en Sistemas de Información en la Universidad Mariano Gálvez de Guatemala (Campus Jutiapa), enfocado en ciberseguridad, redes e infraestructura.',
     'about.p2':
       'Me gusta entender cómo funcionan las redes y los sistemas para poder protegerlos. Uso Arch Linux a diario y administro mi propio dominio y correo en Cloudflare.',
-    'about.p3': 'Siguiente paso: la beca de IRSI 2027.',
+    'about.p3': 'Siguiente paso: fui aceptado en la beca IRSI, que inicia en 2027.',
 
     'skills.title': 'habilidades',
     'skills.security': 'Seguridad y redes',
@@ -91,7 +91,8 @@ export const ui = {
     'projects.problem': 'Problema',
     'projects.result': 'Resultado',
     'projects.tools': 'Herramientas',
-    'projects.link': 'Ver proyecto',
+    'projects.demo': 'Ver sitio',
+    'projects.repo': 'Código fuente',
 
     'certs.title': 'certificaciones-y-metas',
     'certs.status.done': 'obtenida',

@@ -7,10 +7,11 @@ interface Props {
   problem: string;
   result: string;
   tools: string[];
-  link?: string;
+  repo?: string;
+  demo?: string;
 }
 
-const { lang, title, problem, result, tools, link } = Astro.props;
+const { lang, title, problem, result, tools, repo, demo } = Astro.props;
 const t = useTranslations(lang);
 ---
 
@@ -27,10 +28,19 @@ const t = useTranslations(lang);
     {tools.map((tool) => <li class="tag">{tool}</li>)}
   </ul>
   {
-    link && (
-      <a class="link" href={link} target="_blank" rel="noopener noreferrer">
-        {t('projects.link')} →
-      </a>
+    (repo || demo) && (
+      <div class="links">
+        {demo && (
+          <a href={demo} target="_blank" rel="noopener noreferrer">
+            {t('projects.demo')} →
+          </a>
+        )}
+        {repo && (
+          <a href={repo} target="_blank" rel="noopener noreferrer">
+            {t('projects.repo')} →
+          </a>
+        )}
+      </div>
     )
   }
 </article>
@@ -65,9 +75,12 @@ const t = useTranslations(lang);
     margin: 0 0 12px;
   }
 
-  .link {
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: auto;
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    margin-top: auto;
   }
 </style>
