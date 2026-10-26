@@ -1,0 +1,10 @@
+---
+import BlogIndex from '../../../../components/blog/BlogIndex.astro';
+import { tagPaths } from '../../../../lib/blog-paths';
+
+export const getStaticPaths = () => tagPaths();
+
+const { tag } = Astro.params;
+---
+
+<BlogIndex lang="es" tag={tag} />

@@ -20,6 +20,7 @@ export const ui = {
     'nav.skills': 'skills',
     'nav.projects': 'projects',
     'nav.certs': 'certs',
+    'nav.blog': 'blog',
     'nav.contact': 'contact',
     'nav.switch': 'Ver en español',
 
@@ -74,6 +75,22 @@ export const ui = {
     'contact.email': 'Send an email',
 
     'footer.built': 'Built with Astro · Hosted on Cloudflare Pages',
+
+    'blog.title': 'blog',
+    'blog.metaTitle': 'Blog — Steven Quintana',
+    'blog.description': 'Articles, guides and write-ups on networking, infrastructure and security.',
+    'blog.intro': 'Notes, guides and write-ups from what I learn about networks, infrastructure and security.',
+    'blog.empty': 'No articles yet. The first one is on its way.',
+    'blog.readingTime': '{n} min read',
+    'blog.updated': 'Updated',
+    'blog.draft': 'draft',
+    'blog.back': 'Back to blog',
+    'blog.tags': 'Tags',
+    'blog.allPosts': 'all',
+    'blog.tagTitle': 'Articles tagged',
+    'blog.rss': 'RSS feed',
+    'blog.lang.es': 'in Spanish',
+    'blog.lang.en': 'in English',
   },
   es: {
     'meta.title': 'Steven Quintana — Ciberseguridad · Infraestructura · Cloud',
@@ -84,6 +101,7 @@ export const ui = {
     'nav.skills': 'habilidades',
     'nav.projects': 'proyectos',
     'nav.certs': 'certificaciones',
+    'nav.blog': 'blog',
     'nav.contact': 'contacto',
     'nav.switch': 'View in English',
 
@@ -138,6 +156,22 @@ export const ui = {
     'contact.email': 'Enviar correo',
 
     'footer.built': 'Hecho con Astro · Alojado en Cloudflare Pages',
+
+    'blog.title': 'blog',
+    'blog.metaTitle': 'Blog — Steven Quintana',
+    'blog.description': 'Artículos, guías y write-ups sobre redes, infraestructura y seguridad.',
+    'blog.intro': 'Notas, guías y write-ups de lo que voy aprendiendo sobre redes, infraestructura y seguridad.',
+    'blog.empty': 'Todavía no hay artículos. El primero viene en camino.',
+    'blog.readingTime': '{n} min de lectura',
+    'blog.updated': 'Actualizado',
+    'blog.draft': 'borrador',
+    'blog.back': 'Volver al blog',
+    'blog.tags': 'Etiquetas',
+    'blog.allPosts': 'todos',
+    'blog.tagTitle': 'Artículos con la etiqueta',
+    'blog.rss': 'Feed RSS',
+    'blog.lang.es': 'en español',
+    'blog.lang.en': 'en inglés',
   },
 } as const;
 

@@ -1,0 +1,36 @@
+---
+import { tagUrl } from '../../lib/blog';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  tags: string[];
+}
+
+const { lang, tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class="tag-list">
+      {tags.map((tag) => (
+        <li>
+          <a class="tag tag-link" href={tagUrl(lang, tag)}>
+            #{tag}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tag-link {
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .tag-link:hover {
+    border-color: var(--purple);
+  }
+</style>

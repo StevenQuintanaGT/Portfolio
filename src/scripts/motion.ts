@@ -96,7 +96,10 @@ function setupTypedHeadings() {
 function setupActiveNav() {
   const links = new Map<string, HTMLElement>();
   document.querySelectorAll<HTMLAnchorElement>('.nav .links a').forEach((link) => {
-    links.set(link.hash.slice(1), link);
+    // Only links to sections of this page (the blog link is its own page)
+    if (link.hash && link.pathname === window.location.pathname) {
+      links.set(link.hash.slice(1), link);
+    }
   });
 
   const observer = new IntersectionObserver(

@@ -4,37 +4,48 @@ import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
+  // Where the language button goes (defaults to the home page in the other language)
+  switchUrl?: string;
 }
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const otherLang: Lang = lang === 'en' ? 'es' : 'en';
+const switchUrl = Astro.props.switchUrl ?? getRelativeLocaleUrl(otherLang);
+
+// Section links point at the home page so they also work from the blog
+const home = getRelativeLocaleUrl(lang);
+const blog = getRelativeLocaleUrl(lang, 'blog/');
+const onBlog = Astro.url.pathname.startsWith(blog.replace(/\/$/, ''));
 
 const links = [
-  { href: '#about', label: t('nav.about') },
-  { href: '#skills', label: t('nav.skills') },
-  { href: '#projects', label: t('nav.projects') },
-  { href: '#certs', label: t('nav.certs') },
-  { href: '#contact', label: t('nav.contact') },
+  { href: `${home}#about`, label: t('nav.about') },
+  { href: `${home}#skills`, label: t('nav.skills') },
+  { href: `${home}#projects`, label: t('nav.projects') },
+  { href: `${home}#certs`, label: t('nav.certs') },
+  { href: blog, label: t('nav.blog'), current: onBlog, keepOnPhone: true },
+  { href: `${home}#contact`, label: t('nav.contact') },
 ];
 ---
 
 <header class="nav">
   <nav class="container nav-inner">
-    <a class="brand" href={getRelativeLocaleUrl(lang)}>
+    <a class="brand" href={home}>
       <img src="/logo-steven-quintana.svg" alt="" width="32" height="32" />
       <span><span class="prompt">~/</span>msquintana</span>
     </a>
     <ul class="links">
-      {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      {
+        links.map((link) => (
+          <li class:list={{ keep: link.keepOnPhone }}>
+            <a href={link.href} aria-current={link.current ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
-    <a
-      class="lang"
-      href={getRelativeLocaleUrl(otherLang)}
-      hreflang={otherLang}
-      lang={otherLang}
-      title={t('nav.switch')}
-    >
+    <a class="lang" href={switchUrl} hreflang={otherLang} lang={otherLang} title={t('nav.switch')}>
       <span class="visually-hidden">{t('nav.switch')}: </span>{otherLang.toUpperCase()}
     </a>
   </nav>
@@ -98,12 +109,14 @@ const links = [
   }
 
   .links a:hover,
-  .links a:global(.active) {
+  .links a:global(.active),
+  .links a[aria-current='page'] {
     color: var(--blue);
   }
 
   .links a:hover::after,
-  .links a:global(.active)::after {
+  .links a:global(.active)::after,
+  .links a[aria-current='page']::after {
     transform: scaleX(1);
   }
 
@@ -131,15 +144,11 @@ const links = [
     border-color: var(--blue);
   }
 
-  /* On phones only the brand and the language switch fit */
-  /* Spanish labels are longer, so the links collapse before they can wrap */
-  @media (max-width: 880px) {
-    .links {
+  /* Spanish labels are longer, so the section links collapse before they can wrap.
+     The blog link stays, since it's a separate page. */
+  @media (max-width: 960px) {
+    .links li:not(.keep) {
       display: none;
-    }
-
-    .lang {
-      margin-left: auto;
     }
   }
 </style>

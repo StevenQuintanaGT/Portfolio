@@ -1,0 +1,52 @@
+---
+import PostMeta from './PostMeta.astro';
+import TagList from './TagList.astro';
+import { postUrl, type Post } from '../../lib/blog';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  post: Post;
+}
+
+const { lang, post } = Astro.props;
+---
+
+<article class="card hover-lift">
+  <PostMeta lang={lang} post={post} />
+  <h3 lang={post.data.lang}>
+    <a href={postUrl(lang, post)}>{post.data.title}</a>
+  </h3>
+  <p class="description" lang={post.data.lang}>{post.data.description}</p>
+  <TagList lang={lang} tags={post.data.tags} />
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    background: var(--surface-deep);
+    border: 1px solid var(--card-border, var(--line));
+    border-radius: var(--radius-lg);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  h3 a {
+    color: var(--ink-strong);
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--blue);
+  }
+
+  .description {
+    margin: 0;
+  }
+</style>

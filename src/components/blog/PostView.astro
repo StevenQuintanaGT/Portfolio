@@ -1,0 +1,95 @@
+---
+// A single article, used by /blog/<slug> and /es/blog/<slug>
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Nav from '../Nav.astro';
+import Footer from '../Footer.astro';
+import PostMeta from './PostMeta.astro';
+import TagList from './TagList.astro';
+import { blogUrl, postUrl, type Post } from '../../lib/blog';
+import { useTranslations, type Lang } from '../../i18n/ui';
+import '../../styles/prose.css';
+
+interface Props {
+  lang: Lang;
+  post: Post;
+}
+
+const { lang, post } = Astro.props;
+const t = useTranslations(lang);
+const otherLang: Lang = lang === 'en' ? 'es' : 'en';
+const { title, description, date, updated, tags } = post.data;
+const { Content } = await render(post);
+---
+
+<Base
+  lang={lang}
+  title={`${title} — Steven Quintana`}
+  description={description}
+  canonical={postUrl(post.data.lang, post)}
+  alternates={{ [post.data.lang]: postUrl(post.data.lang, post) }}
+  ogType="article"
+  ogImage={`/og/blog/${post.id}.png`}
+  contentLang={post.data.lang}
+  published={date}
+  modified={updated}
+  tags={tags}
+>
+  <Nav lang={lang} switchUrl={postUrl(otherLang, post)} />
+  <main class="container">
+    <article class="post" lang={post.data.lang}>
+      <header class="post-header">
+        <a class="crumb" href={blogUrl(lang)}><span class="prompt">~/</span>blog</a>
+        <h1>{title}</h1>
+        <PostMeta lang={lang} post={post} />
+        <TagList lang={lang} tags={tags} />
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="post-footer">
+        <a class="btn" href={blogUrl(lang)}>← {t('blog.back')}</a>
+      </footer>
+    </article>
+  </main>
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .post {
+    max-width: 70ch;
+    padding: 48px 0 64px;
+  }
+
+  .post-header {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .crumb:hover {
+    color: var(--blue);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+  }
+
+  .post-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+</style>

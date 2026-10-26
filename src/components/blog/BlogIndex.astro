@@ -1,0 +1,131 @@
+---
+// The blog list, used by /blog and by each /blog/tags/<tag> page
+import Base from '../../layouts/Base.astro';
+import Nav from '../Nav.astro';
+import Footer from '../Footer.astro';
+import SectionTitle from '../SectionTitle.astro';
+import PostCard from './PostCard.astro';
+import { blogUrl, getPosts, getTags, tagSlug, tagUrl } from '../../lib/blog';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  // When set, only posts with this tag (by slug) are listed
+  tag?: string;
+}
+
+const { lang, tag } = Astro.props;
+const t = useTranslations(lang);
+const otherLang: Lang = lang === 'en' ? 'es' : 'en';
+
+const allPosts = await getPosts();
+const tags = getTags(allPosts);
+const posts = tag ? allPosts.filter((post) => post.data.tags.some((tg) => tagSlug(tg) === tag)) : allPosts;
+const tagName = tag ? tags.find(([slug]) => slug === tag)?.[1] : undefined;
+
+const path = (l: Lang) => (tagName ? tagUrl(l, tagName) : blogUrl(l));
+const title = tagName ? `#${tagName} — ${t('blog.metaTitle')}` : t('blog.metaTitle');
+const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.description')}` : t('blog.description');
+---
+
+<Base
+  lang={lang}
+  title={title}
+  description={description}
+  alternates={{ en: path('en'), es: path('es') }}
+  ogImage={`/og/blog-${lang}.png`}
+>
+  <Nav lang={lang} switchUrl={path(otherLang)} />
+  <main>
+    <section class="section blog">
+      <div class="container">
+        <SectionTitle text={tagName ? `${t('blog.title')}/${tagName}` : t('blog.title')} />
+        <p class="intro">{tagName ? `${t('blog.tagTitle')} #${tagName}` : t('blog.intro')}</p>
+
+        {
+          tags.length > 0 && (
+            <nav class="filters" aria-label={t('blog.tags')}>
+              <ul class="tag-list">
+                <li>
+                  <a class="tag filter" href={blogUrl(lang)} aria-current={!tag ? 'page' : undefined}>
+                    {t('blog.allPosts')}
+                  </a>
+                </li>
+                {tags.map(([slug, name]) => (
+                  <li>
+                    <a class="tag filter" href={tagUrl(lang, name)} aria-current={slug === tag ? 'page' : undefined}>
+                      #{name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+
+        {
+          posts.length > 0 ? (
+            <div class="list">
+              {posts.map((post) => (
+                <PostCard lang={lang} post={post} />
+              ))}
+            </div>
+          ) : (
+            <p class="empty">
+              <span class="prompt">$</span> ls ~/blog
+              <br />
+              {t('blog.empty')}
+            </p>
+          )
+        }
+
+        <p class="rss"><a href="/rss.xml">{t('blog.rss')}</a></p>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  /* The blog is its own page, so its first section has no divider */
+  .blog {
+    border-top: 0;
+  }
+
+  .filters {
+    margin-bottom: 32px;
+  }
+
+  .filter {
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .filter:hover {
+    border-color: var(--purple);
+  }
+
+  .filter[aria-current='page'] {
+    border-color: var(--purple);
+    color: var(--ink-strong);
+  }
+
+  .list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .empty {
+    padding: 24px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-mono);
+    max-width: none;
+  }
+
+  .rss {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+</style>

@@ -12,4 +12,11 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  markdown: {
+    shikiConfig: {
+      // Same palette as the rest of the site
+      theme: 'one-dark-pro',
+      wrap: false,
+    },
+  },
 });

@@ -1,0 +1,10 @@
+---
+import PostView from '../../../components/blog/PostView.astro';
+import { postPaths } from '../../../lib/blog-paths';
+
+export const getStaticPaths = () => postPaths();
+
+const { post } = Astro.props;
+---
+
+<PostView lang="es" post={post} />

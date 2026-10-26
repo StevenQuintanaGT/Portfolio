@@ -1,0 +1,49 @@
+---
+// Date · updated date · reading time (· draft), shown on cards and post pages
+import { formatDate, readingTime, type Post } from '../../lib/blog';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  post: Post;
+}
+
+const { lang, post } = Astro.props;
+const t = useTranslations(lang);
+const { date, updated, draft } = post.data;
+---
+
+<p class="meta">
+  <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+  {
+    updated && (
+      <span>
+        · {t('blog.updated')} <time datetime={updated.toISOString()}>{formatDate(updated, lang)}</time>
+      </span>
+    )
+  }
+  <span>· {t('blog.readingTime').replace('{n}', String(readingTime(post)))}</span>
+  {post.data.lang !== lang && <span>· {t(`blog.lang.${post.data.lang}`)}</span>}
+  {draft && <span class="draft">{t('blog.draft')}</span>}
+</p>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--cyan);
+  }
+
+  /* Only visible in `npm run dev`: drafts never reach the published site */
+  .draft {
+    padding: 0 8px;
+    border: 1px solid var(--yellow);
+    border-radius: var(--radius-sm);
+    color: var(--yellow);
+  }
+</style>
