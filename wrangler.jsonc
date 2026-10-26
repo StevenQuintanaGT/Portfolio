@@ -1,0 +1,11 @@
+// Cloudflare Workers deploy config: the site is fully static, so the Worker only
+// serves the files Astro builds into dist/. Having this file stops `wrangler deploy`
+// from auto-configuring the @astrojs/cloudflare adapter, which the site doesn't need.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
