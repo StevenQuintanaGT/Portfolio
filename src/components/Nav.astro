@@ -1,0 +1,105 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const otherLang: Lang = lang === 'en' ? 'es' : 'en';
+
+const links = [
+  { href: '#about', label: t('nav.about') },
+  { href: '#skills', label: t('nav.skills') },
+  { href: '#projects', label: t('nav.projects') },
+  { href: '#certs', label: t('nav.certs') },
+  { href: '#contact', label: t('nav.contact') },
+];
+---
+
+<header class="nav">
+  <nav class="container nav-inner">
+    <a class="brand" href={getRelativeLocaleUrl(lang)}>
+      <span class="prompt">~/</span>msquintana
+    </a>
+    <ul class="links">
+      {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+    <a
+      class="lang"
+      href={getRelativeLocaleUrl(otherLang)}
+      hreflang={otherLang}
+      lang={otherLang}
+      title={t('nav.switch')}
+    >
+      <span class="visually-hidden">{t('nav.switch')}: </span>{otherLang.toUpperCase()}
+    </a>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface-deep);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 56px;
+  }
+
+  .brand {
+    color: var(--ink-strong);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .links {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    margin: 0 0 0 auto;
+    padding: 0;
+    font-size: 0.85rem;
+  }
+
+  .links a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--blue);
+  }
+
+  .lang {
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--ink-strong);
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+
+  .lang:hover {
+    border-color: var(--blue);
+  }
+
+  /* On phones only the brand and the language switch fit */
+  @media (max-width: 720px) {
+    .links {
+      display: none;
+    }
+
+    .lang {
+      margin-left: auto;
+    }
+  }
+</style>

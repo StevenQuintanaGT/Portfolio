@@ -1,0 +1,20 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="about" class="section">
+  <div class="container">
+    <SectionTitle text={t('about.title')} />
+    <p>{t('about.p1')}</p>
+    <p>{t('about.p2')}</p>
+    <p>{t('about.p3')}</p>
+  </div>
+</section>

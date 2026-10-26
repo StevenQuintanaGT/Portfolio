@@ -1,0 +1,144 @@
+/* One Dark Pro palette — see guia-portafolio.md, section 3 */
+:root {
+  --bg: #282c34;
+  --surface: #2c313c;
+  --surface-deep: #21252b;
+  --line: #3e4451;
+  --ink: #abb2bf;
+  --ink-strong: #ffffff;
+  --ink-muted: #5c6370; /* decorative only, never text */
+  --blue: #61afef;
+  --green: #98c379;
+  --yellow: #e5c07b;
+  --red: #e06c75;
+  --purple: #c678dd;
+  --cyan: #56b6c2;
+
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --gutter: 16px;
+  --max-width: 960px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  margin: 0;
+}
+
+h1, h2, h3, nav, button, .btn, .tag {
+  font-family: var(--font-mono);
+  color: var(--ink-strong);
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0 0 16px;
+  max-width: 65ch;
+}
+
+a {
+  color: var(--blue);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section {
+  padding: 64px 0;
+  border-top: 1px solid var(--line);
+}
+
+/* Terminal details: $, [+], ~/ */
+.prompt {
+  color: var(--green);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--ink-strong);
+  background: transparent;
+}
+
+.btn:hover {
+  border-color: var(--blue);
+}
+
+/* One primary button per section */
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--surface-deep);
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: #7bbdf2;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  color: var(--purple);
+  font-size: 0.8rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

@@ -1,0 +1,80 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { certs, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="certs" class="section">
+  <div class="container">
+    <SectionTitle text={t('certs.title')} />
+    <ul class="list">
+      {
+        certs.map((cert) => (
+          <li class="item">
+            <span class={`status status-${cert.status}`}>{t(`certs.status.${cert.status}`)}</span>
+            <span class="name">{cert.name}</span>
+            <span class="issuer">{cert.issuer}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .status {
+    min-width: 96px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid currentColor;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .status-done {
+    color: var(--green);
+  }
+
+  .status-progress {
+    color: var(--yellow);
+  }
+
+  .status-planned {
+    color: var(--cyan);
+  }
+
+  .name {
+    color: var(--ink-strong);
+  }
+
+  .issuer {
+    margin-left: auto;
+  }
+</style>

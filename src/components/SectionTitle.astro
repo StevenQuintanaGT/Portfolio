@@ -1,0 +1,10 @@
+---
+// Section heading styled as a terminal path: ~/projects
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<h2><span class="prompt" aria-hidden="true">~/</span>{text}</h2>

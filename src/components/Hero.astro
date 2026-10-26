@@ -1,0 +1,96 @@
+---
+import { site } from '../config';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="hero">
+  <div class="container">
+    <div class="terminal">
+      <div class="bar" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="body">
+        <p class="cmd"><span class="prompt">$</span> whoami</p>
+        <h1>{site.name}</h1>
+        <p class="role">{t('hero.role')}</p>
+        <p class="tagline">{t('hero.tagline')}</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#projects">{t('hero.cta.projects')}</a>
+          <a class="btn" href="#contact">{t('hero.cta.contact')}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 64px 0;
+  }
+
+  .terminal {
+    background: var(--surface-deep);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .bar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+
+  .body {
+    padding: 32px 24px;
+  }
+
+  .cmd {
+    font-family: var(--font-mono);
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin-bottom: 8px;
+  }
+
+  .role {
+    font-family: var(--font-mono);
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  .tagline {
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    .body {
+      padding: 24px 16px;
+    }
+  }
+</style>

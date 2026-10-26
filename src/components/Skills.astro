@@ -1,0 +1,71 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { skills, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const groups = [
+  { title: t('skills.security'), items: skills.security },
+  { title: t('skills.systems'), items: skills.systems },
+  { title: t('skills.cloud'), items: skills.cloud },
+];
+---
+
+<section id="skills" class="section">
+  <div class="container">
+    <SectionTitle text={t('skills.title')} />
+    <div class="grid">
+      {
+        groups.map((group) => (
+          <div class="card">
+            <h3>{group.title}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>
+                  <span class="prompt" aria-hidden="true">[+]</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  li {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+</style>

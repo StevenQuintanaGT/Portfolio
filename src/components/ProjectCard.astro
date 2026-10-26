@@ -1,0 +1,73 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  problem: string;
+  result: string;
+  tools: string[];
+  link?: string;
+}
+
+const { lang, title, problem, result, tools, link } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<article class="card">
+  <h3>{title}</h3>
+  <dl>
+    <dt>{t('projects.problem')}</dt>
+    <dd>{problem}</dd>
+    <dt>{t('projects.result')}</dt>
+    <dd>{result}</dd>
+  </dl>
+  <p class="visually-hidden">{t('projects.tools')}</p>
+  <ul class="tag-list">
+    {tools.map((tool) => <li class="tag">{tool}</li>)}
+  </ul>
+  {
+    link && (
+      <a class="link" href={link} target="_blank" rel="noopener noreferrer">
+        {t('projects.link')} →
+      </a>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--surface-deep);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--cyan);
+  }
+
+  dd {
+    margin: 0 0 12px;
+  }
+
+  .link {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+</style>

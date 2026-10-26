@@ -1,0 +1,45 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { site } from '../config';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="section">
+  <div class="container">
+    <SectionTitle text={t('contact.title')} />
+    <p>{t('contact.text')}</p>
+    <p class="established"><span class="prompt">[+]</span> Connection established</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={`mailto:${site.email}`}>{t('contact.email')}</a>
+      <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+    <p class="email">{site.email}</p>
+  </div>
+</section>
+
+<style>
+  .established {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .email {
+    font-family: var(--font-mono);
+    color: var(--cyan);
+  }
+</style>
