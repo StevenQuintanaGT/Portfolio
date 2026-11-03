@@ -12,7 +12,7 @@ export const defaultLang: Lang = 'en';
 
 export const ui = {
   en: {
-    'meta.title': 'Steven Quintana — Cybersecurity · Infrastructure · Cloud',
+    'meta.title': 'Steven Quintana — Cybersecurity · Networking · Cloud',
     'meta.description':
       'Portfolio of Steven Quintana, Systems Engineering student in Guatemala focused on cybersecurity, networking and infrastructure.',
 
@@ -24,7 +24,7 @@ export const ui = {
     'nav.contact': 'contact',
     'nav.switch': 'Ver en español',
 
-    'hero.role': 'Cybersecurity · Infrastructure · Cloud',
+    'hero.role': 'Cybersecurity · Networking · Cloud',
     'hero.tagline': 'Learning to protect networks and systems, one packet at a time.',
     'hero.cta.projects': 'View projects',
     'hero.cta.contact': 'Contact',
@@ -108,7 +108,7 @@ export const ui = {
     'blog.lang.en': 'in English',
   },
   es: {
-    'meta.title': 'Steven Quintana — Ciberseguridad · Infraestructura · Cloud',
+    'meta.title': 'Steven Quintana — Ciberseguridad · Redes · Cloud',
     'meta.description':
       'Portafolio de Steven Quintana, estudiante de Ingeniería en Sistemas en Guatemala enfocado en ciberseguridad, redes e infraestructura.',
 
@@ -120,7 +120,7 @@ export const ui = {
     'nav.contact': 'contacto',
     'nav.switch': 'View in English',
 
-    'hero.role': 'Ciberseguridad · Infraestructura · Cloud',
+    'hero.role': 'Ciberseguridad · Redes · Cloud',
     'hero.tagline': 'Aprendo a proteger redes y sistemas, un paquete a la vez.',
     'hero.cta.projects': 'Ver proyectos',
     'hero.cta.contact': 'Contactar',

@@ -4,7 +4,7 @@
 
 # msquintana.com
 
-**Portafolio personal de Steven Quintana: ciberseguridad, infraestructura y cloud.**
+**Portafolio personal de Steven Quintana: ciberseguridad, redes y cloud.**
 
 [Ver el sitio](https://msquintana.com) · [Blog](https://msquintana.com/es/blog/) · [LinkedIn](https://www.linkedin.com/in/msquintana)
 
