@@ -39,7 +39,10 @@ const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.desc
   <main>
     <section class="section blog">
       <div class="container">
-        <SectionTitle text={tagName ? `${t('blog.title')}/${tagName}` : t('blog.title')} />
+        <SectionTitle
+          text={tagName ? `${t('blog.title')}/${tagName}` : t('blog.title')}
+          title={tagName ? `#${tagName}` : 'Blog'}
+        />
         <p class="intro">{tagName ? `${t('blog.tagTitle')} #${tagName}` : t('blog.intro')}</p>
 
         {

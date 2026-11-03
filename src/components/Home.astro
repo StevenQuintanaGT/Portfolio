@@ -9,16 +9,49 @@ import Projects from './Projects.astro';
 import Certifications from './Certifications.astro';
 import Contact from './Contact.astro';
 import Footer from './Footer.astro';
-import type { Lang } from '../i18n/ui';
+import { site } from '../config';
+import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Structured data: tells Google this site is about the person "Steven Quintana"
+// and links it to the same person's GitHub and LinkedIn profiles.
+const siteUrl = new URL('/', Astro.site).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}#person`,
+      name: site.name,
+      url: siteUrl,
+      email: `mailto:${site.email}`,
+      jobTitle: t('hero.role'),
+      description: t('meta.description'),
+      knowsAbout: ['Cybersecurity', 'Networking', 'Infrastructure', 'Cloud', 'Linux', 'Windows Server'],
+      affiliation: { '@type': 'CollegeOrUniversity', name: 'Universidad Mariano Gálvez de Guatemala' },
+      address: { '@type': 'PostalAddress', addressCountry: 'GT' },
+      sameAs: [site.github, site.linkedin],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}#website`,
+      name: site.name,
+      url: siteUrl,
+      inLanguage: ['en', 'es'],
+      publisher: { '@id': `${siteUrl}#person` },
+    },
+  ],
+};
 ---
 
 <Base lang={lang}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(structuredData)} />
   <Nav lang={lang} />
   <main>
     <Hero lang={lang} />

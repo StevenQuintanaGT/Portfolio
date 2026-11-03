@@ -12,21 +12,41 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="container">
-    <p>© {year} {site.name} · {t('footer.built')}</p>
+  <div class="container inner">
+    <p>© {year} {site.name}</p>
+    <p>{t('footer.built')}</p>
+    <a href="#" class="top">↑ top</a>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--surface-deep);
+    margin-top: 32px;
+    padding: 28px 0;
     border-top: 1px solid var(--line);
-    padding: 24px 0;
-    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
   }
 
   p {
     margin: 0;
     max-width: none;
+  }
+
+  .top {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .top:hover {
+    color: var(--ink-strong);
   }
 </style>

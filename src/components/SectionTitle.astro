@@ -1,20 +1,55 @@
 ---
-// Section heading styled as a terminal path: ~/projects
-// The name is typed out when the heading scrolls into view (see scripts/motion.ts).
+// Section heading: a small terminal path (~/projects, typed when it scrolls into view,
+// see scripts/motion.ts) above a large display title.
 interface Props {
+  // Path shown in the eyebrow, e.g. "projects"
   text: string;
+  // Large heading
+  title: string;
+  // Optional section number, e.g. "03"
+  index?: string;
 }
 
-const { text } = Astro.props;
+const { text, title, index } = Astro.props;
 ---
 
-<h2 class="section-title" aria-label={`~/${text}`}>
-  <span class="prompt" aria-hidden="true">~/</span><span data-type-on-view aria-hidden="true">{text}</span><span
-    class="cursor"
-    aria-hidden="true"></span>
-</h2>
+<div class="section-head">
+  <p class="eyebrow section-title" aria-hidden="true">
+    {index && <span class="idx">{index}</span>}
+    <span class="prompt">~/</span><span data-type-on-view>{text}</span><span class="cursor"></span>
+  </p>
+  <h2>{title}</h2>
+</div>
 
 <style>
+  .section-head {
+    margin-bottom: 40px;
+  }
+
+  .section-head h2 {
+    max-width: 22ch;
+    margin: 0;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+
+  .idx {
+    margin-right: 8px;
+    padding: 2px 8px;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.72rem;
+  }
+
   /* The cursor only blinks while the name is being typed */
   .cursor {
     display: none;

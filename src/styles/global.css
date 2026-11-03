@@ -1,28 +1,37 @@
-/* One Dark Pro palette — see guia-portafolio.md, section 3 */
+/* Midnight palette: near-black base, violet → cyan accent, green for terminal details.
+   Older components still use --blue/--surface-deep/etc., so those names are kept. */
 :root {
-  --bg: #282c34;
-  --surface: #2c313c;
-  --surface-deep: #21252b;
-  --line: #3e4451;
-  --ink: #abb2bf;
-  --ink-strong: #ffffff;
-  --ink-muted: #5c6370; /* decorative only, never text */
-  --blue: #61afef;
-  --green: #98c379;
-  --yellow: #e5c07b;
-  --red: #e06c75;
-  --purple: #c678dd;
-  --cyan: #56b6c2;
+  --bg: #0a0b10;
+  --surface: #12141c;
+  --surface-deep: #0e1017;
+  --surface-raised: #181b25;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --ink: #a1a7b6;
+  --ink-strong: #f3f4f8;
+  --ink-muted: #4b5263; /* decorative only, never text */
 
+  --accent: #a78bfa; /* violet: brand, links */
+  --accent-2: #22d3ee; /* cyan: data, secondary */
+  --blue: var(--accent);
+  --cyan: var(--accent-2);
+  --purple: #c4b5fd;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --red: #f87171;
+  --grad: linear-gradient(120deg, #a78bfa 0%, #22d3ee 100%);
+
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-sans: "Inter", system-ui, sans-serif;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
   --gutter: 16px;
-  --max-width: 960px;
+  --max-width: 1080px;
 }
 
 *,
@@ -33,29 +42,56 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 72px;
+  scroll-padding-top: 96px;
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, nav, button, .btn, .tag {
-  font-family: var(--font-mono);
+::selection {
+  background: rgba(167, 139, 250, 0.35);
   color: var(--ink-strong);
 }
 
+/* Fixed background: two soft glows and a fading grid */
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(640px 420px at 12% -8%, rgba(167, 139, 250, 0.2), transparent 70%),
+    radial-gradient(560px 400px at 92% 6%, rgba(34, 211, 238, 0.12), transparent 70%);
+}
+
+.bg-fx::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 25%, transparent 75%);
+}
+
 h1, h2, h3 {
-  line-height: 1.25;
+  font-family: var(--font-display);
+  color: var(--ink-strong);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   margin: 0 0 16px;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
 }
 
 p {
@@ -64,13 +100,14 @@ p {
 }
 
 a {
-  color: var(--blue);
+  color: var(--accent);
 }
 
 a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .container {
@@ -79,9 +116,22 @@ button:focus-visible {
   padding: 0 var(--gutter);
 }
 
+@media (min-width: 720px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
 .section {
-  padding: 64px 0;
-  border-top: 1px solid var(--line);
+  padding: 96px 0;
+}
+
+/* Text with the brand gradient */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Terminal details: $, [+], ~/ */
@@ -90,39 +140,59 @@ button:focus-visible {
 }
 
 .btn {
-  display: inline-block;
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-  font-size: 0.9rem;
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--ink-strong);
-  background: transparent;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    translate 0.2s ease,
+    filter 0.2s ease;
 }
 
 .btn:hover {
-  border-color: var(--blue);
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.07);
 }
 
-/* One primary button per section */
+/* Main call to action: gradient fill, dark text for contrast */
 .btn-primary {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: var(--surface-deep);
-  font-weight: 700;
+  background: var(--grad);
+  border-color: transparent;
+  color: #0a0b10;
 }
 
 .btn-primary:hover {
-  background: #7bbdf2;
+  background: var(--grad);
+  border-color: transparent;
+  filter: brightness(1.1);
+  translate: 0 -2px;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
 }
 
 .tag {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  background: rgba(167, 139, 250, 0.08);
   color: var(--purple);
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
 }
 
 .tag-list {
@@ -134,18 +204,36 @@ button:focus-visible {
   margin: 0;
 }
 
-/* Cards lift slightly and get a blue border on hover.
+/* Cards: lift on hover, with a soft light that follows the pointer (scripts/motion.ts).
    Cards draw their border with var(--card-border), so scoped styles don't override it.
    Uses `translate` so it doesn't fight the reveal's `transform`. */
 .hover-lift {
+  position: relative;
+  isolation: isolate;
   transition:
-    border-color 0.2s ease,
-    translate 0.2s ease;
+    border-color 0.25s ease,
+    translate 0.25s ease;
+}
+
+.hover-lift::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(167, 139, 250, 0.14), transparent 65%);
 }
 
 .hover-lift:hover {
-  --card-border: var(--blue);
+  --card-border: rgba(167, 139, 250, 0.45);
   translate: 0 -4px;
+}
+
+.hover-lift:hover::before {
+  opacity: 1;
 }
 
 /* Blinking terminal cursor */
@@ -165,9 +253,22 @@ button:focus-visible {
   }
 }
 
-/* Motion: only when JS runs (html.js) and the visitor hasn't asked for less motion.
-   Without JS everything is visible from the start. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Motion: only when the visitor hasn't asked for less motion.
+   .reveal is added by JS, so without JS everything is visible from the start. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Entrance on page load, staggered with style="--i: n" */
+  .rise {
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(16px);
@@ -175,8 +276,8 @@ button:focus-visible {
     transition:
       opacity 0.6s ease var(--delay, 0ms),
       transform 0.6s ease var(--delay, 0ms),
-      border-color 0.2s ease,
-      translate 0.2s ease;
+      border-color 0.25s ease,
+      translate 0.25s ease;
   }
 
   .reveal.is-visible {
@@ -194,7 +295,8 @@ button:focus-visible {
     animation: none;
   }
 
-  .hover-lift:hover {
+  .hover-lift:hover,
+  .btn-primary:hover {
     translate: none;
   }
 }

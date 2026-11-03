@@ -16,9 +16,18 @@ const projects = await getProjects(lang);
 
 <section id="projects" class="section">
   <div class="container">
-    <SectionTitle text={t('projects.title')} />
+    <SectionTitle index="03" text={t('projects.title')} title={t('projects.heading')} />
     <div class="grid">
-      {projects.map((project) => <ProjectCard lang={lang} {...project.data} />)}
+      {
+        projects.map((project, i) => (
+          <ProjectCard
+            lang={lang}
+            {...project.data}
+            index={String(i + 1).padStart(2, '0')}
+            featured={i === 0}
+          />
+        ))
+      }
     </div>
   </div>
 </section>
@@ -26,7 +35,12 @@ const projects = await getProjects(lang);
 <style>
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

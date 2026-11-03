@@ -9,16 +9,16 @@ export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
 const PAD = 48;
 
-// One Dark Pro, same values as global.css
+// Same palette as global.css (solid colors: satori has no transparency on borders here)
 const c = {
-  bg: '#282c34',
-  surfaceDeep: '#21252b',
-  line: '#3e4451',
-  ink: '#abb2bf',
-  inkStrong: '#ffffff',
-  blue: '#61afef',
-  green: '#98c379',
-  purple: '#c678dd',
+  bg: '#0a0b10',
+  surfaceDeep: '#12141c',
+  line: '#2a2e3a',
+  ink: '#a1a7b6',
+  inkStrong: '#f3f4f8',
+  blue: '#a78bfa',
+  green: '#4ade80',
+  purple: '#c4b5fd',
 };
 
 export interface OgCard {

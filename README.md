@@ -10,7 +10,7 @@
 
 </div>
 
-Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa la paleta **One Dark Pro** y una
+Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa una paleta oscura con acentos violeta y cian, tipografía Space Grotesk y una
 estética de terminal. Está en **inglés** (`/`) y **español** (`/es/`), y el botón EN / ES cambia de idioma en cualquier
 página.
 
@@ -35,7 +35,7 @@ página.
 | Código en el blog | Shiki con el tema `one-dark-pro` |
 | Feed | `@astrojs/rss` |
 | Imágenes Open Graph | `satori` + `@resvg/resvg-js`, con las fuentes de `@fontsource` |
-| Tipografía | JetBrains Mono (títulos, código) e Inter (texto) |
+| Tipografía | Space Grotesk (títulos), Inter (texto) y JetBrains Mono (detalles de terminal y código) |
 | Hosting | Cloudflare Pages |
 
 ## Verlo en tu computadora
@@ -140,4 +140,4 @@ aparte, que no hay que tocar.
 
 ---
 
-Hecho por [Steven Quintana](https://msquintana.com) · Diseño basado en la paleta One Dark Pro.
+Hecho por [Steven Quintana](https://msquintana.com) · Diseño oscuro con acentos violeta y cian.

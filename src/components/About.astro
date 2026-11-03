@@ -1,5 +1,6 @@
 ---
 import SectionTitle from './SectionTitle.astro';
+import { getProjects } from '../lib/projects';
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -8,13 +9,100 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const projectCount = String((await getProjects(lang)).length).padStart(2, '0');
+
+const facts = [
+  { label: t('about.fact.base'), value: 'Guatemala', sub: t('about.fact.baseSub') },
+  { label: t('about.fact.next'), value: 'IRSI 2027', sub: t('about.fact.nextSub'), accent: true },
+  { label: t('about.fact.projects'), value: projectCount, sub: t('about.fact.projectsSub') },
+];
 ---
 
 <section id="about" class="section">
   <div class="container">
-    <SectionTitle text={t('about.title')} />
-    <p>{t('about.p1')}</p>
-    <p>{t('about.p2')}</p>
-    <p>{t('about.p3')}</p>
+    <SectionTitle index="01" text={t('about.title')} title={t('about.heading')} />
+    <div class="bento">
+      <div class="card hover-lift story">
+        <p class="file" aria-hidden="true"><span class="prompt">$</span> cat about.md</p>
+        <p>{t('about.p1')}</p>
+        <p>{t('about.p2')}</p>
+      </div>
+      {
+        facts.map((fact) => (
+          <div class="card hover-lift fact">
+            <span class="label">{fact.label}</span>
+            <span class:list={['value', { 'grad-text': fact.accent }]}>{fact.value}</span>
+            <span class="sub">{fact.sub}</span>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
+
+<style>
+  .bento {
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .bento {
+      grid-template-columns: 1.6fr 1fr;
+    }
+
+    .story {
+      grid-row: span 3;
+    }
+  }
+
+  .card {
+    padding: 28px;
+    border: 1px solid var(--card-border, var(--line));
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .story {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.08rem;
+  }
+
+  .file {
+    margin-bottom: auto;
+    padding-bottom: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .story p:last-child {
+    margin-bottom: 0;
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink-strong);
+  }
+
+  .sub {
+    font-size: 0.9rem;
+  }
+</style>

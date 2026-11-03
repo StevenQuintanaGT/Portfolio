@@ -29,10 +29,11 @@ const links = [
 ---
 
 <header class="nav">
-  <nav class="container nav-inner">
+  <div class="progress" data-progress aria-hidden="true"></div>
+  <nav class="nav-inner">
     <a class="brand" href={home}>
-      <img src="/logo-steven-quintana.svg" alt="" width="32" height="32" />
-      <span><span class="prompt">~/</span>msquintana</span>
+      <img src="/logo-steven-quintana.svg" alt="" width="30" height="30" />
+      <span>msquintana</span>
     </a>
     <ul class="links">
       {
@@ -49,99 +50,101 @@ const links = [
       <span class="visually-hidden">{t('nav.switch')}: </span>{otherLang.toUpperCase()}
     </a>
   </nav>
-  <div class="progress" data-progress aria-hidden="true"></div>
 </header>
 
 <style>
+  /* Floating glass pill */
   .nav {
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: var(--surface-deep);
-    border-bottom: 1px solid var(--line);
+    z-index: 20;
+    padding: 16px var(--gutter) 0;
   }
 
   .nav-inner {
     display: flex;
     align-items: center;
-    gap: 24px;
-    height: 56px;
+    gap: 8px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 8px 8px 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(14, 16, 23, 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    margin-right: auto;
     color: var(--ink-strong);
+    font-family: var(--font-display);
     font-weight: 700;
     text-decoration: none;
   }
 
   .links {
     display: flex;
-    gap: 16px;
+    gap: 2px;
     list-style: none;
-    margin: 0 0 0 auto;
+    margin: 0;
     padding: 0;
-    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
   }
 
   .links a {
-    position: relative;
+    display: block;
+    padding: 6px 12px;
+    border-radius: 999px;
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
-    transition: color 0.2s ease;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
   }
 
-  /* Underline that grows from the left on hover and on the current section */
-  .links a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -4px;
-    height: 2px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s ease;
+  .links a:hover {
+    color: var(--ink-strong);
+    background: rgba(255, 255, 255, 0.06);
   }
 
-  .links a:hover,
+  /* Current section (set by scripts/motion.ts) or current page */
   .links a:global(.active),
   .links a[aria-current='page'] {
-    color: var(--blue);
-  }
-
-  .links a:hover::after,
-  .links a:global(.active)::after,
-  .links a[aria-current='page']::after {
-    transform: scaleX(1);
-  }
-
-  .progress {
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: 2px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: left;
+    color: var(--ink-strong);
+    background: rgba(167, 139, 250, 0.16);
   }
 
   .lang {
-    padding: 4px 8px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
     color: var(--ink-strong);
-    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     text-decoration: none;
+    transition: border-color 0.2s ease;
   }
 
   .lang:hover {
-    border-color: var(--blue);
+    border-color: var(--accent);
+  }
+
+  /* Reading progress, pinned to the top edge */
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--grad);
+    transform: scaleX(0);
+    transform-origin: left;
   }
 
   /* Spanish labels are longer, so the section links collapse before they can wrap.

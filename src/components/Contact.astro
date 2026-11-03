@@ -13,33 +13,82 @@ const t = useTranslations(lang);
 
 <section id="contact" class="section">
   <div class="container">
-    <SectionTitle text={t('contact.title')} />
-    <p>{t('contact.text')}</p>
-    <p class="established"><span class="prompt">[+]</span> Connection established</p>
-    <div class="actions">
-      <a class="btn btn-primary" href={`mailto:${site.email}`}>{t('contact.email')}</a>
-      <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a class="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <div class="cta">
+      <SectionTitle index="05" text={t('contact.title')} title={t('contact.heading')} />
+      <p class="text">{t('contact.text')}</p>
+      <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+      <div class="actions">
+        <a class="btn btn-primary" href={`mailto:${site.email}`}>{t('contact.email')} <span aria-hidden="true">→</span></a>
+        <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+      <p class="established"><span class="prompt">[+]</span> Connection established</p>
     </div>
-    <p class="email">{site.email}</p>
   </div>
 </section>
 
 <style>
-  .established {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
+  /* Big panel with a gradient border and a soft glow */
+  .cta {
+    position: relative;
+    padding: 56px 24px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(600px 300px at 50% 0%, rgba(167, 139, 250, 0.16), transparent 70%) padding-box,
+      linear-gradient(var(--surface-deep), var(--surface-deep)) padding-box,
+      var(--grad) border-box;
+    text-align: center;
+  }
+
+  @media (min-width: 720px) {
+    .cta {
+      padding: 80px 48px;
+    }
+  }
+
+  .cta :global(.section-head) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .cta :global(.section-head h2) {
+    font-size: clamp(2.4rem, 6vw, 3.75rem);
+  }
+
+  .text {
+    margin: 0 auto 24px;
+  }
+
+  .email {
+    display: inline-block;
+    margin-bottom: 32px;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 600;
+    color: var(--ink-strong);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color 0.2s ease;
+  }
+
+  .email:hover {
+    color: var(--accent);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 32px;
   }
 
-  .email {
+  .established {
+    margin: 0 auto;
     font-family: var(--font-mono);
-    color: var(--cyan);
+    font-size: 0.8rem;
   }
 </style>

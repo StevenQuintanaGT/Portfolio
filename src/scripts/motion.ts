@@ -45,7 +45,7 @@ function setupReveals() {
   if (reduceMotion) return;
 
   const targets = document.querySelectorAll<HTMLElement>(
-    '.section p, .section .card, .section .item, .section .actions, .section .tag-list',
+    '.section .section-head h2, .section p, .section .card, .section .item, .section .actions, .section .tag-list, .section .cta',
   );
   // Stagger siblings so a grid of cards appears one after another
   targets.forEach((el) => {
@@ -130,8 +130,26 @@ function setupProgressBar() {
   window.addEventListener('resize', update);
 }
 
+// --- Cards: a soft light follows the pointer (see .hover-lift in global.css) ---
+function setupSpotlight() {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  document.addEventListener(
+    'pointermove',
+    (event) => {
+      const card = (event.target as HTMLElement).closest?.<HTMLElement>('.hover-lift');
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+      card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+    },
+    { passive: true },
+  );
+}
+
 heroIntro();
 setupReveals();
+setupSpotlight();
 setupTypedHeadings();
 setupActiveNav();
 setupProgressBar();

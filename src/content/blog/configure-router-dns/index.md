@@ -1,7 +1,7 @@
 ---
 title: configure-router-dns
-description: Guía paso a paso para usar los DNS de Cloudflare (1.1.1.1) en un router.
-date: 2026-10-26
+description: Guía paso a paso para usar los DNS de Cloudflare en un router.
+date: 2026-11-03
 tags:
   - redes
   - dns
@@ -13,23 +13,56 @@ draft: true
 
 Si tienes internet por fibra óptica en Guatemala, es muy probable que tu proveedor te haya instalado un **módem Huawei** como este. Hace poco quise cambiar los DNS del mío y me encontré con que la opción estaba bloqueada. Después de investigar, encontré cómo hacerlo, y en esta guía te explico paso a paso cómo lograrlo, aunque no tengas experiencia en redes.
 
-<!-- IMAGEN: foto del módem Huawei (vista general o puertos traseros) -->
+![img-modem](01-img.jpeg)
 
 Módem de fibra Huawei
 
 ---
 
-## Primero: ¿qué es un DNS y por qué cambiarlo?
+## Primero: ¿qué es un DNS?
 
 Cuando escribes `google.com` en el navegador, tu computadora no sabe dónde está ese sitio. Necesita preguntarle a un **servidor DNS**, que funciona como una **agenda de contactos de internet**: tú le das el nombre del sitio y él te devuelve su "número" (la dirección IP).
 
-Por defecto, usas el DNS de tu proveedor de internet. Cambiarlo por uno público como **Cloudflare** tiene algunas ventajas:
-
-- ✅ **Más confiable:** si el DNS de tu proveedor falla, puedes quedarte "sin internet" aunque la conexión funcione.
-- ✅ **Más privacidad:** tu proveedor deja de ser quien responde tus consultas.
-- ✅ **Muy rápido** y gratuito.
+Por defecto, todos los dispositivos de tu casa usan el DNS de tu proveedor de internet (Tigo, Claro u otro). Pero puedes cambiarlo por otro.
 
 > **¿Me va a dar más velocidad de descarga o menos lag en juegos?** No. El DNS solo ayuda a _encontrar_ los sitios; no cambia tu velocidad de internet ni tu ping dentro de un juego.
+
+---
+
+## ¿Por qué Cloudflare y no el DNS de tu proveedor?
+
+**Cloudflare** es una de las empresas de infraestructura de internet más grandes del mundo, y ofrece su DNS público **gratis**. Estas son las razones por las que lo prefiero sobre el DNS de Tigo, Claro o cualquier proveedor local:
+
+||DNS de tu proveedor|DNS de Cloudflare|
+|---|---|---|
+|**Confiabilidad**|Si su DNS falla, te quedas "sin internet" aunque tu conexión funcione|Red global con cientos de centros de datos; muy difícil que falle|
+|**Privacidad**|Tu proveedor ve y puede registrar todos los sitios que consultas|Política pública de no vender tus datos y borrar los registros en 24 horas, con auditorías externas|
+|**Manipulación**|Algunos proveedores redirigen páginas inexistentes a publicidad o bloquean sitios desde su DNS|Responde lo que es, sin redirecciones ni publicidad|
+|**Protección opcional**|Normalmente no ofrece filtros|Puedes elegir bloquear sitios peligrosos o contenido para adultos (ver abajo)|
+|**Cifrado**|Normalmente sin cifrar|Soporta DNS cifrado (útil en el celular)|
+|**Velocidad**|Puede ser rápido porque está dentro de la red del proveedor|Muy rápido; uno de los DNS públicos con mejor tiempo de respuesta|
+
+---
+
+## Elige tu tipo de DNS de Cloudflare
+
+Cloudflare tiene **tres versiones** de su DNS. Todas son gratuitas; la diferencia es **qué bloquean**:
+
+- **1.1.1.1 – Sin filtrado:** responde todo, sin bloquear nada. Ideal si solo quieres un DNS rápido y privado.
+- **1.1.1.2 – Bloquea malware:** igual que el anterior, pero **no te deja entrar a sitios conocidos de virus, estafas y páginas falsas (phishing)**. Es una capa extra de seguridad para toda la casa.
+- **1.1.1.3 – Bloquea malware y contenido para adultos:** además de lo anterior, **bloquea páginas para adultos**. Útil si en casa hay niños.
+
+Usa **los cuatro valores de la misma fila** en tu módem:
+
+|Tipo|IPv4 primario|IPv4 secundario|IPv6 primario|IPv6 secundario|
+|---|---|---|---|---|
+|**Sin filtrado**|`1.1.1.1`|`1.0.0.1`|`2606:4700:4700::1111`|`2606:4700:4700::1001`|
+|**Bloquea malware**|`1.1.1.2`|`1.0.0.2`|`2606:4700:4700::1112`|`2606:4700:4700::1002`|
+|**Bloquea malware y adultos**|`1.1.1.3`|`1.0.0.3`|`2606:4700:4700::1113`|`2606:4700:4700::1003`|
+
+> 💡 **No mezcles filas.** Si pones el primario de una y el secundario de otra, tus dispositivos a veces usarán uno y a veces el otro, y el filtrado funcionará solo "a ratos".
+
+> En esta guía uso los de **sin filtrado** como ejemplo. Si elegiste otra versión, solo cambia los números por los de tu fila.
 
 ---
 
@@ -49,11 +82,10 @@ Por defecto, usas el DNS de tu proveedor de internet. Cambiarlo por uno público
 2. En la barra de direcciones escribe: `192.168.1.1` y presiona Enter.
 3. Ingresa el **usuario y contraseña** de la etiqueta del módem.
 
-<!-- IMAGEN: etiqueta del módem (tapar contraseñas y números de serie) -->
+>⚠️ Si en la etiqueta no encuentras las credenciales puedes buscar en internet para tu modelo en especifico
 
-Etiqueta del módem con usuario y contraseña
 
-<!-- IMAGEN: pantalla de inicio de sesión del panel -->
+![[02-img.png]]
 
 Pantalla de inicio de sesión
 
@@ -69,7 +101,7 @@ Pantalla de inicio de sesión
 
 Vas a ver los campos **Primary DNS Server** y **Secondary DNS Server**. Lo más probable es que aparezcan **en gris** y no te dejen escribir. 😤
 
-<!-- IMAGEN: pantalla DHCP Server con los campos de DNS en gris -->
+![[03-img.png]]
 
 Campos de DNS bloqueados
 
@@ -84,7 +116,7 @@ Tu proveedor bloquea esa opción en la cuenta de usuario normal. Pero ese bloque
 3. Haz **doble clic** sobre la palabra `disabled`, bórrala y presiona Enter.
 4. Haz lo mismo con el campo **Secondary DNS Server**.
 
-<!-- IMAGEN: panel de inspeccionar mostrando la palabra disabled resaltada -->
+![[04-img.png]]
 
 Quitar la palabra disabled en Inspeccionar
 
@@ -94,24 +126,24 @@ Quitar la palabra disabled en Inspeccionar
 
 ---
 
-## Paso 4: Escribir los nuevos DNS
+## Paso 4: Escribir los DNS de IPv4
 
-En los campos que acabas de desbloquear escribe:
+En los campos que acabas de desbloquear escribe los valores **IPv4** de la versión que elegiste. Por ejemplo, sin filtrado:
 
 |Campo|Valor|
 |---|---|
 |**Primary DNS Server**|`1.1.1.1`|
-|**Secondary DNS Server**|`9.9.9.9`|
+|**Secondary DNS Server**|`1.0.0.1`|
 
 Luego haz clic en **Apply**.
 
-<!-- IMAGEN: campos de DNS con los valores escritos -->
+![[05-img.png]]
 
 DNS configurados
 
-> 💡 **¿Por qué dos DNS de empresas distintas?** `1.1.1.1` es de **Cloudflare** y `9.9.9.9` es de **Quad9**. Si uno de los dos llega a fallar, el otro sigue funcionando. Si prefieres usar solo Cloudflare, en el secundario puedes poner `1.0.0.1`.
-
 Recarga la página: si los números siguen ahí, **el cambio se guardó**. 🎉
+
+> **¿Por qué dos direcciones?** Son dos "puertas" distintas al mismo servicio de Cloudflare. Si una no responde, tus dispositivos usan la otra.
 
 ---
 
@@ -122,16 +154,16 @@ Muchos módems de fibra ya usan **IPv6**, la versión nueva de las direcciones d
 1. En el mismo menú **LAN**, entra a **DHCPv6 Server**.
 2. Busca la opción **DNS Source on the LAN Side**. Seguramente dice **DNS agent**.
 3. Cámbiala a la opción **Static** (o "estático").
-4. Aparecerán campos para los DNS. Escribe:
+4. Aparecerán campos para los DNS. Escribe los valores **IPv6** de tu versión. Por ejemplo, sin filtrado:
 
 |Campo|Valor|
 |---|---|
 |**DNS primario**|`2606:4700:4700::1111`|
-|**DNS secundario**|`2620:fe::fe`|
+|**DNS secundario**|`2606:4700:4700::1001`|
 
 5. Haz clic en **Apply**.
 
-<!-- IMAGEN: pantalla DHCPv6 Server con la opción DNS Source -->
+![[06-img.png]]
 
 Configurar DNS de IPv6
 
@@ -163,12 +195,12 @@ Lo que configuraste en el módem solo funciona en tu casa. Si usas WiFi público
 
 1. **Ajustes → Conexiones → Más opciones de conexión → DNS privado.**
 2. Elige **Nombre de host del proveedor de DNS privado**.
-3. Escribe: `one.one.one.one` y guarda.
+3. Escribe el nombre según la versión que quieras y guarda:
 
-<!-- IMAGEN: pantalla de DNS privado en Android -->
+|Tipo|Nombre de host|
+|---|---|
+|**Sin filtrado**|`one.one.one.one`|
+|**Bloquea malware**|`security.cloudflare-dns.com`|
+|**Bloquea malware y adultos**|`family.cloudflare-dns.com`|
 
-DNS privado en Android
-
-Este además **cifra** tus consultas, así que nadie en esa red puede ver qué sitios visitas por medio del DNS.
-
-> Si en algún WiFi público no te aparece la página para iniciar sesión, desactiva el DNS privado un momento, inicia sesión y vuelve a activarlo.
+![08-img](./08-img.jpeg)

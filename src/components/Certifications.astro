@@ -12,50 +12,61 @@ const t = useTranslations(lang);
 
 <section id="certs" class="section">
   <div class="container">
-    <SectionTitle text={t('certs.title')} />
-    <ul class="list">
+    <SectionTitle index="04" text={t('certs.title')} title={t('certs.heading')} />
+    <ol class="list">
       {
         certs.map((cert) => (
           <li class="item hover-lift">
-            <span class={`status status-${cert.status}`}>{t(`certs.status.${cert.status}`)}</span>
+            <span class={`status status-${cert.status}`}>
+              <span class="dot" aria-hidden="true" />
+              {t(`certs.status.${cert.status}`)}
+            </span>
             <span class="name">{cert.name}</span>
             <span class="issuer">{cert.issuer}</span>
           </li>
         ))
       }
-    </ul>
+    </ol>
   </div>
 </section>
 
 <style>
   .list {
-    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 8px;
+    list-style: none;
   }
 
   .item {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background: var(--surface);
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
     border: 1px solid var(--card-border, var(--line));
-    border-radius: var(--radius-md);
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
   }
 
   .status {
-    min-width: 96px;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 4px 12px;
     border: 1px solid currentColor;
-    font-size: 0.75rem;
-    text-align: center;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
   }
 
   .status-done {
@@ -67,14 +78,18 @@ const t = useTranslations(lang);
   }
 
   .status-planned {
-    color: var(--cyan);
+    color: var(--accent-2);
   }
 
   .name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
     color: var(--ink-strong);
   }
 
   .issuer {
-    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
   }
 </style>
