@@ -7,7 +7,7 @@ tags:
   - dns
   - cloudflare
 lang: es
-draft: true
+draft: false
 ---
 # Cómo cambiar los DNS de tu módem Huawei de fibra (aunque las opciones estén bloqueadas)
 
@@ -179,7 +179,7 @@ Configurar DNS de IPv6
 2. Entra a 👉 **[1.1.1.1/help](https://1.1.1.1/help)**
 3. Si dice **"Connected to 1.1.1.1: Yes"**, todo quedó bien.
 
-<!-- IMAGEN: resultado de 1.1.1.1/help -->
+![screen-dns](dns-cap.png)
 
 Comprobación en 1.1.1.1/help
 
