@@ -1,5 +1,5 @@
 ---
-title: configure-router-dns
+title: Cómo cambiar los DNS de tu módem Huawei de fibra (aunque las opciones estén bloqueadas)
 description: Guía paso a paso para usar los DNS de Cloudflare en un router.
 date: 2026-11-03
 tags:
@@ -9,11 +9,10 @@ tags:
 lang: es
 draft: false
 ---
-# Cómo cambiar los DNS de tu módem Huawei de fibra (aunque las opciones estén bloqueadas)
 
 Si tienes internet por fibra óptica en Guatemala, es muy probable que tu proveedor te haya instalado un **módem Huawei** como este. Hace poco quise cambiar los DNS del mío y me encontré con que la opción estaba bloqueada. Después de investigar, encontré cómo hacerlo, y en esta guía te explico paso a paso cómo lograrlo, aunque no tengas experiencia en redes.
 
-![img-modem](01-img.jpeg)
+![Módem de fibra Huawei](./01-img.jpeg)
 
 Módem de fibra Huawei
 
@@ -82,10 +81,9 @@ Usa **los cuatro valores de la misma fila** en tu módem:
 2. En la barra de direcciones escribe: `192.168.1.1` y presiona Enter.
 3. Ingresa el **usuario y contraseña** de la etiqueta del módem.
 
->⚠️ Si en la etiqueta no encuentras las credenciales puedes buscar en internet para tu modelo en especifico
+> ⚠️ Si en la etiqueta no encuentras las credenciales, puedes buscarlas en internet para tu modelo en específico.
 
-
-![[02-img.png]]
+![Pantalla de inicio de sesión del módem](./02-img.png)
 
 Pantalla de inicio de sesión
 
@@ -101,7 +99,7 @@ Pantalla de inicio de sesión
 
 Vas a ver los campos **Primary DNS Server** y **Secondary DNS Server**. Lo más probable es que aparezcan **en gris** y no te dejen escribir. 😤
 
-![[03-img.png]]
+![Campos de DNS bloqueados en gris](./03-img.png)
 
 Campos de DNS bloqueados
 
@@ -116,7 +114,7 @@ Tu proveedor bloquea esa opción en la cuenta de usuario normal. Pero ese bloque
 3. Haz **doble clic** sobre la palabra `disabled`, bórrala y presiona Enter.
 4. Haz lo mismo con el campo **Secondary DNS Server**.
 
-![[04-img.png]]
+![Quitar la palabra disabled en el panel Inspeccionar](./04-img.png)
 
 Quitar la palabra disabled en Inspeccionar
 
@@ -137,7 +135,7 @@ En los campos que acabas de desbloquear escribe los valores **IPv4** de la versi
 
 Luego haz clic en **Apply**.
 
-![[05-img.png]]
+![DNS de IPv4 configurados con 1.1.1.1 y 1.0.0.1](./05-img.png)
 
 DNS configurados
 
@@ -163,7 +161,7 @@ Muchos módems de fibra ya usan **IPv6**, la versión nueva de las direcciones d
 
 5. Haz clic en **Apply**.
 
-![[06-img.png]]
+![Configuración de DNS de IPv6 en DHCPv6 Server](./06-img.png)
 
 Configurar DNS de IPv6
 
@@ -179,7 +177,7 @@ Configurar DNS de IPv6
 2. Entra a 👉 **[1.1.1.1/help](https://1.1.1.1/help)**
 3. Si dice **"Connected to 1.1.1.1: Yes"**, todo quedó bien.
 
-![screen-dns](dns-cap.png)
+![Página 1.1.1.1/help confirmando la conexión](./dns-cap.png)
 
 Comprobación en 1.1.1.1/help
 
@@ -203,4 +201,4 @@ Lo que configuraste en el módem solo funciona en tu casa. Si usas WiFi público
 |**Bloquea malware**|`security.cloudflare-dns.com`|
 |**Bloquea malware y adultos**|`family.cloudflare-dns.com`|
 
-![08-img](./08-img.jpeg)
+![Opción de DNS privado en un celular Android](./08-img.jpeg)
