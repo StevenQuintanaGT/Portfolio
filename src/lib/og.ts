@@ -44,7 +44,7 @@ function loadAssets() {
       fontFile('jetbrains-mono', 'jetbrains-mono-latin-ext-700-normal.woff'),
       fontFile('inter', 'inter-latin-400-normal.woff'),
       fontFile('inter', 'inter-latin-ext-400-normal.woff'),
-      fs.readFile(path.join(root, 'public', 'logo-steven-quintana.svg')),
+      fs.readFile(path.join(root, 'public', 'brand', 'symbol.svg')),
     ]);
     return {
       fonts: [

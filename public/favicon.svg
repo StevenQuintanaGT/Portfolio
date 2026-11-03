@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 196">
-<rect width="196" height="196" rx="44" fill="#61afef"/>
-<rect x="18" y="18" width="160" height="160" rx="30" fill="#282c34"/>
-<path d="M57.496 128.624V117.584L85.33600000000001 104.72Q87.256 103.856 89.128 103.232Q91.0 102.608 92.05600000000001 102.416Q91.0 102.224 89.08 101.696Q87.16 101.168 85.33600000000001 100.304L57.496 87.344V76.112L100.504 96.368V108.368Z" fill="#98c379"/>
-<rect x="111.8" y="70.0" width="30" height="64" rx="4" fill="#61afef"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img"><title>msquintana — favicon Enlace</title><defs><linearGradient id="ribbon-v" x1="18" y1="14" x2="66" y2="61" gradientUnits="userSpaceOnUse"><stop stop-color="#B29AFB"/><stop offset="1" stop-color="#9273EE"/></linearGradient><linearGradient id="ribbon-c" x1="35" y1="38" x2="78" y2="86" gradientUnits="userSpaceOnUse"><stop stop-color="#26D8EB"/><stop offset="1" stop-color="#16B4DA"/></linearGradient></defs><rect width="96" height="96" rx="21" fill="#090B10"/><path fill="url(#ribbon-v)" d="M34 12H90L72 30H46L30 46L46 62H28L12 46V34Z"/><path fill="url(#ribbon-c)" d="M62 84H6L24 66H50L66 50L50 34H68L84 50V62Z"/></svg>

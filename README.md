@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/logo-steven-quintana.svg" alt="" width="88" height="88">
+<img src="public/brand/logo-full.svg" alt="Steven Quintana" width="420">
 
 # msquintana.com
 
@@ -109,7 +109,7 @@ páginas de sus etiquetas, y se genera su imagen de vista previa.
 ## Estructura
 
 ```
-public/                 favicon y logos
+public/                 favicons, manifest y brand/ (logos y símbolo)
 src/
 ├── components/         secciones de la página principal (Hero, Projects, Nav…)
 │   └── blog/           lista, tarjetas y página de artículo

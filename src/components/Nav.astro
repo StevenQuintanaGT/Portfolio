@@ -31,9 +31,10 @@ const links = [
 <header class="nav">
   <div class="progress" data-progress aria-hidden="true"></div>
   <nav class="nav-inner">
-    <a class="brand" href={home}>
-      <img src="/logo-steven-quintana.svg" alt="" width="30" height="30" />
-      <span>msquintana</span>
+    <!-- The logo already includes the "msquintana" wordmark -->
+    <a class="brand" href={home} aria-label="Steven Quintana — home">
+      <img class="logo" src="/brand/logo.svg" alt="msquintana" width="272" height="64" />
+      <img class="symbol" src="/brand/symbol.svg" alt="msquintana" width="96" height="96" />
     </a>
     <ul class="links">
       {
@@ -78,12 +79,36 @@ const links = [
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
     margin-right: auto;
-    color: var(--ink-strong);
-    font-family: var(--font-display);
-    font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 999px;
     text-decoration: none;
+  }
+
+  .brand img {
+    display: block;
+  }
+
+  .logo {
+    width: auto;
+    height: 34px;
+  }
+
+  /* Very narrow screens: symbol only, so the blog link and language switch still fit */
+  .brand .symbol {
+    display: none;
+    width: 34px;
+    height: 34px;
+  }
+
+  @media (max-width: 340px) {
+    .brand .logo {
+      display: none;
+    }
+
+    .brand .symbol {
+      display: block;
+    }
   }
 
   .links {

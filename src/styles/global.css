@@ -1,7 +1,7 @@
 /* Midnight palette: near-black base, violet → cyan accent, green for terminal details.
    Older components still use --blue/--surface-deep/etc., so those names are kept. */
 :root {
-  --bg: #0a0b10;
+  --bg: #090b10; /* same as the brand's dark background */
   --surface: #12141c;
   --surface-deep: #0e1017;
   --surface-raised: #181b25;

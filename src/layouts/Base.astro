@@ -56,10 +56,14 @@ const ogLocale = { en: 'en_US', es: 'es_GT' }[contentLang];
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalUrl} />
-    <meta name="theme-color" content="#0a0b10" />
+    <meta name="theme-color" content="#090b10" />
     <!-- Lets CSS hide animated elements only when the script that shows them will run -->
     <script is:inline>document.documentElement.classList.add('js');</script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     {
       Object.entries(alternates).map(([l, path]) => (
         <link rel="alternate" hreflang={l} href={new URL(path, Astro.site)} />
