@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { satteri } from '@astrojs/markdown-satteri';
+import { wikilinks } from './src/lib/wikilinks.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,6 +25,8 @@ export default defineConfig({
     },
   },
   markdown: {
+    // Astro's default Markdown processor, plus Obsidian ![[image]] and [[note]] support
+    processor: satteri({ mdastPlugins: [wikilinks] }),
     shikiConfig: {
       // Same palette as the rest of the site
       theme: 'one-dark-pro',

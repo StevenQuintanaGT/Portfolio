@@ -106,6 +106,20 @@ páginas de sus etiquetas, y se genera su imagen de vista previa.
 
 > En los artículos de seguridad no publiques IPs reales, nombres de redes, credenciales ni datos de terceros.
 
+### Sintaxis de Obsidian
+
+Los artículos aceptan wikilinks de Obsidian ([`src/lib/wikilinks.mjs`](src/lib/wikilinks.mjs)):
+
+| Escribes | Se publica como |
+| --- | --- |
+| `![[captura.png]]` | Imagen optimizada; tiene que estar en la carpeta del artículo |
+| `![[captura.png\|Texto alternativo]]` | Imagen con ese texto alternativo (un tamaño como `\|300` se ignora) |
+| `[[otro-articulo]]` | Enlace a ese artículo del blog |
+| `[[otro-articulo#Un título\|texto]]` | Enlace a una sección de ese artículo, con texto propio |
+| `[[nota-de-apuntes]]` | Texto normal, si la nota no es un artículo del blog |
+
+Si una imagen `![[...]]` no está junto al `index.md`, el build se detiene y dice qué archivo falta.
+
 ## Estructura
 
 ```
