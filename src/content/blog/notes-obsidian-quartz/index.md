@@ -49,6 +49,7 @@ Podría haber metido las notas dentro de la carpeta `content/` de Quartz y tener
 |---|---|
 | `notes` (privado) | Solo el vault. Es lo que sincroniza Obsidian. |
 | `notes-web` | Solo Quartz: configuración y tema. Ninguna nota. |
+**Link del repo notes-web** https://github.com/StevenQuintanaGT/notes-web
 
 Así el vault queda limpio (sin `node_modules` ni código de Quartz). Si algún día quiero editar desde el celular con el plugin Git, solo clono mis notas. En cada build, Cloudflare descarga Quartz y le mete una copia del vault en `content/`.
 
@@ -106,6 +107,8 @@ npx quartz build --serve
 ```
 
 y abrir `http://localhost:8080`.
+
+![[Pasted image 20261109154004.png]]
 
 > [!warning] Error: Theme "default" could not be loaded
 > En el primer build, Quartz instaló el tema por defecto *a mitad del proceso* y luego no lo pudo cargar. Es un error reportado en el repo (issue #2560). Se arregla volviendo a correr el build o, si persiste, con `npm i @quartz-themes/default`.
@@ -208,7 +211,11 @@ En **Zero Trust → Access → Applications** creé una aplicación *Self-hosted
 > [!danger] No uses "All authenticated users"
 > El ejemplo de Cloudflare viene con esa regla. Con login por código al correo, eso significa que **cualquier persona con cualquier email** puede pedirse un código y entrar. La política tiene que nombrar correos específicos.
 
+![[09 Blog/notes-obsidian-quartz/02-img.png]]
+
 Probé en incógnito: aparece la pantalla de Cloudflare Access pidiendo autenticación antes de mostrar nada.
+
+![[Pasted image 20261109153722.png]]
 
 ## Paso 6: Token de GitHub de solo lectura
 
@@ -218,7 +225,11 @@ El build necesita leer el repo privado del vault. Creé un **fine-grained person
 - **Permissions → Contents**: **Read-only**.
 - **Expiration**: 1 año, con un recordatorio para renovarlo.
 
+![[09 Blog/notes-obsidian-quartz/06-img.png]]
+
 Lo guardé en Cloudflare como **build variable secreta** `GH_TOKEN`.
+
+![[09 Blog/notes-obsidian-quartz/03-img.png]]
 
 > [!bug] `fatal: could not read Password for 'https://github.com'`
 > Este error significa que GitHub rechazó la autenticación. Las causas típicas son: el token está en las variables de *runtime* y no en las de *build*, el nombre del repo está mal escrito, o el token no tiene acceso a ese repo. También ayudó usar el formato `https://x-access-token:$GH_TOKEN@github.com/...` en lugar de `https://$GH_TOKEN@github.com/...`.
@@ -230,12 +241,18 @@ Al principio hice push al vault y Cloudflare no hizo nada. Tiene sentido: el Wor
 La solución fueron los **Deploy Hooks** de Workers Builds: una URL que dispara un build cuando recibe un POST.
 
 1. En el Worker: **Settings → Builds → Deploy Hooks**, rama `v5`. Copié la URL.
+
+![[09 Blog/notes-obsidian-quartz/04-img.png]]
+
 2. En el repo `notes`: **Settings → Webhooks → Add webhook**, con la URL del hook, `application/json` y solo el evento *push*.
+
+![[09 Blog/notes-obsidian-quartz/05-img.png]]
 
 > [!note]
 > La URL del Deploy Hook no necesita autenticación extra: cualquiera que la tenga puede disparar builds. Hay que guardarla como un secreto.
 
 Ahora cada push del vault, manual o del auto commit, genera un build nuevo, y en un par de minutos el cambio está en el sitio.
+
 
 ---
 
