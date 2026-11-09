@@ -108,7 +108,7 @@ npx quartz build --serve
 
 y abrir `http://localhost:8080`.
 
-![[Pasted image 20261109154004.png]]
+![[08-img.png]]
 
 > [!warning] Error: Theme "default" could not be loaded
 > En el primer build, Quartz instaló el tema por defecto *a mitad del proceso* y luego no lo pudo cargar. Es un error reportado en el repo (issue #2560). Se arregla volviendo a correr el build o, si persiste, con `npm i @quartz-themes/default`.
@@ -215,7 +215,7 @@ En **Zero Trust → Access → Applications** creé una aplicación *Self-hosted
 
 Probé en incógnito: aparece la pantalla de Cloudflare Access pidiendo autenticación antes de mostrar nada.
 
-![[Pasted image 20261109153722.png]]
+![[09 Blog/notes-obsidian-quartz/07-img.png]]
 
 ## Paso 6: Token de GitHub de solo lectura
 

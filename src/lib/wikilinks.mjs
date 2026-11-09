@@ -34,9 +34,12 @@ function postExists(slug) {
 }
 
 function toImage(target, label, fileURL) {
-  const file = target.trim();
+  // Obsidian may write the path from the vault root ("09 Blog/post/img.png") or just
+  // the name ("img.png"). Either way the image must sit next to the post, so use the name.
+  let file = target.trim();
   if (fileURL) {
     const dir = path.dirname(fileURLToPath(fileURL));
+    if (!fs.existsSync(path.join(dir, file))) file = path.basename(file);
     if (!fs.existsSync(path.join(dir, file))) {
       throw new Error(
         `[wikilinks] "${file}" no está junto al artículo (${path.relative(process.cwd(), dir)}). ` +
