@@ -120,6 +120,9 @@ Los artículos aceptan wikilinks de Obsidian ([`src/lib/wikilinks.mjs`](src/lib/
 
 Si una imagen `![[...]]` no está junto al `index.md`, el build se detiene y dice qué archivo falta.
 
+Los bloques ` ```mermaid ` se dibujan como diagramas con los colores del sitio ([`src/scripts/mermaid.ts`](src/scripts/mermaid.ts)).
+Mermaid solo se descarga en los artículos que tienen un diagrama.
+
 ## Estructura
 
 ```

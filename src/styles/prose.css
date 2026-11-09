@@ -140,6 +140,31 @@
   font-family: inherit;
 }
 
+/* Mermaid diagrams (scripts/mermaid.ts). Wide diagrams scroll sideways on phones. */
+.prose .diagram {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 24px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-deep);
+  overflow-x: auto;
+  text-align: center;
+}
+
+.prose .diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  /* Keep text readable: let the diagram be wider than the screen and scroll */
+  .prose .diagram svg {
+    max-width: none;
+    min-width: 560px;
+  }
+}
+
 /* Tables scroll sideways on small screens instead of breaking the page */
 .prose table {
   display: block;

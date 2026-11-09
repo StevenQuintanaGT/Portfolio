@@ -83,7 +83,7 @@ Usa **los cuatro valores de la misma fila** en tu módem:
 
 > ⚠️ Si en la etiqueta no encuentras las credenciales, puedes buscarlas en internet para tu modelo en específico.
 
-![[02-img.png|Pantalla de inicio de sesión del módem]]
+![[09 Blog/configure-router-dns/02-img.png|Pantalla de inicio de sesión del módem]]
 
 Pantalla de inicio de sesión
 
@@ -99,7 +99,7 @@ Pantalla de inicio de sesión
 
 Vas a ver los campos **Primary DNS Server** y **Secondary DNS Server**. Lo más probable es que aparezcan **en gris** y no te dejen escribir. 😤
 
-![[03-img.png|Campos de DNS bloqueados en gris]]
+![[09 Blog/configure-router-dns/03-img.png|Campos de DNS bloqueados en gris]]
 
 Campos de DNS bloqueados
 
@@ -114,7 +114,7 @@ Tu proveedor bloquea esa opción en la cuenta de usuario normal. Pero ese bloque
 3. Haz **doble clic** sobre la palabra `disabled`, bórrala y presiona Enter.
 4. Haz lo mismo con el campo **Secondary DNS Server**.
 
-![[04-img.png|Quitar la palabra disabled en el panel Inspeccionar]]
+![[09 Blog/configure-router-dns/04-img.png|Quitar la palabra disabled en el panel Inspeccionar]]
 
 Quitar la palabra disabled en Inspeccionar
 
@@ -135,7 +135,7 @@ En los campos que acabas de desbloquear escribe los valores **IPv4** de la versi
 
 Luego haz clic en **Apply**.
 
-![[05-img.png|DNS de IPv4 configurados con 1.1.1.1 y 1.0.0.1]]
+![[09 Blog/configure-router-dns/05-img.png|DNS de IPv4 configurados con 1.1.1.1 y 1.0.0.1]]
 
 DNS configurados
 
@@ -161,7 +161,7 @@ Muchos módems de fibra ya usan **IPv6**, la versión nueva de las direcciones d
 
 5. Haz clic en **Apply**.
 
-![[06-img.png|Configuración de DNS de IPv6 en DHCPv6 Server]]
+![[09 Blog/configure-router-dns/06-img.png|Configuración de DNS de IPv6 en DHCPv6 Server]]
 
 Configurar DNS de IPv6
 

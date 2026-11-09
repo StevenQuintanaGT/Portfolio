@@ -27,6 +27,8 @@ export default defineConfig({
   markdown: {
     // Astro's default Markdown processor, plus Obsidian ![[image]] and [[note]] support
     processor: satteri({ mdastPlugins: [wikilinks] }),
+    // Mermaid blocks are drawn as diagrams in the browser (src/scripts/mermaid.ts), not highlighted
+    syntaxHighlight: { type: 'shiki', excludeLangs: ['math', 'mermaid'] },
     shikiConfig: {
       // Same palette as the rest of the site
       theme: 'one-dark-pro',
