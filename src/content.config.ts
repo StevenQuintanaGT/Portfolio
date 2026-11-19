@@ -11,6 +11,9 @@ const projects = defineCollection({
     problem: z.string(),
     result: z.string(),
     tools: z.array(z.string()),
+    category: z.string().optional(),
+    cover: z.string().optional(),
+    highlights: z.array(z.object({ title: z.string(), detail: z.string() })).min(1).optional(),
     // Source code and live site/download. Each one shows as a button when set.
     repo: z.string().url().optional(),
     demo: z.string().url().optional(),

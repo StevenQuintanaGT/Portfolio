@@ -1,151 +1,262 @@
 ---
 import { useTranslations, type Lang } from '../i18n/ui';
+import { projectAnchor } from '../lib/projects';
 
 interface Props {
   lang: Lang;
+  projectId: string;
   title: string;
+  category?: string;
+  cover?: string;
+  highlights?: { title: string; detail: string }[];
   problem: string;
   result: string;
   tools: string[];
   repo?: string;
   demo?: string;
-  // Position in the list, e.g. "01"
-  index: string;
-  // The first project gets a wide card
   featured?: boolean;
 }
 
-const { lang, title, problem, result, tools, repo, demo, index, featured = false } = Astro.props;
+const { lang, projectId, title, category, cover, highlights, problem, result, tools, repo, demo, featured = false } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<article class:list={['card hover-lift', { featured }]}>
-  <div class="top">
-    <span class="num">{index}</span>
-    {featured && <span class="badge">{t('projects.featured')}</span>}
-  </div>
-  <h3>{title}</h3>
-  <dl>
+<article id={projectAnchor(projectId)} class:list={['panel project', { featured, 'with-cover': cover }]} data-reveal data-reactive>
+  <div class="content">
     <div>
-      <dt>{t('projects.problem')}</dt>
-      <dd>{problem}</dd>
+      {category && <p class="category">{category}</p>}
+      <h3>{title}</h3>
     </div>
-    <div>
-      <dt>{t('projects.result')}</dt>
-      <dd>{result}</dd>
+    <div class="description">
+      <p>{problem}</p>
+      {!highlights && <p>{result}</p>}
     </div>
-  </dl>
-  <p class="visually-hidden">{t('projects.tools')}</p>
-  <ul class="tag-list">
-    {tools.map((tool) => <li class="tag">{tool}</li>)}
-  </ul>
-  {
-    (repo || demo) && (
-      <div class="links">
+    {highlights && (
+      <div class="highlights">
+        {highlights.map(({ title, detail }, index) => (
+          <details name={`${projectId}-highlights`} open={index === 0}>
+            <summary>{title}<span aria-hidden="true"></span></summary>
+            <p>{detail}</p>
+          </details>
+        ))}
+      </div>
+    )}
+    <ul class="tag-list" aria-label={t('projects.tools')}>
+      {tools.map((tool) => <li class="tag">{tool}</li>)}
+    </ul>
+    {(repo || demo) && (
+      <div class="actions">
         {demo && (
           <a class="btn btn-primary btn-sm" href={demo} target="_blank" rel="noopener noreferrer">
-            {t('projects.demo')} ↗
+            {t('projects.demo')}
           </a>
         )}
         {repo && (
           <a class="btn btn-sm" href={repo} target="_blank" rel="noopener noreferrer">
-            {t('projects.repo')} ↗
+            {t('projects.repo')}
           </a>
         )}
       </div>
-    )
-  }
+    )}
+  </div>
+  {cover && (
+    <div class="cover">
+      <img src={cover} alt="" loading="lazy" decoding="async" />
+    </div>
+  )}
 </article>
 
 <style>
-  .card {
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+  }
+
+  .project:nth-child(3) {
+    --reveal-delay: 90ms;
+  }
+
+  .project:target {
+    border-color: rgb(192 175 252 / 0.5);
+    box-shadow: 0 0 28px rgb(192 175 252 / 0.12);
+  }
+
+  .content {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding: 28px;
-    border: 1px solid var(--card-border, var(--line));
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    overflow: hidden;
+    padding: clamp(20px, 3vw, 34px);
   }
 
-  .top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .num {
-    font-family: var(--font-display);
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
-  }
-
-  .badge {
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--grad);
-    color: var(--bg);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 700;
+  .category {
+    margin-bottom: 8px;
+    color: var(--accent-2);
+    font: 0.8125rem/1.5 var(--font-mono);
   }
 
   h3 {
     margin: 0;
-    font-size: 1.35rem;
+    font-size: clamp(1.43rem, 2.6vw, 1.85rem);
   }
 
-  dl {
-    display: grid;
-    gap: 14px;
+  .featured h3 {
+    font-size: clamp(1.95rem, 4vw, 2.9rem);
+    letter-spacing: -0.055em;
+  }
+
+  .featured {
+    border-color: rgb(184 164 254 / 0.24);
+    background: radial-gradient(ellipse at 14% 0%, rgb(178 149 252 / 0.1), transparent 68%), var(--panel-fill);
+  }
+
+  .description p {
     margin: 0;
   }
 
-  dt {
-    margin-bottom: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent-2);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  .description p + p {
+    margin-top: 8px;
   }
 
-  dd {
-    margin: 0;
+  .highlights {
+    border-block: 1px solid var(--line);
   }
 
-  .links {
+  .highlights details + details {
+    border-top: 1px solid var(--line);
+  }
+
+  .highlights summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    gap: 10px;
+    color: var(--ink-strong);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+    transition: box-shadow 0.25s ease, color 0.25s ease, padding-inline 0.25s ease;
+  }
+
+  .highlights summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .highlights summary:hover,
+  .highlights details[open] summary {
+    color: var(--accent);
+  }
+
+  .highlights details[open] summary {
+    padding-inline: 10px;
+    box-shadow: inset 2px 0 var(--accent);
+  }
+
+  .highlights summary span {
+    position: relative;
+    flex: 0 0 10px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .highlights summary span::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: currentColor;
+    transform: rotate(90deg);
+    transition: transform 0.24s ease;
+  }
+
+  .highlights details[open] summary span::after { transform: none; }
+
+  .highlights p {
+    margin: 0 0 12px 10px;
+  }
+
+  .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     margin-top: auto;
   }
 
-  /* Featured: full width, bigger title, problem and result side by side */
-  .featured {
-    background:
-      radial-gradient(500px 260px at 100% 0%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 70%),
-      radial-gradient(500px 260px at 0% 100%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
-      var(--surface);
+  .cover {
+    position: relative;
+    order: -1;
+    width: 100%;
+    min-height: 168px;
+    aspect-ratio: 2.1;
+    background: var(--surface-raised);
+    overflow: hidden;
+  }
+
+  .cover img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 55% 50%;
+  }
+
+  .cover::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: linear-gradient(135deg, rgb(109 89 164 / 0.14), transparent 52%, rgb(10 14 23 / 0.34));
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-motion='playing']) .project:target {
+      animation: targeted 0.7s var(--ease-out);
+    }
+
+    .highlights details[open] p {
+      animation: open-highlight 0.29s ease-out;
+    }
+
+    .cover img {
+      transition: transform 0.48s var(--ease-out);
+    }
+
+    .project:focus-within .cover img {
+      transform: scale(1.045);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .project:hover .cover img {
+        transform: translate(var(--pan-x, 0px), var(--pan-y, 0px)) scale(1.06);
+      }
+    }
+  }
+
+  @keyframes open-highlight {
+    from { opacity: 0.3; transform: translateY(-4px); }
+  }
+
+  @keyframes targeted {
+    from { box-shadow: 0 0 0 3px rgb(192 175 252 / 0.26), 0 0 32px rgb(192 175 252 / 0.2); }
   }
 
   @media (min-width: 760px) {
     .featured {
       grid-column: 1 / -1;
-      padding: 36px;
     }
 
-    .featured h3 {
-      font-size: 1.9rem;
+    .featured.with-cover {
+      grid-template-columns: minmax(0, 1.14fr) minmax(0, 1fr);
     }
 
-    .featured dl {
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
+    .featured .cover {
+      order: 0;
+      aspect-ratio: auto;
+      min-height: 0;
+      border-inline-start: 1px solid var(--line);
     }
   }
 </style>

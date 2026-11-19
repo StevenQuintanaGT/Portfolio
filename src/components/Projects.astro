@@ -1,7 +1,7 @@
 ---
 import SectionTitle from './SectionTitle.astro';
 import ProjectCard from './ProjectCard.astro';
-import { getProjects } from '../lib/projects';
+import { getProjects, projectAnchor } from '../lib/projects';
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -16,14 +16,19 @@ const projects = await getProjects(lang);
 
 <section id="projects" class="section">
   <div class="container">
-    <SectionTitle index="03" text={t('projects.title')} title={t('projects.heading')} />
+    <SectionTitle title={t('projects.heading')} />
+    {projects.length > 1 && (
+      <nav class="project-jumps" data-project-jumps aria-label={t('projects.jump')} data-reveal>
+        {projects.map(({ id, data }) => <a href={`#${projectAnchor(id)}`}>{data.title}</a>)}
+      </nav>
+    )}
     <div class="grid">
       {
         projects.map((project, i) => (
           <ProjectCard
             lang={lang}
+            projectId={project.id}
             {...project.data}
-            index={String(i + 1).padStart(2, '0')}
             featured={i === 0}
           />
         ))
@@ -32,7 +37,49 @@ const projects = await getProjects(lang);
   </div>
 </section>
 
+<script>
+  const jumps = document.querySelectorAll<HTMLAnchorElement>('[data-project-jumps] a');
+  if (jumps.length) {
+    const markSelection = () => {
+      for (const link of jumps) {
+        if (link.hash === location.hash) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    markSelection();
+    window.addEventListener('hashchange', markSelection);
+  }
+</script>
+
 <style>
+  .project-jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .project-jumps a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 5px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-deep);
+    color: var(--ink);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .project-jumps a:hover,
+  .project-jumps a[aria-current] {
+    border-color: rgb(192 175 252 / 0.35);
+    background: rgb(192 175 252 / 0.09);
+    color: var(--accent);
+  }
+
   .grid {
     display: grid;
     gap: 16px;

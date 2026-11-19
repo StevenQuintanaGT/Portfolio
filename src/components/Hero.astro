@@ -13,7 +13,7 @@ const t = useTranslations(lang);
 
 // Commands shown by `help` and as quick buttons under the prompt
 const commands = ['help', 'whoami', 'about', 'experience', 'skills', 'projects', 'certs', 'contact', 'lang', 'clear'] as const;
-const quickCommands = ['help', 'projects', 'skills', 'contact'];
+const quickCommands = ['help', 'projects', 'experience', 'certs'];
 const { earned, training } = getCredentials(lang);
 
 // Everything the terminal can print, read by scripts/terminal.ts
@@ -47,62 +47,78 @@ const terminalData = {
     repo: t('projects.repo'),
     employer: t('experience.employer'),
     credly: t('certs.credly'),
+    sections: {
+      about: t('nav.about'),
+      experience: t('nav.experience'),
+      skills: t('nav.skills'),
+      projects: t('nav.projects'),
+      certs: t('nav.certs'),
+      contact: t('nav.contact'),
+    },
   },
 };
 
 // Safe to embed inside <script>: no "</script>" can sneak in
 const terminalJson = JSON.stringify(terminalData).replace(/</g, '\\u003c');
 
-// Scrolling strip of every tool, under the hero
-const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
+const [givenName, ...familyName] = site.name.split(' ');
+const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 'AWS'];
 ---
 
-<section class="hero" data-hero>
+<section class="hero">
+  <div class="hero-art" aria-hidden="true">
+    <div class="horizon"></div>
+    <canvas class="circuit-field" data-hero-field></canvas>
+  </div>
   <div class="container hero-grid">
     <div class="intro">
-      <p class="badge rise" style="--i: 0">
-        <span class="pulse" aria-hidden="true"></span>{t('hero.status')}
-      </p>
+      <p class="availability rise" style="--i: 0">{t('hero.status')}</p>
       <h1 class="rise" style="--i: 1">
-        <span class="hello">{t('hero.hello')}</span>
-        <span class="name grad-text">{site.name}</span>
+        {givenName} <span>{familyName.join(' ')}</span>
       </h1>
       <p class="role rise" style="--i: 2">{t('hero.role')}</p>
       <p class="tagline rise" style="--i: 3">{t('hero.tagline')}</p>
       <div class="actions rise" style="--i: 4">
-        <a class="btn btn-primary" href="#projects">{t('hero.cta.projects')} <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="#projects">{t('hero.cta.projects')}</a>
         <a class="btn" href="#contact">{t('hero.cta.contact')}</a>
       </div>
       <ul class="socials rise" style="--i: 5">
-        <li><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></li>
+        <li><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
       </ul>
     </div>
 
-    <div class="terminal rise" style="--i: 3">
-      <div class="bar" aria-hidden="true">
-        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-        <span class="bar-title">steven@msquintana: ~</span>
+    <div class="terminal panel rise" style="--i: 2" data-reactive>
+      <div class="bar">
+        <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="window-title" aria-hidden="true">steven@msquintana: ~</span>
+        <button class="motion-toggle" type="button" hidden data-motion-toggle
+          aria-label={t('motion.pause')} title={t('motion.pause')}
+          data-pause-label={t('motion.pause')} data-play-label={t('motion.play')}>
+          <span aria-hidden="true"></span>
+        </button>
       </div>
       <div class="body">
-        <!-- The script types `whoami`, then shows each output block in order -->
+        <div class="signal" data-terminal-signal aria-hidden="true">
+          <img src="/brand/symbol.svg" alt="" width="96" height="96" />
+          <span></span><span></span><span></span>
+        </div>
         <p class="cmd">
           <span class="prompt">$</span> <span data-hero-cmd>whoami</span><span
             class="cursor"
             data-hero-cursor
             aria-hidden="true"></span>
         </p>
-        <dl class="whoami line" data-hero-line>
+        <dl class="whoami">
           <div><dt>name</dt><dd>{site.name}</dd></div>
           <div><dt>role</dt><dd>{t('hero.role')}</dd></div>
           <div><dt>base</dt><dd>Guatemala</dd></div>
-          <div><dt>status</dt><dd class="ok">[+] {t('hero.status')}</dd></div>
         </dl>
 
         <!-- Interactive terminal: needs JS, so it stays hidden without it -->
-        <div class="term line" data-hero-line data-term hidden>
-          <div class="term-log" data-term-log aria-live="polite"></div>
+        <div class="term" data-term hidden>
+          <div class="term-log" id="term-log" data-term-log role="log"></div>
           <form class="term-form" data-term-form>
             <label class="prompt" for="term-input">$</label>
             <input
@@ -118,31 +134,31 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
             />
           </form>
           <div class="term-quick">
-            <span class="term-hint">{t('term.hint')}</span>
             {
               quickCommands.map((cmd) => (
-                <button type="button" class="term-chip" data-term-run={cmd}>
+                <button type="button" class="term-chip" data-term-run={cmd} aria-controls="term-log">
                   {cmd}
                 </button>
               ))
             }
+            <button type="button" class="term-chip term-clear" data-term-run="clear" aria-controls="term-log" hidden>
+              {t('term.clear')}
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="track">
-      {
-        [0, 1].map(() => (
-          <ul>
-            {allSkills.map((skill) => (
-              <li>{skill}</li>
-            ))}
+  <div class="container">
+    <div class="tech-strip">
+      <div class="tech-track">
+        {[false, true].map((copy) => (
+          <ul class:list={['tech-set', { 'tech-copy': copy }]} aria-hidden={copy ? 'true' : undefined}>
+            {toolkit.map((tool) => <li>{tool}</li>)}
           </ul>
-        ))
-      }
+        ))}
+      </div>
     </div>
   </div>
 
@@ -155,200 +171,283 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
 
 <style>
   .hero {
-    padding: 72px 0 0;
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: clamp(52px, 6.4vw, 96px) 0;
+  }
+
+  .hero-art {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 52% 71% at 79% 48%, rgb(108 67 190 / 0.21), transparent 83%),
+      radial-gradient(ellipse 60% 43% at 100% 70%, rgb(57 111 170 / 0.13), transparent 90%);
+    mask-image: linear-gradient(#000 78%, transparent);
+  }
+
+  .horizon {
+    position: absolute;
+    inset: 40% -30% -48%;
+    transform: perspective(540px) rotateX(55deg);
+    transform-origin: top center;
+    background:
+      linear-gradient(rgb(158 174 237 / 0.16) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(158 174 237 / 0.16) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 43% 56% at 59% 31%, #000 15%, transparent 90%);
+  }
+
+  .circuit-field {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    mask-image: linear-gradient(90deg, transparent 22%, #000 58%);
   }
 
   .hero-grid {
     display: grid;
-    gap: 48px;
     align-items: center;
+    gap: clamp(32px, 5.6vw, 78px);
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 840px) {
     .hero-grid {
-      grid-template-columns: 1.05fr 1fr;
-      gap: 56px;
-    }
-  }
-
-  /* --- Intro --- */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    padding: 6px 14px 6px 10px;
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    border-radius: 999px;
-    background: rgba(74, 222, 128, 0.08);
-    color: var(--green);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-  }
-
-  .pulse {
-    position: relative;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .pulse::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: var(--green);
-      animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-    }
-  }
-
-  @keyframes ping {
-    75%,
-    100% {
-      transform: scale(2.6);
-      opacity: 0;
+      grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
     }
   }
 
   h1 {
-    margin-bottom: 16px;
-  }
-
-  .hello {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--ink);
-    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
-    font-weight: 500;
-    letter-spacing: 0;
-  }
-
-  .name {
-    display: block;
-    font-size: clamp(2.8rem, 7.5vw, 4.75rem);
+    width: fit-content;
+    margin: 0 0 17px;
+    color: var(--ink-strong);
+    font-size: clamp(3.75rem, 8.7vw, 7rem);
     font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.02;
+    line-height: 0.95;
+    letter-spacing: -0.068em;
+  }
+
+  h1 span {
+    display: block;
+    padding-bottom: 0.05em;
+    background: linear-gradient(106deg, #dbcbff 0%, #b9a0fc 48%, #7dd3fc 100%);
+    background-clip: text;
+    color: transparent;
   }
 
   .role {
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
+    margin-bottom: 12px;
     color: var(--accent-2);
-    margin-bottom: 16px;
+    font: 0.875rem/1.5 var(--font-mono);
   }
 
   .tagline {
-    font-size: 1.15rem;
-    color: var(--ink);
-    margin-bottom: 32px;
+    max-width: 39ch;
+    margin-bottom: 24px;
+    font-size: clamp(1.025rem, 1.6vw, 1.2rem);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 19px;
+    padding: 5px 11px;
+    border: 1px solid rgb(134 239 172 / 0.21);
+    border-radius: 999px;
+    background: rgb(37 108 81 / 0.15);
+    color: #a7edba;
+    font: 0.8125rem/1.45 var(--font-mono);
+  }
+
+  .availability::before {
+    content: '';
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
   }
 
   .socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 20px;
-    list-style: none;
+    gap: 7px 17px;
     margin: 0;
     padding: 0;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
+    list-style: none;
+    font-size: 0.875rem;
   }
 
   .socials a {
-    color: var(--ink);
-    text-decoration: none;
-    transition: color 0.2s ease;
+    color: var(--ink-muted);
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: color 0.22s ease, text-decoration-color 0.22s ease;
   }
 
   .socials a:hover {
-    color: var(--ink-strong);
+    color: var(--accent);
+    text-decoration-color: currentColor;
   }
 
-  /* --- Terminal window --- */
   .terminal {
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius-xl);
-    background: color-mix(in srgb, var(--surface-deep) 85%, transparent);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent),
-      0 40px 100px -30px color-mix(in srgb, var(--accent) 35%, transparent);
     overflow: hidden;
-    min-width: 0;
+    border-color: rgb(185 160 252 / 0.26);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(146deg, #151a2a 0%, #0a0f1a 67%);
+    box-shadow:
+      0 0 0 6px rgb(171 153 238 / 0.035),
+      0 26px 75px rgb(0 0 0 / 0.56),
+      0 0 55px rgb(155 125 252 / 0.12),
+      inset 0 1px rgb(221 206 255 / 0.1);
   }
 
   .bar {
-    display: flex;
+    display: grid;
+    grid-template-columns: 45px minmax(0, 1fr) 34px;
     align-items: center;
-    gap: 8px;
-    padding: 14px 18px;
+    min-height: 48px;
+    gap: 4px;
+    padding: 5px 15px;
     border-bottom: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.02);
+    background: linear-gradient(90deg, rgb(192 175 252 / 0.09), rgb(131 200 251 / 0.035));
   }
 
-  .dot {
-    width: 12px;
-    height: 12px;
+  .window-lights {
+    display: flex;
+    gap: 6px;
+  }
+
+  .window-lights i {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    opacity: 0.85;
+    background: #f4819c;
+    box-shadow: 0 0 9px color-mix(in srgb, currentColor 25%, transparent);
+    color: #f4819c;
   }
 
-  .red {
-    background: var(--red);
-  }
+  .window-lights i:nth-child(2) { background: #f8c889; color: #f8c889; }
+  .window-lights i:nth-child(3) { background: #8ce4ac; color: #8ce4ac; }
 
-  .yellow {
-    background: var(--yellow);
-  }
-
-  .green {
-    background: var(--green);
-  }
-
-  .bar-title {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .window-title {
+    overflow: hidden;
     color: var(--ink);
+    font: clamp(0.6875rem, 1.1vw, 0.8125rem)/1.4 var(--font-mono);
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .motion-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgb(7 10 18 / 0.35);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .motion-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .motion-toggle span {
+    display: inline-block;
+    width: 9px;
+    height: 11px;
+    border-inline: 2px solid currentColor;
+    vertical-align: middle;
+  }
+
+  :global(html[data-motion='paused']) .motion-toggle span {
+    width: 0;
+    height: 0;
+    border: solid transparent;
+    border-width: 6px 0 6px 9px;
+    border-inline-start-color: currentColor;
+    transform: translateX(1px);
   }
 
   .body {
-    padding: 24px;
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
+    position: relative;
+    isolation: isolate;
+    padding: clamp(16px, 3vw, 30px);
+    font: 0.875rem/1.65 var(--font-mono);
+  }
+
+  .signal {
+    position: absolute;
+    z-index: -1;
+    top: 10px;
+    right: 12px;
+    width: clamp(97px, 17vw, 200px);
+    height: 132px;
+    pointer-events: none;
+  }
+
+  .signal img {
+    position: absolute;
+    inset: 50% 16% auto auto;
+    width: clamp(60px, 10vw, 126px);
+    height: auto;
+    transform: translateY(-50%);
+    opacity: 0.21;
+  }
+
+  .signal span {
+    position: absolute;
+    inset: 28% 0 auto;
+    height: 1px;
+    overflow: hidden;
+    color: var(--accent-2);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 28%, transparent));
+  }
+
+  .signal span:nth-of-type(2) {
+    inset-block-start: 50%;
+    color: var(--accent);
+  }
+
+  .signal span:nth-of-type(3) {
+    inset-block-start: 72%;
   }
 
   .cmd {
-    color: var(--ink-strong);
+    min-height: 1lh;
     margin-bottom: 16px;
+    color: var(--ink-strong);
   }
 
   .whoami {
     display: grid;
-    gap: 6px;
+    gap: 7px;
     margin: 0;
   }
 
   .whoami div {
-    display: flex;
+    display: grid;
+    grid-template-columns: 5ch minmax(0, 1fr);
     gap: 12px;
   }
 
   .whoami dt {
-    min-width: 7ch;
-    color: var(--accent-2);
+    color: var(--ink-muted);
   }
 
   .whoami dd {
@@ -356,45 +455,16 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
     color: var(--ink-strong);
   }
 
-  .whoami .ok {
-    color: var(--green);
-  }
-
-  /* Hidden until the typing intro reveals them (only when JS runs) */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .line {
-      opacity: 0;
-      transform: translateY(8px);
-      transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
-    }
-
-    :global(.js) .line.is-visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* Avoid a flash of the full command before typing starts */
-    :global(.js) [data-hero-cmd]:not([data-typing]) {
-      visibility: hidden;
-    }
-  }
-
-  /* --- Interactive terminal --- */
   .term {
     margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px dashed var(--line-strong);
-  }
-
-  .term[hidden] {
-    display: none;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
   }
 
   .term-log {
-    max-height: 240px;
+    max-height: 216px;
     overflow-y: auto;
+    margin-bottom: 12px;
   }
 
   .term-log:empty {
@@ -413,6 +483,10 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
     margin-top: 12px;
   }
 
+  .term-log :global(.out-link) {
+    margin-block: 9px;
+  }
+
   .term-log :global(.out-cmd:first-child) {
     margin-top: 0;
   }
@@ -424,11 +498,12 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
   .term-log :global(.out-key) {
     display: inline-block;
     min-width: 10ch;
+    margin-inline-end: 6px;
     color: var(--accent-2);
   }
 
   .term-log :global(.out-tag) {
-    color: var(--purple);
+    color: var(--accent);
   }
 
   .term-log :global(.out-error) {
@@ -438,17 +513,16 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
   .term-form {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding: 8px 12px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.02);
-    transition: border-color 0.2s ease;
+    min-height: 45px;
+    gap: 10px;
+    padding: 8px 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
   }
 
   .term-form:focus-within {
-    border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+    border-color: var(--accent);
   }
 
   .term-input {
@@ -463,101 +537,153 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
   }
 
   .term-input::placeholder {
-    color: var(--ink);
-    opacity: 0.75;
+    color: var(--ink-muted);
   }
 
   .term-quick {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .term-hint {
-    color: var(--ink);
-    font-size: 0.78rem;
+    gap: 7px;
+    margin-top: 13px;
   }
 
   .term-chip {
-    padding: 4px 12px;
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    min-height: 34px;
+    padding: 4px 9px;
+    border: 1px solid var(--line);
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    color: var(--purple);
-    font: inherit;
-    font-size: 0.78rem;
+    background: rgb(162 145 233 / 0.09);
+    color: var(--ink);
+    font: 0.8125rem/1.4 var(--font-mono);
     cursor: pointer;
-    transition: border-color 0.2s ease;
   }
 
   .term-chip:hover {
     border-color: var(--accent);
-  }
-
-  @media (max-width: 480px) {
-    .body {
-      padding: 20px 16px;
-    }
-
-    .bar-title {
-      display: none;
-    }
-  }
-
-  /* --- Tool strip --- */
-  .marquee {
-    margin-top: 88px;
-    padding: 18px 0;
-    border-block: 1px solid var(--line);
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  }
-
-  .track {
-    display: flex;
-    width: max-content;
-  }
-
-  .track ul {
-    display: flex;
-    gap: 40px;
-    margin: 0;
-    padding: 0 40px 0 0;
-    list-style: none;
-  }
-
-  .track li {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--ink);
-    white-space: nowrap;
-  }
-
-  .track li::before {
-    content: '◆';
-    font-size: 0.55rem;
     color: var(--accent);
   }
 
+  .term-clear {
+    margin-inline-start: auto;
+  }
+
+  .tech-strip {
+    overflow: hidden;
+    margin-top: clamp(38px, 6vw, 74px);
+    border-block: 1px solid var(--line);
+    background: linear-gradient(90deg, transparent, rgb(113 106 177 / 0.095), transparent);
+  }
+
+  .tech-set {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px clamp(18px, 3.5vw, 48px);
+    margin: 0;
+    padding: 14px 18px;
+    list-style: none;
+  }
+
+  .tech-set li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--ink);
+    font: 0.8125rem/1.5 var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .tech-set li::before {
+    width: 5px;
+    height: 5px;
+    content: '';
+    border-radius: 1px;
+    background: var(--accent);
+    transform: rotate(45deg);
+    opacity: 0.7;
+  }
+
+  .tech-copy {
+    display: none;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
-    .track {
-      animation: scroll 40s linear infinite;
+    .hero-art {
+      animation: grid-in 1.6s ease-out both;
     }
 
-    .marquee:hover .track {
+    .availability::before {
+      animation: status-ring 1.6s ease-out 3;
+    }
+
+    .signal span::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 50%, currentColor 72%, transparent 78%);
+      animation: signal-pass 2s ease-out 2 both;
+    }
+
+    .signal span:nth-of-type(2)::after { animation-delay: 240ms; }
+    .signal span:nth-of-type(3)::after { animation-delay: 480ms; }
+
+    .term-log :global(.out-cmd) {
+      animation: output-in 220ms ease-out both;
+    }
+
+    :global(html[data-motion='playing']) .tech-strip {
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+
+    :global(html[data-motion='playing']) .tech-track {
+      display: flex;
+      width: max-content;
+      min-width: 200%;
+      animation: tech-loop 31s linear infinite;
+    }
+
+    :global(html[data-motion='playing']) .tech-set {
+      display: flex;
+      flex: 1 0 auto;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+
+    .tech-strip:hover .tech-track {
+      animation-play-state: paused;
+    }
+
+    .hero[data-hero-offscreen] .tech-track {
       animation-play-state: paused;
     }
   }
 
-  @keyframes scroll {
-    to {
-      transform: translateX(-50%);
+  @keyframes grid-in {
+    from { opacity: 0; transform: translateY(10px); }
+  }
+
+  @keyframes tech-loop {
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes status-ring {
+    from { box-shadow: 0 0 0 0 rgb(74 222 128 / 0.56); }
+    to { box-shadow: 0 0 0 8px rgb(74 222 128 / 0); }
+  }
+
+  @keyframes signal-pass {
+    from { transform: translateX(-85%); }
+    to { transform: translateX(100%); }
+  }
+
+  @keyframes output-in {
+    from { opacity: 0.35; transform: translateY(4px); }
+  }
+
+  @media (max-width: 520px) {
+    .term-input {
+      font-size: 1rem;
     }
   }
 </style>

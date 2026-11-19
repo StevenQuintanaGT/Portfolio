@@ -3,7 +3,6 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../Nav.astro';
 import Footer from '../Footer.astro';
-import SectionTitle from '../SectionTitle.astro';
 import PostCard from './PostCard.astro';
 import { blogUrl, getPosts, getTags, tagSlug, tagUrl } from '../../lib/blog';
 import { useTranslations, type Lang } from '../../i18n/ui';
@@ -37,13 +36,12 @@ const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.desc
 >
   <Nav lang={lang} switchUrl={path(otherLang)} />
   <main>
-    <section class="section blog">
+    <section class="section">
       <div class="container">
-        <SectionTitle
-          text={tagName ? `${t('blog.title')}/${tagName}` : t('blog.title')}
-          title={tagName ? `#${tagName}` : 'Blog'}
-        />
-        <p class="intro">{tagName ? `${t('blog.tagTitle')} #${tagName}` : t('blog.intro')}</p>
+        <header class="blog-header">
+          <h1>{tagName ? `#${tagName}` : t('nav.blog')}</h1>
+          {!tagName && <p>{t('blog.intro')}</p>}
+        </header>
 
         {
           tags.length > 0 && (
@@ -74,11 +72,7 @@ const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.desc
               ))}
             </div>
           ) : (
-            <p class="empty">
-              <span class="prompt">$</span> ls ~/blog
-              <br />
-              {t('blog.empty')}
-            </p>
+            <p class="empty">{t('blog.empty')}</p>
           )
         }
 
@@ -90,9 +84,20 @@ const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.desc
 </Base>
 
 <style>
-  /* The blog is its own page, so its first section has no divider */
-  .blog {
-    border-top: 0;
+  .blog-header {
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    font-size: clamp(2.65rem, 7vw, 5.25rem);
+    letter-spacing: -0.065em;
+    overflow-wrap: anywhere;
+  }
+
+  .blog-header p {
+    margin: 0;
+    font-size: 1.1rem;
   }
 
   .filters {
@@ -109,13 +114,20 @@ const description = tagName ? `${t('blog.tagTitle')} #${tagName}. ${t('blog.desc
   }
 
   .filter[aria-current='page'] {
-    border-color: var(--purple);
+    border-color: var(--line-strong);
+    background: var(--surface-raised);
     color: var(--ink-strong);
   }
 
   .list {
     display: grid;
     gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .empty {

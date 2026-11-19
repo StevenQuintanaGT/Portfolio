@@ -18,12 +18,12 @@ página.
 
 | Parte | Qué hace |
 | --- | --- |
-| **Inicio** | Animación que escribe `whoami` y luego muestra el nombre, el enfoque y la frase principal. |
+| **Inicio** | Presenta el perfil, una terminal interactiva y un fondo de circuitos que reacciona al cursor. |
 | **Terminal interactiva** | Comandos `help`, `whoami`, `about`, `experience`, `skills`, `projects`, `certs`, `contact`, `lang` y `clear`, con alias en español, historial (↑ ↓) y autocompletado con Tab. |
 | **Secciones** | Perfil y educación, experiencia profesional, habilidades, proyectos con enlaces, certificaciones y formación, y contacto. |
 | **Blog** | Artículos en Markdown, filtro por etiquetas, tiempo de lectura, código resaltado con Shiki (`one-dark-pro`) y feed RSS. |
 | **SEO** | `<title>`, descripción, `canonical`, `hreflang` y Open Graph en todas las páginas. Las imágenes de vista previa (PNG de 1200×630) se generan en el build. |
-| **Movimiento** | Las secciones aparecen al hacer scroll, los títulos se escriben solos, el menú marca la sección actual y hay una barra de progreso. Si el sistema pide reducir el movimiento, no hay animaciones; sin JavaScript se ve todo el contenido. |
+| **Navegación** | El menú flotante marca la sección actual y se despliega en pantallas pequeñas. Las animaciones se pueden pausar desde la terminal y respetan la preferencia de movimiento reducido. |
 
 ## Tecnologías
 
@@ -72,12 +72,17 @@ Cada proyecto tiene un archivo por idioma, con el mismo nombre en `en/` y en `es
 ```md
 ---
 title: Hypr-Dotfiles
+category: Configuración de escritorio # opcional: tipo de proyecto
 problem: Qué problema resuelve.
 result: Qué se logró.
 tools: [Arch Linux, Hyprland, Bash, Git]
 order: 3                     # posición en la lista
 repo: https://github.com/…   # opcional: botón "Código fuente"
 demo: https://…              # opcional: botón "Ver sitio"
+cover: /projects/imagen.webp # opcional: imagen decorativa en public/projects/
+highlights:                 # opcional: características que se pueden desplegar
+  - title: Instalación
+    detail: La configuración se puede restaurar en una instalación nueva.
 draft: true                  # opcional: lo oculta hasta que esté listo
 ---
 ```

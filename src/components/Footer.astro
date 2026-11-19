@@ -15,17 +15,16 @@ const year = new Date().getFullYear();
   <div class="container inner">
     <p>© {year} {site.name}</p>
     <p>{t('footer.built')}</p>
-    <a href="#" class="top">↑ top</a>
+    <a href="#" class="top">{t('footer.top')}</a>
   </div>
 </footer>
 
 <style>
   .footer {
-    margin-top: 32px;
-    padding: 28px 0;
+    padding: 22px 0;
     border-top: 1px solid var(--line);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+    color: var(--ink-muted);
+    font-size: 0.875rem;
   }
 
   .inner {

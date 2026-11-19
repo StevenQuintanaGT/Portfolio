@@ -1,68 +1,27 @@
 ---
-// Section heading: a small terminal path (~/projects, typed when it scrolls into view,
-// see scripts/motion.ts) above a large display title.
 interface Props {
-  // Path shown in the eyebrow, e.g. "projects"
-  text: string;
-  // Large heading
   title: string;
-  // Optional section number, e.g. "03"
-  index?: string;
 }
 
-const { text, title, index } = Astro.props;
+const { title } = Astro.props;
 ---
 
-<div class="section-head">
-  <p class="eyebrow section-title" aria-hidden="true">
-    {index && <span class="idx">{index}</span>}
-    <span class="prompt">~/</span><span data-type-on-view>{text}</span><span class="cursor"></span>
-  </p>
-  <h2>{title}</h2>
-</div>
+<h2 class="section-heading" data-reveal>{title}</h2>
 
 <style>
-  .section-head {
-    margin-bottom: 40px;
-  }
-
-  .section-head h2 {
-    max-width: 22ch;
-    margin: 0;
-  }
-
-  .eyebrow {
+  .section-heading {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--ink);
+    gap: clamp(10px, 2vw, 26px);
+    margin: 0 0 clamp(24px, 4vw, 44px);
   }
 
-  .idx {
-    margin-right: 8px;
-    padding: 2px 8px;
-    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  .section-heading::before {
+    flex: 0 0 clamp(12px, 2vw, 23px);
+    height: 2px;
     border-radius: 999px;
-    color: var(--accent);
-    font-size: 0.72rem;
-  }
-
-  /* The cursor only blinks while the name is being typed */
-  .cursor {
-    display: none;
-  }
-
-  .section-title:global(.is-typing) .cursor {
-    display: inline-block;
-  }
-
-  /* Keep the name hidden until it is typed, so it doesn't flash in full first */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) [data-type-on-view]:not([data-typing]) {
-      visibility: hidden;
-    }
+    content: '';
+    background: var(--grad);
+    box-shadow: 0 0 11px rgb(192 175 252 / 0.31);
   }
 </style>

@@ -12,65 +12,131 @@ const t = useTranslations(lang);
 
 <section id="experience" class="section">
   <div class="container">
-    <SectionTitle text={t('nav.experience')} title={t('experience.heading')} />
-    <div class="grid">
-      {getExperience(lang).map(({ title, period, duties }) => (
-        <article class="card hover-lift">
-          <header>
-            <p class="period">{period}</p>
+    <SectionTitle title={t('experience.heading')} />
+    <p class="employer">{t('experience.employer')}</p>
+    <ol class="panel timeline" data-reveal>
+      {getExperience(lang).map(({ title, period, duties }, index) => (
+        <li class="role" data-timeline-stop data-timeline-active={index === 0 || undefined}>
+          <span class="marker" aria-hidden="true"></span>
+          <p class="period">{period}</p>
+          <div>
             <h3>{title}</h3>
-            <p class="employer">{t('experience.employer')}</p>
-          </header>
-          <ul>
-            {duties.map((duty) => <li>{duty}</li>)}
-          </ul>
-        </article>
+            <ul>
+              {duties.map((duty) => <li>{duty}</li>)}
+            </ul>
+          </div>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
 
 <style>
-  .grid {
-    display: grid;
-    gap: 16px;
+  .employer {
+    margin: -12px 0 20px;
+    color: var(--ink);
+    font-size: 1rem;
   }
 
-  @media (min-width: 760px) {
-    .grid {
-      grid-template-columns: 1fr 1fr;
+  .timeline {
+    --track-x: clamp(17px, 2.8vw, 35px);
+    --row-padding: clamp(20px, 3vw, 32px);
+    --marker-y: calc(var(--row-padding) + 0.68rem);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .role {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: 10px;
+    padding: var(--row-padding) var(--row-padding) var(--row-padding) calc(var(--track-x) + 21px);
+  }
+
+  .role::before,
+  .role::after {
+    position: absolute;
+    z-index: 1;
+    inset: var(--marker-y) auto auto var(--track-x);
+    width: 1px;
+    height: 100%;
+    content: '';
+    pointer-events: none;
+  }
+
+  .role:last-child::before,
+  .role:last-child::after {
+    content: none;
+  }
+
+  .role::before { background: var(--line-strong); }
+
+  .role::after {
+    background: var(--grad);
+    transform: scaleY(var(--segment-progress, 0));
+    transform-origin: top;
+    box-shadow: 0 0 10px rgb(192 175 252 / 0.45);
+  }
+
+  .role[data-timeline-active] {
+    background: radial-gradient(ellipse at 12% 15%, rgb(147 116 232 / 0.14), transparent 72%);
+  }
+
+  .marker {
+    position: absolute;
+    z-index: 2;
+    inset: var(--marker-y) auto auto var(--track-x);
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    background: var(--surface-deep);
+    transform: translate(-50%, -50%);
+  }
+
+  .role[data-timeline-active] .marker {
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgb(192 175 252 / 0.12), 0 0 15px rgb(192 175 252 / 0.34);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .marker {
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
   }
 
-  .card {
-    padding: 28px;
-    border: 1px solid var(--card-border, var(--line));
-    border-radius: var(--radius-lg);
-    background: var(--surface);
+  @media (min-width: 760px) {
+    .role {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 3.1fr);
+      gap: 20px;
+    }
   }
 
   h3 {
-    margin-bottom: 6px;
-    font-size: 1.3rem;
+    margin: 0 0 12px;
+    font-size: clamp(1.25rem, 2.2vw, 1.55rem);
   }
 
   .period {
-    margin-bottom: 10px;
+    margin: 0;
     color: var(--accent-2);
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-  }
-
-  .employer {
-    font-size: 0.9rem;
+    font: 0.875rem/1.6 var(--font-mono);
   }
 
   ul {
+    max-width: 66ch;
     margin: 0;
-    padding-inline-start: 1.25em;
+    padding-inline-start: 1.15em;
   }
 
-  li + li {
-    margin-top: 8px;
+  ul li + li {
+    margin-top: 7px;
+  }
+
+  ul li::marker {
+    color: var(--ink-muted);
   }
 </style>

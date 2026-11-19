@@ -22,6 +22,7 @@ interface TerminalData {
     repo: string;
     employer: string;
     credly: string;
+    sections: Record<string, string>;
   };
 }
 
@@ -52,6 +53,8 @@ if (root && dataEl) {
   const log = root.querySelector<HTMLElement>('[data-term-log]')!;
   const form = root.querySelector<HTMLFormElement>('[data-term-form]')!;
   const input = root.querySelector<HTMLInputElement>('[data-term-input]')!;
+  const clearButton = root.querySelector<HTMLButtonElement>('[data-term-run="clear"]');
+  const signal = root.parentElement?.querySelector<HTMLElement>('[data-terminal-signal]');
   const history: string[] = [];
   let historyIndex = 0;
 
@@ -71,7 +74,7 @@ if (root && dataEl) {
     const a = document.createElement('a');
     a.href = href;
     a.textContent = text;
-    if (!href.startsWith('mailto:')) {
+    if (/^https?:\/\//.test(href)) {
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
     }
@@ -159,17 +162,28 @@ if (root && dataEl) {
     historyIndex = history.length;
 
     const name = value.split(/\s+/)[0].toLowerCase();
-    const command = commands[aliases[name] ?? name];
+    const key = Object.hasOwn(aliases, name) ? aliases[name] : name;
+    const command = Object.hasOwn(commands, key) ? commands[key] : undefined;
 
     if (command !== commands.clear) {
       print([span('$ ', 'prompt'), value], 'out-cmd');
     }
     if (command) {
       command();
+      if (Object.hasOwn(data.text.sections, key)) {
+        print([link(data.text.sections[key], `#${key}`)], 'out-link');
+      }
     } else {
       print(['[!] ', data.text.notFound.replace('{cmd}', name)], 'out-error');
     }
+    if (clearButton) clearButton.hidden = log.childElementCount === 0;
     log.scrollTop = log.scrollHeight;
+    if (document.documentElement.dataset.motion === 'playing') {
+      for (const animation of signal?.getAnimations({ subtree: true }) ?? []) {
+        animation.currentTime = 0;
+        animation.play();
+      }
+    }
   }
 
   form.addEventListener('submit', (event) => {
@@ -203,6 +217,7 @@ if (root && dataEl) {
     button.addEventListener('click', () => {
       run(button.dataset.termRun ?? '');
       if (hasMouse) input.focus({ preventScroll: true });
+      else if (button.hidden) root.querySelector<HTMLButtonElement>('[data-term-run="help"]')?.focus({ preventScroll: true });
     });
   });
 

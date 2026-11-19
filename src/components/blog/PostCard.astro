@@ -12,37 +12,35 @@ interface Props {
 const { lang, post } = Astro.props;
 ---
 
-<article class="card hover-lift">
+<article class="panel post-card" data-reveal>
   <PostMeta lang={lang} post={post} />
-  <h3 lang={post.data.lang}>
+  <h2 lang={post.data.lang}>
     <a href={postUrl(lang, post)}>{post.data.title}</a>
-  </h3>
+  </h2>
   <p class="description" lang={post.data.lang}>{post.data.description}</p>
   <TagList lang={lang} tags={post.data.tags} />
 </article>
 
 <style>
-  .card {
+  .post-card {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 24px;
-    background: var(--surface-deep);
-    border: 1px solid var(--card-border, var(--line));
-    border-radius: var(--radius-lg);
+    padding: clamp(20px, 3vw, 30px);
   }
 
-  h3 {
+  h2 {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: clamp(1.3rem, 2.3vw, 1.65rem);
+    text-wrap: pretty;
   }
 
-  h3 a {
+  h2 a {
     color: var(--ink-strong);
     text-decoration: none;
   }
 
-  h3 a:hover {
+  h2 a:hover {
     color: var(--blue);
   }
 

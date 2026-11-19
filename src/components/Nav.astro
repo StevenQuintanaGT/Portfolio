@@ -4,7 +4,6 @@ import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
-  // Where the language button goes (defaults to the home page in the other language)
   switchUrl?: string;
 }
 
@@ -12,171 +11,241 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const otherLang: Lang = lang === 'en' ? 'es' : 'en';
 const switchUrl = Astro.props.switchUrl ?? getRelativeLocaleUrl(otherLang);
-
-// Section links point at the home page so they also work from the blog
 const home = getRelativeLocaleUrl(lang);
 const blog = getRelativeLocaleUrl(lang, 'blog/');
 const onBlog = Astro.url.pathname.startsWith(blog.replace(/\/$/, ''));
 
 const links = [
+  { href: `${home}#projects`, label: t('nav.projects') },
   { href: `${home}#about`, label: t('nav.about') },
   { href: `${home}#experience`, label: t('nav.experience') },
   { href: `${home}#skills`, label: t('nav.skills') },
-  { href: `${home}#projects`, label: t('nav.projects') },
   { href: `${home}#certs`, label: t('nav.certs') },
-  { href: blog, label: t('nav.blog'), current: onBlog, keepOnPhone: true },
+  { href: blog, label: t('nav.blog'), current: onBlog },
   { href: `${home}#contact`, label: t('nav.contact') },
 ];
 ---
 
 <header class="nav">
   <div class="progress" data-progress aria-hidden="true"></div>
-  <nav class="nav-inner">
-    <!-- The logo already includes the "msquintana" wordmark -->
-    <a class="brand" href={home} aria-label="Steven Quintana — home">
-      <img class="logo" src="/brand/logo.svg" alt="msquintana" width="272" height="64" />
-      <img class="symbol" src="/brand/symbol.svg" alt="msquintana" width="96" height="96" />
+  <nav class="container nav-inner" aria-label={t('nav.label')}>
+    <a class="brand" href={home} aria-label={t('nav.home')}>
+      <img src="/brand/logo.svg" alt="" width="272" height="64" />
     </a>
-    <ul class="links">
-      {
-        links.map((link) => (
-          <li class:list={{ keep: link.keepOnPhone }}>
-            <a href={link.href} aria-current={link.current ? 'page' : undefined}>
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
+    <ul class="links desktop">
+      {links.map(({ href, label, current }) => (
+        <li><a href={href} aria-current={current ? 'page' : undefined}>{label}</a></li>
+      ))}
     </ul>
     <a class="lang" href={switchUrl} hreflang={otherLang} lang={otherLang} title={t('nav.switch')}>
-      <span class="visually-hidden">{t('nav.switch')}: </span>{otherLang.toUpperCase()}
+      <span class="visually-hidden">{t('nav.switch')} </span>{otherLang.toUpperCase()}
     </a>
+    <details class="menu" data-nav-menu>
+      <summary>
+        <span class="menu-icon" aria-hidden="true"></span>{t('nav.menu')}
+      </summary>
+      <ul class="links mobile">
+        {links.map(({ href, label, current }) => (
+          <li><a href={href} aria-current={current ? 'page' : undefined}>{label}</a></li>
+        ))}
+      </ul>
+    </details>
   </nav>
 </header>
 
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-nav-menu]');
+  if (menu) {
+    menu.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) {
+        menu.querySelector('summary')?.focus({ preventScroll: true });
+        menu.open = false;
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) {
+        menu.open = false;
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
+
 <style>
-  /* Floating glass pill */
   .nav {
     position: sticky;
     top: 0;
     z-index: 20;
-    padding: 16px var(--gutter) 0;
+    padding-top: 13px;
+    pointer-events: none;
   }
 
   .nav-inner {
     display: flex;
     align-items: center;
+    width: calc(100% - 2 * var(--gutter));
+    max-width: calc(var(--max-width) - 2 * var(--gutter));
+    min-height: 60px;
     gap: 8px;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 8px 8px 8px 12px;
-    border: 1px solid var(--line);
+    padding: 6px 9px 6px 13px;
+    border: 1px solid var(--line-strong);
     border-radius: 999px;
-    background: color-mix(in srgb, var(--surface-deep) 72%, transparent);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    backdrop-filter: blur(14px) saturate(140%);
+    background: rgb(12 15 26 / 0.84);
+    box-shadow: 0 9px 26px rgb(0 0 0 / 0.28), inset 0 1px rgb(248 250 252 / 0.045);
+    backdrop-filter: blur(16px);
+    pointer-events: auto;
   }
 
   .brand {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    padding: 2px 4px;
-    border-radius: 999px;
-    text-decoration: none;
+    display: inline-flex;
+    margin-inline-end: auto;
+    border-radius: var(--radius-sm);
   }
 
   .brand img {
     display: block;
-  }
-
-  .logo {
     width: auto;
-    height: 34px;
-  }
-
-  /* Very narrow screens: symbol only, so the blog link and language switch still fit */
-  .brand .symbol {
-    display: none;
-    width: 34px;
-    height: 34px;
-  }
-
-  @media (max-width: 340px) {
-    .brand .logo {
-      display: none;
-    }
-
-    .brand .symbol {
-      display: block;
-    }
+    height: clamp(26px, 8.5vw, 36px);
   }
 
   .links {
-    display: flex;
-    gap: 2px;
     list-style: none;
     margin: 0;
     padding: 0;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.875rem;
   }
 
-  .links a {
-    display: block;
-    padding: 6px 9px;
+  .desktop {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    margin-inline-end: 10px;
+  }
+
+  .links a,
+  .lang,
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
     border-radius: 999px;
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
-    transition:
-      color 0.2s ease,
-      background 0.2s ease;
   }
 
-  .links a:hover {
-    color: var(--ink-strong);
-    background: rgba(255, 255, 255, 0.06);
+  .links a {
+    position: relative;
+    padding-inline: 10px;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
 
-  /* Current section (set by scripts/motion.ts) or current page */
-  .links a:global(.active),
-  .links a[aria-current='page'] {
+  .links a:hover,
+  .links a[aria-current] {
     color: var(--ink-strong);
-    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    background: rgb(192 175 252 / 0.13);
+  }
+
+  .lang,
+  summary {
+    padding-inline: 10px;
+    border: 1px solid var(--line);
+    color: var(--ink-strong);
+    font-size: 0.875rem;
   }
 
   .lang {
-    padding: 6px 12px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    color: var(--ink-strong);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-decoration: none;
-    transition: border-color 0.2s ease;
   }
 
-  .lang:hover {
+  .lang:hover,
+  summary:hover {
     border-color: var(--accent);
   }
 
-  /* Reading progress, pinned to the top edge */
+  .menu {
+    position: relative;
+  }
+
+  summary {
+    gap: 8px;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu-icon {
+    width: 14px;
+    height: 8px;
+    border-block: 1px solid currentColor;
+  }
+
+  .mobile {
+    position: absolute;
+    inset-block-start: calc(100% + 12px);
+    inset-inline-end: 0;
+    min-width: 192px;
+    padding: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background: #0f1422;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.42);
+  }
+
   .progress {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0 0 auto;
     height: 2px;
+    background: var(--grad);
+    box-shadow: 0 0 10px rgb(192 175 252 / 0.34);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .desktop a::after {
+    position: absolute;
+    inset: auto 10px 4px;
+    height: 1px;
+    content: '';
     background: var(--grad);
     transform: scaleX(0);
     transform-origin: left;
   }
 
-  /* Spanish labels are longer, so the section links collapse before they can wrap.
-     The blog link stays, since it's a separate page. */
-  @media (max-width: 960px) {
-    .links li:not(.keep) {
+  .desktop a[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .desktop a::after {
+      transition: transform 0.3s ease;
+    }
+
+    .menu[open] .mobile {
+      animation: menu-in 0.2s ease-out both;
+    }
+  }
+
+  @keyframes menu-in {
+    from { opacity: 0; transform: translateY(-5px); }
+  }
+
+  @media (min-width: 1000px) {
+    .desktop {
+      display: flex;
+    }
+
+    .menu {
       display: none;
     }
   }

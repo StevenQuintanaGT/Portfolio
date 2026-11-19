@@ -1,5 +1,4 @@
 ---
-import SectionTitle from './SectionTitle.astro';
 import { site } from '../config';
 import { useTranslations, type Lang } from '../i18n/ui';
 
@@ -13,82 +12,125 @@ const t = useTranslations(lang);
 
 <section id="contact" class="section">
   <div class="container">
-    <div class="cta">
-      <SectionTitle index="05" text={t('contact.title')} title={t('contact.heading')} />
-      <p class="text">{t('contact.text')}</p>
-      <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
-      <div class="actions">
-        <a class="btn btn-primary" href={`mailto:${site.email}`}>{t('contact.email')} <span aria-hidden="true">→</span></a>
-        <a class="btn" href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-        <a class="btn" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    <div class="panel cta" data-reveal data-reactive>
+      <div>
+        <h2>{t('contact.heading')}</h2>
+        <p>{t('contact.text')}</p>
       </div>
-      <p class="established"><span class="prompt">[+]</span> Connection established</p>
+      <div class="channels">
+        <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+        <div class="actions">
+          <button type="button" class="btn btn-sm copy" hidden data-copy-email={site.email}
+            data-ready={t('contact.copy')}
+            data-copied={t('contact.copied')}
+            data-failed={t('contact.copyFailed')}>
+            <span data-copy-label aria-live="polite">{t('contact.copy')}</span>
+          </button>
+          <a class="btn btn-sm" href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn btn-sm" href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<script>
+  const copyButton = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const label = copyButton?.querySelector<HTMLElement>('[data-copy-label]');
+
+  if (copyButton && label && navigator.clipboard?.writeText) {
+    const { copyEmail, ready, copied, failed } = copyButton.dataset;
+    let resetTimer = 0;
+    copyButton.hidden = false;
+
+    copyButton.addEventListener('click', async () => {
+      if (!copyEmail) return;
+
+      try {
+        await navigator.clipboard.writeText(copyEmail);
+        label.textContent = copied ?? '';
+        copyButton.dataset.copyState = 'copied';
+      } catch {
+        label.textContent = failed ?? '';
+        copyButton.dataset.copyState = 'failed';
+      }
+
+      window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        delete copyButton.dataset.copyState;
+        label.textContent = ready ?? '';
+      }, 2800);
+    });
+  }
+</script>
+
 <style>
-  /* Big panel with a gradient border and a soft glow */
   .cta {
-    position: relative;
-    padding: 56px 24px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-xl);
-    background:
-      radial-gradient(600px 300px at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%) padding-box,
-      linear-gradient(var(--surface-deep), var(--surface-deep)) padding-box,
-      var(--grad) border-box;
-    text-align: center;
+    display: grid;
+    align-items: center;
+    gap: 24px;
+    padding: clamp(22px, 5vw, 52px);
+    border-block-start-color: color-mix(in srgb, var(--accent) 54%, var(--surface));
+    background: radial-gradient(ellipse at 90% 0%, rgb(120 103 219 / 0.2), transparent 66%), var(--panel-fill);
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 760px) {
     .cta {
-      padding: 80px 48px;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+      gap: 36px;
+    }
+
+    .channels {
+      justify-self: end;
     }
   }
 
-  .cta :global(.section-head) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+  h2 {
+    margin: 0 0 10px;
   }
 
-  .cta :global(.section-head h2) {
-    font-size: clamp(2.4rem, 6vw, 3.75rem);
-  }
-
-  .text {
-    margin: 0 auto 24px;
+  p {
+    margin: 0;
+    max-width: 43ch;
   }
 
   .email {
     display: inline-block;
-    margin-bottom: 32px;
+    margin-bottom: 14px;
+    color: var(--accent);
     font-family: var(--font-display);
-    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-size: clamp(1.25rem, 3.1vw, 2rem);
     font-weight: 600;
-    color: var(--ink-strong);
-    text-decoration: none;
+    text-underline-offset: 5px;
     overflow-wrap: anywhere;
-    transition: color 0.2s ease;
   }
 
   .email:hover {
-    color: var(--accent);
+    color: var(--ink-strong);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 32px;
+    gap: 8px;
   }
 
-  .established {
-    margin: 0 auto;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+  .copy[hidden] { display: none; }
+
+  .copy {
+    min-width: 120px;
+    border-color: rgb(192 175 252 / 0.31);
+    background: rgb(192 175 252 / 0.11);
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  .copy[data-copy-state='copied'] {
+    border-color: rgb(134 239 172 / 0.4);
+    color: #a7edba;
+  }
+
+  .copy[data-copy-state='failed'] {
+    color: var(--red);
   }
 </style>

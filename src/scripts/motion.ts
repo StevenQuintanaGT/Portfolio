@@ -1,155 +1,175 @@
-// Small motion layer for the one-page site: hero typing intro, scroll reveals,
-// typed section headings, active nav link and the scroll progress bar.
-// Everything is readable without this script, and it does almost nothing
-// when the visitor prefers reduced motion.
+import { setupHeroField } from './hero-field';
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersMotion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+const motionToggle = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
+const playHeroField = setupHeroField();
+const pausePreference = 'portfolio-motion-paused';
+let paused = false;
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+try {
+  paused = localStorage.getItem(pausePreference) === 'true';
+} catch {
+  // The control still works when storage is unavailable.
+}
 
-async function typeInto(el: HTMLElement, text: string, speed = 60) {
-  el.textContent = '';
-  el.setAttribute('data-typing', '');
-  for (const char of text) {
-    el.textContent += char;
-    await sleep(speed);
+const allowsMotion = () => prefersMotion.matches && !paused;
+
+function syncMotion() {
+  const playing = allowsMotion();
+  document.documentElement.dataset.motion = playing ? 'playing' : 'paused';
+  playHeroField?.(playing);
+
+  if (motionToggle) {
+    motionToggle.hidden = !prefersMotion.matches;
+    const label = playing ? motionToggle.dataset.pauseLabel : motionToggle.dataset.playLabel;
+    if (label) {
+      motionToggle.setAttribute('aria-label', label);
+      motionToggle.title = label;
+    }
   }
 }
 
-// --- Hero: type `whoami`, then print the output lines one by one ---
 async function heroIntro() {
-  const cmd = document.querySelector<HTMLElement>('[data-hero-cmd]');
-  const cursor = document.querySelector<HTMLElement>('[data-hero-cursor]');
-  const lines = document.querySelectorAll<HTMLElement>('[data-hero-line]');
-  if (!cmd) return;
-
-  if (reduceMotion) {
-    cmd.setAttribute('data-typing', '');
+  const command = document.querySelector<HTMLElement>('[data-hero-cmd]');
+  const cursor = document.querySelector('[data-hero-cursor]');
+  if (!command || !allowsMotion()) {
     cursor?.remove();
-    lines.forEach((line) => line.classList.add('is-visible'));
     return;
   }
 
-  await sleep(300);
-  await typeInto(cmd, cmd.textContent ?? '', 90);
-  await sleep(250);
-  cursor?.remove();
-  for (const line of lines) {
-    line.classList.add('is-visible');
-    await sleep(180);
-  }
-}
-
-// --- Reveal cards, paragraphs and lists as they scroll into view ---
-function setupReveals() {
-  if (reduceMotion) return;
-
-  const targets = document.querySelectorAll<HTMLElement>(
-    '.section .section-head h2, .section p, .section .card, .section .item, .section .actions, .section .tag-list, .section .cta',
-  );
-  // Stagger siblings so a grid of cards appears one after another
-  targets.forEach((el) => {
-    const index = Array.prototype.indexOf.call(el.parentElement?.children ?? [], el);
-    el.style.setProperty('--delay', `${Math.min(index, 5) * 80}ms`);
-    el.classList.add('reveal');
-  });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      }
-    },
-    { rootMargin: '0px 0px -10% 0px' },
-  );
-  targets.forEach((el) => observer.observe(el));
-}
-
-// --- Type each section name (~/projects) the first time it is seen ---
-function setupTypedHeadings() {
-  if (reduceMotion) return;
-
-  const headings = document.querySelectorAll<HTMLElement>('.section-title');
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        observer.unobserve(entry.target);
-        const heading = entry.target as HTMLElement;
-        const name = heading.querySelector<HTMLElement>('[data-type-on-view]');
-        if (!name) continue;
-        heading.classList.add('is-typing');
-        typeInto(name, name.textContent ?? '', 45).then(() => {
-          setTimeout(() => heading.classList.remove('is-typing'), 600);
-        });
-      }
-    },
-    { rootMargin: '0px 0px -15% 0px' },
-  );
-  headings.forEach((heading) => observer.observe(heading));
-}
-
-// --- Highlight the nav link of the section on screen ---
-function setupActiveNav() {
-  const links = new Map<string, HTMLElement>();
-  document.querySelectorAll<HTMLAnchorElement>('.nav .links a').forEach((link) => {
-    // Only links to sections of this page (the blog link is its own page)
-    if (link.hash && link.pathname === window.location.pathname) {
-      links.set(link.hash.slice(1), link);
+  const text = command.textContent ?? '';
+  command.textContent = '';
+  for (const character of text) {
+    if (!allowsMotion()) {
+      command.textContent = text;
+      break;
     }
-  });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        links.forEach((link) => link.classList.remove('active'));
-        links.get(entry.target.id)?.classList.add('active');
-      }
-    },
-    // A section counts as "current" when it crosses the middle of the screen
-    { rootMargin: '-45% 0px -55% 0px' },
-  );
-  document.querySelectorAll('section[id]').forEach((section) => observer.observe(section));
+    command.textContent += character;
+    await new Promise((resolve) => setTimeout(resolve, 84));
+  }
+  cursor?.remove();
 }
 
-// --- Thin bar under the nav showing how far down the page you are ---
-function setupProgressBar() {
+function setupReveals() {
+  if (!('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    for (const { isIntersecting, target } of entries) {
+      if (!isIntersecting) continue;
+
+      observer.unobserve(target);
+      if (allowsMotion() && !target.matches(':focus-within')) {
+        target.classList.add('is-revealed');
+      }
+    }
+  }, { rootMargin: '0px 0px -9% 0px' });
+
+  document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
+}
+
+function setupPointerEffects() {
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  document.querySelectorAll<HTMLElement>('[data-reactive]').forEach((element) => {
+    let frame = 0;
+
+    element.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || !finePointer.matches || !allowsMotion()) return;
+
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const bounds = element.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width;
+        const y = (event.clientY - bounds.top) / bounds.height;
+        element.style.setProperty('--pointer-x', `${x * 100}%`);
+        element.style.setProperty('--pointer-y', `${y * 100}%`);
+        element.style.setProperty('--pan-x', `${(0.5 - x) * 10}px`);
+        element.style.setProperty('--pan-y', `${(0.5 - y) * 10}px`);
+      });
+    }, { passive: true });
+
+    element.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(frame);
+      element.style.removeProperty('--pan-x');
+      element.style.removeProperty('--pan-y');
+    });
+  });
+}
+
+function setupActiveNav() {
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav .links a'))
+    .filter((link) => link.hash && link.pathname === location.pathname);
+  if (!links.length || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    const entry = entries.find((candidate) => candidate.isIntersecting);
+    if (!entry) return;
+
+    for (const link of links) {
+      if (link.hash === `#${entry.target.id}`) {
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    }
+  }, { rootMargin: '-18% 0px -66% 0px' });
+
+  document.querySelectorAll('main > section').forEach((section) => observer.observe(section));
+}
+
+function setupScrollProgress() {
   const bar = document.querySelector<HTMLElement>('[data-progress]');
-  if (!bar) return;
+  const stops = Array.from(document.querySelectorAll<HTMLElement>('[data-timeline-stop]'));
+  const markers = stops.map((stop) => stop.querySelector<HTMLElement>('.marker'));
+  let frame = 0;
 
   const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    frame = 0;
+    const height = window.innerHeight;
+    const max = document.documentElement.scrollHeight - height;
+    const readingLine = height * 0.58;
+    const positions = markers.map((marker) => marker?.getBoundingClientRect().top ?? 0);
+    const active = Math.max(0, positions.findLastIndex((position) => position <= readingLine));
+    const animate = allowsMotion();
+
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    stops.forEach((stop, index) => {
+      stop.toggleAttribute('data-timeline-active', index === active);
+      if (index >= stops.length - 1) return;
+
+      const span = Math.max(1, positions[index + 1] - positions[index]);
+      const progress = Math.max(0, Math.min(1, (readingLine - positions[index]) / span));
+      stop.style.setProperty('--segment-progress', String(animate ? progress : Number(index < active)));
+    });
   };
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
+
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(update);
+  };
+
+  schedule();
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
+  return schedule;
 }
 
-// --- Cards: a soft light follows the pointer (see .hover-lift in global.css) ---
-function setupSpotlight() {
-  if (!window.matchMedia('(pointer: fine)').matches) return;
-
-  document.addEventListener(
-    'pointermove',
-    (event) => {
-      const card = (event.target as HTMLElement).closest?.<HTMLElement>('.hover-lift');
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
-      card.style.setProperty('--my', `${event.clientY - rect.top}px`);
-    },
-    { passive: true },
-  );
-}
-
+const refreshScroll = setupScrollProgress();
+motionToggle?.addEventListener('click', () => {
+  paused = !paused;
+  syncMotion();
+  refreshScroll();
+  try {
+    localStorage.setItem(pausePreference, String(paused));
+  } catch {
+    // The setting applies to the current page even without storage.
+  }
+});
+prefersMotion.addEventListener('change', () => {
+  syncMotion();
+  refreshScroll();
+});
+syncMotion();
 heroIntro();
 setupReveals();
-setupSpotlight();
-setupTypedHeadings();
+setupPointerEffects();
 setupActiveNav();
-setupProgressBar();

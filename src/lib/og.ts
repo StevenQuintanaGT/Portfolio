@@ -11,10 +11,10 @@ const PAD = 48;
 
 // Same palette as global.css (solid colors: satori has no transparency on borders here)
 const c = {
-  bg: '#0b1120',
-  surface: '#1e293b',
-  line: '#404b5d',
-  ink: '#bac6d7',
+  bg: '#070a12',
+  surface: '#0e1421',
+  line: '#293242',
+  ink: '#b4bfd1',
   inkStrong: '#f8fafc',
   accent: '#c0affc',
   green: '#4ade80',
@@ -79,7 +79,6 @@ function titleSize(title: string) {
 
 export async function renderOgImage(card: OgCard) {
   const { fonts, logo } = await loadAssets();
-  const dot = h('div', { width: 16, height: 16, borderRadius: 8, background: c.line });
 
   const tree = h(
     'div',
@@ -115,10 +114,8 @@ export async function renderOgImage(card: OgCard) {
           padding: '20px 28px',
           borderBottom: `2px solid ${c.line}`,
         },
-        dot,
-        dot,
-        dot,
-        h('div', { display: 'flex', marginLeft: 'auto', fontSize: 22, color: c.ink }, 'steven@msquintana: ~'),
+        h('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: c.accent }, '>_'),
+        h('div', { display: 'flex', fontSize: 22, color: c.ink }, 'steven@msquintana: ~'),
       ),
       // Body
       h(

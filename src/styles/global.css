@@ -1,24 +1,25 @@
-/* Azul noche y lavanda: brand colors with green, yellow and red reserved for status. */
+/* Azul noche y lavanda. Keep the brightest colors on text, controls and status. */
 :root {
-  --bg: #0b1120;
-  --surface: #1e293b;
-  --surface-deep: #111a2d;
-  --surface-raised: #273449;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --ink: #bac6d7;
+  --bg: #070a12;
+  --surface: #101420;
+  --surface-deep: #0a0f19;
+  --surface-raised: #151e2e;
+  --line: rgba(178, 191, 219, 0.15);
+  --line-strong: rgba(178, 191, 219, 0.29);
+  --ink: #b4bfd1;
   --ink-strong: #f8fafc;
-  --ink-muted: #4b5263; /* decorative only, never text */
+  --ink-muted: #909cb2;
 
   --accent: #c0affc;
   --accent-2: #7dd3fc;
   --blue: var(--accent);
-  --cyan: var(--accent-2);
   --purple: var(--accent);
   --green: #4ade80;
   --yellow: #fbbf24;
   --red: #f87171;
-  --grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
+  --grad: linear-gradient(120deg, var(--accent), var(--accent-2));
+  --panel-fill: linear-gradient(145deg, #141727 0%, #0d111b 72%);
+  --ease-out: cubic-bezier(0.2, 0.72, 0.2, 1);
 
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -29,8 +30,8 @@
   --radius-lg: 16px;
   --radius-xl: 24px;
 
-  --gutter: 16px;
-  --max-width: 1080px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --max-width: 1240px;
 }
 
 *,
@@ -40,13 +41,13 @@
 }
 
 html {
-  /* Dark scrollbars and form controls */
   color-scheme: dark;
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: 94px;
 }
 
 body {
+  isolation: isolate;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
@@ -55,35 +56,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.site-atmosphere {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 54% at 5% 0%, #191424 0%, transparent 80%),
+    radial-gradient(ellipse 70% 55% at 94% 18%, #111a2a 0%, transparent 82%),
+    linear-gradient(150deg, #080b13 0%, var(--bg) 58%, #080d16 100%);
+}
+
+.site-atmosphere::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: radial-gradient(circle at center, rgb(192 175 252 / 0.1) 0.6px, transparent 0.9px) 0 0 / 7px 7px;
+  mask-image: linear-gradient(112deg, #000 0%, transparent 36%, transparent 80%, #000 100%);
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 35%, transparent);
   color: var(--ink-strong);
 }
 
-/* Fixed background: two soft glows and a fading grid */
-.bg-fx {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(640px 420px at 12% -8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
-    radial-gradient(560px 400px at 92% 6%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 70%);
-}
-
-.bg-fx::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 25%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 25%, transparent 75%);
-}
-
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: var(--font-display);
   color: var(--ink-strong);
   line-height: 1.15;
@@ -92,7 +89,9 @@ h1, h2, h3 {
 }
 
 h2 {
-  font-size: clamp(1.9rem, 4vw, 2.75rem);
+  font-size: clamp(2.05rem, 4vw, 3.55rem);
+  letter-spacing: -0.045em;
+  text-wrap: balance;
 }
 
 p {
@@ -104,9 +103,7 @@ a {
   color: var(--accent);
 }
 
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
+:where(a, button, input, summary):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
@@ -117,25 +114,55 @@ input:focus-visible {
   padding: 0 var(--gutter);
 }
 
-@media (min-width: 720px) {
-  :root {
-    --gutter: 32px;
-  }
-}
-
 .section {
-  padding: 96px 0;
+  padding-block: clamp(54px, 7vw, 98px);
 }
 
-/* Text with the brand gradient */
-.grad-text {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.section + .section {
+  position: relative;
 }
 
-/* Terminal details: $, [+], ~/ */
+.section + .section::before {
+  position: absolute;
+  inset: 0 var(--gutter) auto;
+  max-width: calc(var(--max-width) - 2 * var(--gutter));
+  height: 1px;
+  margin-inline: auto;
+  content: '';
+  background: linear-gradient(90deg, transparent, var(--line-strong) 18%, var(--line) 82%, transparent);
+}
+
+.panel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--panel-fill);
+  box-shadow: inset 0 1px rgb(248 250 252 / 0.025), 0 12px 35px rgb(0 0 0 / 0.17);
+  transition: border-color 0.25s ease;
+}
+
+.panel:focus-within {
+  border-color: var(--line-strong);
+}
+
+[data-reactive] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-reactive]::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(340px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+      rgb(171 148 255 / 0.19), transparent 73%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 .prompt {
   color: var(--green);
 }
@@ -143,57 +170,52 @@ input:focus-visible {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 22px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 17px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface);
   color: var(--ink-strong);
-  font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    translate 0.2s ease,
-    filter 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .btn:hover {
-  border-color: rgba(255, 255, 255, 0.32);
-  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--accent);
+  background: var(--surface-raised);
 }
 
-/* Main call to action: gradient fill, dark text for contrast */
 .btn-primary {
   background: var(--grad);
   border-color: transparent;
   color: var(--bg);
+  box-shadow: 0 6px 21px rgb(148 133 249 / 0.2), inset 0 1px rgb(255 255 255 / 0.5);
 }
 
 .btn-primary:hover {
-  background: var(--grad);
+  background: linear-gradient(120deg, #ddceff, #a9e4ff);
   border-color: transparent;
-  filter: brightness(1.1);
-  translate: 0 -2px;
 }
 
 .btn-sm {
-  padding: 8px 16px;
-  font-size: 0.85rem;
+  padding: 8px 14px;
+  font-size: 0.875rem;
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  color: var(--purple);
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface-deep);
+  color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
 }
 
 .tag-list {
@@ -205,39 +227,6 @@ input:focus-visible {
   margin: 0;
 }
 
-/* Cards: lift on hover, with a soft light that follows the pointer (scripts/motion.ts).
-   Cards draw their border with var(--card-border), so scoped styles don't override it.
-   Uses `translate` so it doesn't fight the reveal's `transform`. */
-.hover-lift {
-  position: relative;
-  isolation: isolate;
-  transition:
-    border-color 0.25s ease,
-    translate 0.25s ease;
-}
-
-.hover-lift::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%);
-}
-
-.hover-lift:hover {
-  --card-border: color-mix(in srgb, var(--accent) 45%, transparent);
-  translate: 0 -4px;
-}
-
-.hover-lift:hover::before {
-  opacity: 1;
-}
-
-/* Blinking terminal cursor */
 .cursor {
   display: inline-block;
   width: 0.55em;
@@ -245,7 +234,47 @@ input:focus-visible {
   margin-left: 4px;
   vertical-align: -0.1em;
   background: var(--green);
-  animation: blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cursor {
+    animation: blink 1s steps(1) infinite;
+  }
+
+  .rise {
+    animation: rise 0.72s var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 85ms);
+  }
+
+  .btn {
+    transition: border-color 0.2s ease, background 0.2s ease, translate 0.2s ease;
+  }
+
+  .btn:active {
+    translate: 0 1px;
+  }
+
+  [data-reveal].is-revealed:not(:focus-within) {
+    animation: reveal 0.66s var(--ease-out) var(--reveal-delay, 0ms) backwards;
+  }
+
+  [data-reactive]:focus-within::after {
+    opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover:not(:active) {
+      translate: 0 -2px;
+    }
+
+    [data-reactive]:hover {
+      border-color: color-mix(in srgb, var(--accent) 36%, var(--surface));
+    }
+
+    [data-reactive]:hover::after {
+      opacity: 1;
+    }
+  }
 }
 
 @keyframes blink {
@@ -257,33 +286,14 @@ input:focus-visible {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(16px);
   }
 }
 
-/* Motion: only when the visitor hasn't asked for less motion.
-   .reveal is added by JS, so without JS everything is visible from the start. */
-@media (prefers-reduced-motion: no-preference) {
-  /* Entrance on page load, staggered with style="--i: n" */
-  .rise {
-    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    /* Keeps the hover-lift transitions, without the stagger delay */
-    transition:
-      opacity 0.6s ease var(--delay, 0ms),
-      transform 0.6s ease var(--delay, 0ms),
-      border-color 0.25s ease,
-      translate 0.25s ease;
-  }
-
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
+@keyframes reveal {
+  from {
+    opacity: 0.36;
+    translate: 0 15px;
   }
 }
 
@@ -291,15 +301,15 @@ input:focus-visible {
   html {
     scroll-behavior: auto;
   }
+}
 
-  .cursor {
-    animation: none;
-  }
+html[data-motion='paused'] {
+  scroll-behavior: auto;
+}
 
-  .hover-lift:hover,
-  .btn-primary:hover {
-    translate: none;
-  }
+html[data-motion='paused'] :where(main *, main *::before, main *::after, .nav *, .nav *::after) {
+  animation: none !important;
+  transition: none !important;
 }
 
 .visually-hidden {
