@@ -2,7 +2,7 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { site } from '../config';
 import { getProjects } from '../lib/projects';
-import { certs, skills, useTranslations, type Lang } from '../i18n/ui';
+import { getCredentials, getExperience, skills, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -12,17 +12,19 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // Commands shown by `help` and as quick buttons under the prompt
-const commands = ['help', 'whoami', 'about', 'skills', 'projects', 'certs', 'contact', 'lang', 'clear'] as const;
+const commands = ['help', 'whoami', 'about', 'experience', 'skills', 'projects', 'certs', 'contact', 'lang', 'clear'] as const;
 const quickCommands = ['help', 'projects', 'skills', 'contact'];
+const { earned, training } = getCredentials(lang);
 
 // Everything the terminal can print, read by scripts/terminal.ts
 const terminalData = {
   otherLangUrl: getRelativeLocaleUrl(lang === 'en' ? 'es' : 'en'),
   name: site.name,
   role: t('hero.role'),
-  about: [t('about.p1'), t('about.p2'), t('about.p3')],
+  about: [t('about.p1'), t('about.p2'), t('about.languages')],
+  experience: getExperience(lang),
   skills: [
-    { title: t('skills.security'), items: skills.security },
+    { title: t('skills.security'), items: [...skills.security, t('skills.ipv4')] },
     { title: t('skills.systems'), items: skills.systems },
     { title: t('skills.cloud'), items: skills.cloud },
   ],
@@ -32,7 +34,8 @@ const terminalData = {
     demo: data.demo,
     repo: data.repo,
   })),
-  certs: certs.map((cert) => ({ ...cert, label: t(`certs.status.${cert.status}`) })),
+  certs: [...earned, ...training],
+  credly: site.credly,
   contact: { email: site.email, github: site.github, linkedin: site.linkedin },
   help: commands.map((name) => ({ name, text: t(`term.help.${name}`) })),
   text: {
@@ -42,6 +45,8 @@ const terminalData = {
     switching: t('term.switching'),
     demo: t('projects.demo'),
     repo: t('projects.repo'),
+    employer: t('experience.employer'),
+    credly: t('certs.credly'),
   },
 };
 
@@ -274,12 +279,12 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
   .terminal {
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-xl);
-    background: rgba(14, 16, 23, 0.85);
+    background: color-mix(in srgb, var(--surface-deep) 85%, transparent);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     box-shadow:
-      0 0 0 1px rgba(167, 139, 250, 0.08),
-      0 40px 100px -30px rgba(167, 139, 250, 0.35);
+      0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent),
+      0 40px 100px -30px color-mix(in srgb, var(--accent) 35%, transparent);
     overflow: hidden;
     min-width: 0;
   }
@@ -443,7 +448,7 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
   }
 
   .term-form:focus-within {
-    border-color: rgba(167, 139, 250, 0.5);
+    border-color: color-mix(in srgb, var(--accent) 50%, transparent);
   }
 
   .term-input {
@@ -477,9 +482,9 @@ const allSkills = [...skills.security, ...skills.systems, ...skills.cloud];
 
   .term-chip {
     padding: 4px 12px;
-    border: 1px solid rgba(167, 139, 250, 0.25);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
     border-radius: 999px;
-    background: rgba(167, 139, 250, 0.08);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
     color: var(--purple);
     font: inherit;
     font-size: 0.78rem;

@@ -10,7 +10,7 @@
 
 </div>
 
-Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa una paleta oscura con acentos violeta y cian, tipografía Space Grotesk y una
+Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa la paleta Azul noche y lavanda, tipografía Space Grotesk y una
 estética de terminal. Está en **inglés** (`/`) y **español** (`/es/`), y el botón EN / ES cambia de idioma en cualquier
 página.
 
@@ -19,8 +19,8 @@ página.
 | Parte | Qué hace |
 | --- | --- |
 | **Inicio** | Animación que escribe `whoami` y luego muestra el nombre, el enfoque y la frase principal. |
-| **Terminal interactiva** | Comandos `help`, `whoami`, `about`, `skills`, `projects`, `certs`, `contact`, `lang` y `clear`, con alias en español, historial (↑ ↓) y autocompletado con Tab. |
-| **Secciones** | Sobre mí, habilidades, proyectos con enlaces, certificaciones y metas, y contacto. |
+| **Terminal interactiva** | Comandos `help`, `whoami`, `about`, `experience`, `skills`, `projects`, `certs`, `contact`, `lang` y `clear`, con alias en español, historial (↑ ↓) y autocompletado con Tab. |
+| **Secciones** | Perfil y educación, experiencia profesional, habilidades, proyectos con enlaces, certificaciones y formación, y contacto. |
 | **Blog** | Artículos en Markdown, filtro por etiquetas, tiempo de lectura, código resaltado con Shiki (`one-dark-pro`) y feed RSS. |
 | **SEO** | `<title>`, descripción, `canonical`, `hreflang` y Open Graph en todas las páginas. Las imágenes de vista previa (PNG de 1200×630) se generan en el build. |
 | **Movimiento** | Las secciones aparecen al hacer scroll, los títulos se escriben solos, el menú marca la sección actual y hay una barra de progreso. Si el sistema pide reducir el movimiento, no hay animaciones; sin JavaScript se ve todo el contenido. |
@@ -57,8 +57,8 @@ npm run dev       # http://localhost:4321
 
 | Quiero cambiar… | Archivo |
 | --- | --- |
-| Textos de la interfaz, habilidades y certificaciones (en los dos idiomas) | [`src/i18n/ui.ts`](src/i18n/ui.ts) |
-| Correo, GitHub y LinkedIn | [`src/config.ts`](src/config.ts) |
+| Textos de la interfaz, experiencia, habilidades y certificaciones (en los dos idiomas) | [`src/i18n/ui.ts`](src/i18n/ui.ts) |
+| Correo, GitHub, LinkedIn y Credly | [`src/config.ts`](src/config.ts) |
 | Proyectos | `src/content/projects/en/*.md` y `src/content/projects/es/*.md` |
 | Artículos del blog | `src/content/blog/*.md` |
 | Colores, tipografía y espaciado | [`src/styles/global.css`](src/styles/global.css) |
@@ -157,4 +157,4 @@ aparte, que no hay que tocar.
 
 ---
 
-Hecho por [Steven Quintana](https://msquintana.com) · Diseño oscuro con acentos violeta y cian.
+Hecho por [Steven Quintana](https://msquintana.com) · Paleta Azul noche y lavanda.

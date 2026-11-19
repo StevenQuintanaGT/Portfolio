@@ -11,14 +11,13 @@ const PAD = 48;
 
 // Same palette as global.css (solid colors: satori has no transparency on borders here)
 const c = {
-  bg: '#0a0b10',
-  surfaceDeep: '#12141c',
-  line: '#2a2e3a',
-  ink: '#a1a7b6',
-  inkStrong: '#f3f4f8',
-  blue: '#a78bfa',
+  bg: '#0b1120',
+  surface: '#1e293b',
+  line: '#404b5d',
+  ink: '#bac6d7',
+  inkStrong: '#f8fafc',
+  accent: '#c0affc',
   green: '#4ade80',
-  purple: '#c4b5fd',
 };
 
 export interface OgCard {
@@ -101,7 +100,7 @@ export async function renderOgImage(card: OgCard) {
         // Explicit size: percentages here ignore the outer padding
         width: OG_WIDTH - 2 * PAD,
         height: OG_HEIGHT - 2 * PAD,
-        background: c.surfaceDeep,
+        background: c.surface,
         border: `2px solid ${c.line}`,
         borderRadius: 20,
         overflow: 'hidden',
@@ -175,14 +174,14 @@ export async function renderOgImage(card: OgCard) {
                   border: `2px solid ${c.line}`,
                   borderRadius: 8,
                   fontSize: 22,
-                  color: c.purple,
+                  color: c.accent,
                 },
                 `#${tag}`,
               ),
             ),
           ),
           { type: 'img', props: { src: logo, width: 64, height: 64 } },
-          h('div', { display: 'flex', fontSize: 28, fontWeight: 700, color: c.blue }, 'msquintana.com'),
+          h('div', { display: 'flex', fontSize: 28, fontWeight: 700, color: c.accent }, 'msquintana.com'),
         ),
       ),
     ),

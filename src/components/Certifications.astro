@@ -1,6 +1,7 @@
 ---
 import SectionTitle from './SectionTitle.astro';
-import { certs, useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../config';
+import { getCredentials, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -8,36 +9,66 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const { earned, training } = getCredentials(lang);
+const groups = [
+  { title: t('certs.earned'), credentials: earned },
+  { title: t('certs.training'), credentials: training },
+];
 ---
 
 <section id="certs" class="section">
   <div class="container">
     <SectionTitle index="04" text={t('certs.title')} title={t('certs.heading')} />
-    <ol class="list">
-      {
-        certs.map((cert) => (
-          <li class="item hover-lift">
-            <span class={`status status-${cert.status}`}>
-              <span class="dot" aria-hidden="true" />
-              {t(`certs.status.${cert.status}`)}
-            </span>
-            <span class="name">{cert.name}</span>
-            <span class="issuer">{cert.issuer}</span>
-          </li>
-        ))
-      }
-    </ol>
+    {groups.map(({ title, credentials }) => (
+      <div class="group">
+        <h3>{title}</h3>
+        <ul class:list={['list', { 'list-earned': credentials === earned }]}>
+          {credentials.map(({ name, issuer, status, label, detail }) => (
+            <li class="item hover-lift">
+              <span class={`status status-${status}`}>{label}</span>
+              <h4 class="name">{name}</h4>
+              <span class="issuer">{issuer}</span>
+              {detail && <span class="detail">{detail}</span>}
+            </li>
+          ))}
+        </ul>
+        {credentials === earned && (
+          <a class="btn credly" href={site.credly} target="_blank" rel="noopener noreferrer">
+            {t('certs.credly')}
+          </a>
+        )}
+      </div>
+    ))}
   </div>
 </section>
 
 <style>
+  .group + .group {
+    margin-top: 36px;
+  }
+
   .list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  @media (min-width: 620px) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 860px) {
+    .list-earned {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .credly {
+    margin-top: 16px;
   }
 
   .item {
@@ -51,22 +82,12 @@ const t = useTranslations(lang);
   }
 
   .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     align-self: flex-start;
     padding: 4px 12px;
     border: 1px solid currentColor;
     border-radius: 999px;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-  }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
+    font-size: 0.85rem;
   }
 
   .status-done {
@@ -77,11 +98,12 @@ const t = useTranslations(lang);
     color: var(--yellow);
   }
 
-  .status-planned {
+  .status-accepted {
     color: var(--accent-2);
   }
 
   .name {
+    margin: 0;
     font-family: var(--font-display);
     font-size: 1.3rem;
     font-weight: 600;
@@ -90,6 +112,10 @@ const t = useTranslations(lang);
 
   .issuer {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.875rem;
+  }
+
+  .detail {
+    font-size: 0.875rem;
   }
 </style>

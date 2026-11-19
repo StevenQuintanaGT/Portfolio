@@ -81,14 +81,14 @@ const t = useTranslations(lang);
     font-weight: 700;
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(167, 139, 250, 0.55);
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
   }
 
   .badge {
     padding: 4px 10px;
     border-radius: 999px;
     background: var(--grad);
-    color: #0a0b10;
+    color: var(--bg);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 700;
@@ -128,8 +128,8 @@ const t = useTranslations(lang);
   /* Featured: full width, bigger title, problem and result side by side */
   .featured {
     background:
-      radial-gradient(500px 260px at 100% 0%, rgba(34, 211, 238, 0.1), transparent 70%),
-      radial-gradient(500px 260px at 0% 100%, rgba(167, 139, 250, 0.12), transparent 70%),
+      radial-gradient(500px 260px at 100% 0%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 70%),
+      radial-gradient(500px 260px at 0% 100%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
       var(--surface);
   }
 

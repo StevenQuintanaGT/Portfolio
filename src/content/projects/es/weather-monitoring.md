@@ -1,7 +1,7 @@
 ---
 title: AgroClima Jalapa (proyecto de graduación)
-problem: Los productores de los 7 municipios de Jalapa necesitan saber a tiempo cuando el pronóstico de su parcela pasa lo que aguanta su cultivo, muchas veces con señal intermitente.
-result: Una app Android con pronóstico por parcela y alertas automáticas cada 3 horas. Funciona a costo cero y sin servidor propio, con el plan gratuito de Firebase y una tarea programada en GitHub Actions, y sigue funcionando sin señal con datos guardados.
+problem: Los agricultores de los siete municipios de Jalapa necesitan conocer a tiempo los riesgos climáticos para sus cultivos, incluso en zonas con señal intermitente.
+result: La aplicación Android revisa el pronóstico de cada parcela cada tres horas, envía alertas automáticas cuando detecta riesgos y muestra los datos guardados sin conexión.
 tools: [Flutter, Firebase, GitHub Actions, Node.js, OpenWeather]
 order: 1
 demo: https://stevenquintanagt.github.io/Pag_Agroclima/

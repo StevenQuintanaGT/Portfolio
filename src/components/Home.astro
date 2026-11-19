@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from './Nav.astro';
 import Hero from './Hero.astro';
 import About from './About.astro';
+import Experience from './Experience.astro';
 import Skills from './Skills.astro';
 import Projects from './Projects.astro';
 import Certifications from './Certifications.astro';
@@ -31,12 +32,13 @@ const structuredData = {
       name: site.name,
       url: siteUrl,
       email: `mailto:${site.email}`,
-      jobTitle: t('hero.role'),
+      jobTitle: t('experience.omas'),
+      worksFor: { '@type': 'GovernmentOrganization', name: t('experience.employer') },
       description: t('meta.description'),
       knowsAbout: ['Cybersecurity', 'Networking', 'Infrastructure', 'Cloud', 'Linux', 'Windows Server'],
       affiliation: { '@type': 'CollegeOrUniversity', name: 'Universidad Mariano Gálvez de Guatemala' },
       address: { '@type': 'PostalAddress', addressCountry: 'GT' },
-      sameAs: [site.github, site.linkedin],
+      sameAs: [site.github, site.linkedin, site.credly],
     },
     {
       '@type': 'WebSite',
@@ -56,6 +58,7 @@ const structuredData = {
   <main>
     <Hero lang={lang} />
     <About lang={lang} />
+    <Experience lang={lang} />
     <Skills lang={lang} />
     <Projects lang={lang} />
     <Certifications lang={lang} />

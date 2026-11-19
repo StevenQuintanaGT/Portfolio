@@ -1,0 +1,76 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { getExperience, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="experience" class="section">
+  <div class="container">
+    <SectionTitle text={t('nav.experience')} title={t('experience.heading')} />
+    <div class="grid">
+      {getExperience(lang).map(({ title, period, duties }) => (
+        <article class="card hover-lift">
+          <header>
+            <p class="period">{period}</p>
+            <h3>{title}</h3>
+            <p class="employer">{t('experience.employer')}</p>
+          </header>
+          <ul>
+            {duties.map((duty) => <li>{duty}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .card {
+    padding: 28px;
+    border: 1px solid var(--card-border, var(--line));
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  h3 {
+    margin-bottom: 6px;
+    font-size: 1.3rem;
+  }
+
+  .period {
+    margin-bottom: 10px;
+    color: var(--accent-2);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .employer {
+    font-size: 0.9rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-inline-start: 1.25em;
+  }
+
+  li + li {
+    margin-top: 8px;
+  }
+</style>

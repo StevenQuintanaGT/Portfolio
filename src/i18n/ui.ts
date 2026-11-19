@@ -14,9 +14,10 @@ export const ui = {
   en: {
     'meta.title': 'Steven Quintana — Cybersecurity · Networking · Cloud',
     'meta.description':
-      'Portfolio of Steven Quintana, Systems Engineering student in Guatemala focused on cybersecurity, networking and infrastructure.',
+      'Portfolio of Steven Quintana, a final-year Information Systems Engineering student in Guatemala focused on cybersecurity, networking and cloud.',
 
     'nav.about': 'about',
+    'nav.experience': 'experience',
     'nav.skills': 'skills',
     'nav.projects': 'projects',
     'nav.certs': 'certs',
@@ -25,23 +26,35 @@ export const ui = {
     'nav.switch': 'Ver en español',
 
     'hero.role': 'Cybersecurity · Networking · Cloud',
-    'hero.tagline': 'Learning to protect networks and systems, one packet at a time.',
+    'hero.tagline': 'Final-year Information Systems Engineering student and computer technician based in Guatemala.',
     'hero.cta.projects': 'View projects',
     'hero.cta.contact': 'Contact',
     'hero.hello': "Hi, I'm",
-    'hero.status': 'Open to internships & labs',
+    'hero.status': 'Open to internships',
 
-    'about.heading': 'Curious about how systems connect, and how to keep them safe.',
-    'about.fact.base': 'Based in',
-    'about.fact.baseSub': 'UMG · Jutiapa campus',
-    'about.fact.next': 'Next step',
-    'about.fact.nextSub': 'Scholarship · accepted',
-    'about.fact.projects': 'Projects',
-    'about.fact.projectsSub': 'with code on GitHub',
+    'about.heading': 'About me',
+    'about.languages': 'Spanish (native) · English (intermediate)',
+    'education.heading': 'Education',
+    'education.degree': 'Information Systems Engineering and Computer Science',
+    'education.degree.school': 'Universidad Mariano Gálvez de Guatemala · Jutiapa campus',
+    'education.degree.period': '2022–Present · Final year',
+    'education.accounting': 'Technical diploma in accounting with a computing focus',
+    'education.technician': 'Computer technician',
+    'experience.heading': 'Professional experience',
+    'experience.employer': 'Municipality of Monjas, Jalapa',
+    'experience.omas': 'Head of the Municipal Water and Sanitation Office (OMAS)',
+    'experience.omas.period': 'March 2025–Present',
+    'experience.omas.team': 'Lead a six-person team of technicians and administrative staff, plan their work and track its completion.',
+    'experience.omas.service': 'Track residents’ requests and reports through resolution, and prepare official documents and reports.',
+    'experience.omas.field': 'Inspect work in the field and follow up until it is complete.',
+    'experience.ospm': 'Assistant at the Municipal Public Services Office (OSPM)',
+    'experience.ospm.period': 'August 2024–February 2025',
+    'experience.ospm.service': 'Logged and followed up on residents’ requests through resolution.',
+    'experience.ospm.operations': 'Managed records, inventory and supply requests, helped prepare reports and checked work in the field.',
     'skills.heading': 'Tools I work with',
     'projects.heading': 'Things I have built',
     'projects.featured': 'Featured',
-    'certs.heading': 'Certifications & roadmap',
+    'certs.heading': 'Certifications & training',
     'contact.heading': "Let's talk.",
 
     'term.hint': 'Type a command or tap one:',
@@ -51,9 +64,10 @@ export const ui = {
     'term.help.help': 'show this list',
     'term.help.whoami': 'who I am',
     'term.help.about': 'a bit about me',
+    'term.help.experience': 'work experience',
     'term.help.skills': 'tools I use',
     'term.help.projects': 'things I have built',
-    'term.help.certs': 'certifications & goals',
+    'term.help.certs': 'certifications & training',
     'term.help.contact': 'how to reach me',
     'term.help.lang': 'ver en español',
     'term.help.clear': 'clear the screen',
@@ -63,15 +77,15 @@ export const ui = {
 
     'about.title': 'about',
     'about.p1':
-      'Information Systems Engineering student at Universidad Mariano Gálvez de Guatemala (Jutiapa campus), focused on cybersecurity, networking and infrastructure.',
+      'I’m in my final year at Universidad Mariano Gálvez de Guatemala (Jutiapa campus). My focus is cybersecurity, networking and cloud infrastructure.',
     'about.p2':
-      'I like understanding how networks and systems work so I can keep them secure. I have experience working with Linux and Windows Server, and I manage my own domain and email on Cloudflare.',
-    'about.p3': 'Next step: accepted into the IRSI scholarship program, starting in 2027.',
+      'I work with Linux, Nmap and Docker. I use AWS and Cloudflare, and manage the DNS, email routing and hosting for this portfolio.',
 
     'skills.title': 'skills',
     'skills.security': 'Security & networking',
     'skills.systems': 'Systems & infrastructure',
     'skills.cloud': 'Cloud',
+    'skills.ipv4': 'IPv4 subnetting',
 
     'projects.title': 'projects',
     'projects.problem': 'Problem',
@@ -80,13 +94,21 @@ export const ui = {
     'projects.demo': 'Live site',
     'projects.repo': 'Source code',
 
-    'certs.title': 'certifications & goals',
+    'certs.title': 'certifications',
+    'certs.earned': 'Earned credentials',
+    'certs.training': 'Ongoing training & scholarships',
+    'certs.credly': 'View badges on Credly',
     'certs.status.done': 'earned',
+    'certs.status.completed': 'completed',
     'certs.status.progress': 'in progress',
-    'certs.status.planned': 'planned',
+    'certs.status.preparing': 'in preparation',
+    'certs.status.accepted': 'accepted',
+    'certs.nse.expiry': 'Expires in November 2028',
+    'certs.itn.scholarship': 'Instituto RED scholarship',
+    'certs.irsi.name': 'Cybersecurity training scholarship',
 
     'contact.title': 'contact',
-    'contact.text': 'Open to internships, labs and security projects. Email is the fastest way to reach me.',
+    'contact.text': 'Open to internships and labs in security and infrastructure. Email is the fastest way to reach me.',
     'contact.email': 'Send an email',
 
     'footer.built': 'Built with Astro · Hosted on Cloudflare Pages',
@@ -110,9 +132,10 @@ export const ui = {
   es: {
     'meta.title': 'Steven Quintana — Ciberseguridad · Redes · Cloud',
     'meta.description':
-      'Portafolio de Steven Quintana, estudiante de Ingeniería en Sistemas en Guatemala enfocado en ciberseguridad, redes e infraestructura.',
+      'Portafolio de Steven Quintana, estudiante de último año de Ingeniería en Sistemas de Información en Guatemala, enfocado en ciberseguridad, redes y cloud.',
 
     'nav.about': 'sobre-mí',
+    'nav.experience': 'experiencia',
     'nav.skills': 'habilidades',
     'nav.projects': 'proyectos',
     'nav.certs': 'certificaciones',
@@ -121,23 +144,35 @@ export const ui = {
     'nav.switch': 'View in English',
 
     'hero.role': 'Ciberseguridad · Redes · Cloud',
-    'hero.tagline': 'Aprendo a proteger redes y sistemas, un paquete a la vez.',
+    'hero.tagline': 'Estudiante de último año de Ingeniería en Sistemas de Información y técnico en computación en Guatemala.',
     'hero.cta.projects': 'Ver proyectos',
     'hero.cta.contact': 'Contactar',
     'hero.hello': 'Hola, soy',
-    'hero.status': 'Abierto a prácticas y laboratorios',
+    'hero.status': 'Disponible para pasantías',
 
-    'about.heading': 'Curioso por cómo se conectan los sistemas y cómo mantenerlos seguros.',
-    'about.fact.base': 'Desde',
-    'about.fact.baseSub': 'UMG · Campus Jutiapa',
-    'about.fact.next': 'Siguiente paso',
-    'about.fact.nextSub': 'Beca · aceptado',
-    'about.fact.projects': 'Proyectos',
-    'about.fact.projectsSub': 'con código en GitHub',
+    'about.heading': 'Sobre mí',
+    'about.languages': 'Español (nativo) · Inglés (intermedio)',
+    'education.heading': 'Educación',
+    'education.degree': 'Ingeniería en Sistemas de Información y Ciencias de la Computación',
+    'education.degree.school': 'Universidad Mariano Gálvez de Guatemala · Campus Jutiapa',
+    'education.degree.period': '2022–Actualidad · Último año',
+    'education.accounting': 'Perito Contador con orientación en computación',
+    'education.technician': 'Técnico en Computación',
+    'experience.heading': 'Experiencia profesional',
+    'experience.employer': 'Municipalidad de Monjas, Jalapa',
+    'experience.omas': 'Encargado de la Oficina Municipal de Agua y Saneamiento (OMAS)',
+    'experience.omas.period': 'Marzo de 2025–Actualidad',
+    'experience.omas.team': 'Lidero un equipo de seis personas, entre técnicos y personal administrativo. Planifico sus actividades y doy seguimiento a su cumplimiento.',
+    'experience.omas.service': 'Gestiono las solicitudes y reportes de la población hasta su resolución y preparo documentación oficial e informes.',
+    'experience.omas.field': 'Verifico la calidad de los trabajos en campo y les doy seguimiento hasta su finalización.',
+    'experience.ospm': 'Asistente de la Oficina de Servicios Públicos Municipales (OSPM)',
+    'experience.ospm.period': 'Agosto de 2024–Febrero de 2025',
+    'experience.ospm.service': 'Registré y di seguimiento a las solicitudes de los vecinos hasta su resolución.',
+    'experience.ospm.operations': 'Gestioné documentación, inventarios y solicitudes de insumos, apoyé la elaboración de informes y verifiqué trabajos en campo.',
     'skills.heading': 'Herramientas con las que trabajo',
     'projects.heading': 'Lo que he construido',
     'projects.featured': 'Destacado',
-    'certs.heading': 'Certificaciones y ruta',
+    'certs.heading': 'Certificaciones y formación',
     'contact.heading': 'Hablemos.',
 
     'term.hint': 'Escribe un comando o toca uno:',
@@ -147,9 +182,10 @@ export const ui = {
     'term.help.help': 'muestra esta lista',
     'term.help.whoami': 'quién soy',
     'term.help.about': 'un poco sobre mí',
+    'term.help.experience': 'experiencia profesional',
     'term.help.skills': 'herramientas que uso',
     'term.help.projects': 'lo que he construido',
-    'term.help.certs': 'certificaciones y metas',
+    'term.help.certs': 'certificaciones y formación',
     'term.help.contact': 'cómo contactarme',
     'term.help.lang': 'view in English',
     'term.help.clear': 'limpia la pantalla',
@@ -159,15 +195,15 @@ export const ui = {
 
     'about.title': 'sobre-mí',
     'about.p1':
-      'Estudiante de Ingeniería en Sistemas de Información en la Universidad Mariano Gálvez de Guatemala (Campus Jutiapa), enfocado en ciberseguridad, redes e infraestructura.',
+      'Curso el último año en la Universidad Mariano Gálvez de Guatemala, Campus Jutiapa. Mi enfoque es la ciberseguridad, las redes y la infraestructura en la nube.',
     'about.p2':
-      'Me gusta entender cómo funcionan las redes y los sistemas para poder protegerlos. Tengo experiencia trabajando con Linux y Windows Server, y administro mi propio dominio y correo en Cloudflare.',
-    'about.p3': 'Siguiente paso: fui aceptado en la beca IRSI, que inicia en 2027.',
+      'Trabajo con Linux, Nmap y Docker. Uso AWS y Cloudflare, y administro el DNS, el enrutamiento de correo y el alojamiento de este portafolio.',
 
     'skills.title': 'habilidades',
     'skills.security': 'Seguridad y redes',
     'skills.systems': 'Sistemas e infraestructura',
     'skills.cloud': 'Cloud',
+    'skills.ipv4': 'Subnetting IPv4',
 
     'projects.title': 'proyectos',
     'projects.problem': 'Problema',
@@ -176,13 +212,21 @@ export const ui = {
     'projects.demo': 'Ver sitio',
     'projects.repo': 'Código fuente',
 
-    'certs.title': 'certificaciones-y-metas',
+    'certs.title': 'certificaciones',
+    'certs.earned': 'Credenciales obtenidas',
+    'certs.training': 'Formación en curso y becas',
+    'certs.credly': 'Ver insignias en Credly',
     'certs.status.done': 'obtenida',
+    'certs.status.completed': 'completado',
     'certs.status.progress': 'en curso',
-    'certs.status.planned': 'planeada',
+    'certs.status.preparing': 'en preparación',
+    'certs.status.accepted': 'aceptada',
+    'certs.nse.expiry': 'Vence en noviembre de 2028',
+    'certs.itn.scholarship': 'Beca de Instituto RED',
+    'certs.irsi.name': 'Beca de formación en ciberseguridad',
 
     'contact.title': 'contacto',
-    'contact.text': 'Abierto a prácticas, laboratorios y proyectos de seguridad. El correo es la forma más rápida de contactarme.',
+    'contact.text': 'Busco pasantías y laboratorios de seguridad e infraestructura. El correo es la forma más rápida de contactarme.',
     'contact.email': 'Enviar correo',
 
     'footer.built': 'Hecho con Astro · Alojado en Cloudflare Pages',
@@ -215,13 +259,80 @@ export function useTranslations(lang: Lang) {
 export const skills = {
   security: ['Nmap', 'Cisco Packet Tracer'],
   systems: ['Linux (Ubuntu, Fedora, Arch)', 'Windows Server', 'Bash', 'Docker', 'Git & GitHub'],
-  cloud: ['Cloudflare (DNS, domain, email)', 'AWS'],
+  cloud: ['Cloudflare Pages', 'Cloudflare DNS', 'Cloudflare Email Routing', 'AWS'],
 } as const;
 
-export type CertStatus = 'done' | 'progress' | 'planned';
+export function getExperience(lang: Lang) {
+  const t = useTranslations(lang);
+  return [
+    {
+      title: t('experience.omas'),
+      period: t('experience.omas.period'),
+      duties: [t('experience.omas.team'), t('experience.omas.service'), t('experience.omas.field')],
+    },
+    {
+      title: t('experience.ospm'),
+      period: t('experience.ospm.period'),
+      duties: [t('experience.ospm.service'), t('experience.ospm.operations')],
+    },
+  ];
+}
 
-// Roadmap from the guide. Move an item to 'done' when you earn it.
-export const certs: { name: string; issuer: string; status: CertStatus }[] = [
-  { name: 'CCST Cybersecurity', issuer: 'Cisco', status: 'planned' },
-  { name: 'AWS Certified Cloud Practitioner', issuer: 'AWS', status: 'planned' },
-];
+export function getCredentials(lang: Lang) {
+  const t = useTranslations(lang);
+  return {
+    earned: [
+      {
+        name: 'Fortinet NSE 1 Certified in Cybersecurity',
+        issuer: 'Fortinet',
+        label: t('certs.status.done'),
+        status: 'done',
+        detail: t('certs.nse.expiry'),
+      },
+      {
+        name: 'Fortinet Cybersecurity and Cloud Fundamentals 1.0',
+        issuer: 'Fortinet',
+        label: t('certs.status.completed'),
+        status: 'done',
+        detail: '2026',
+      },
+      {
+        name: 'Introduction to Cybersecurity',
+        issuer: 'Cisco',
+        label: t('certs.status.completed'),
+        status: 'done',
+        detail: '2026',
+      },
+    ],
+    training: [
+      {
+        name: 'CCNA 1: Introduction to Networks (ITN)',
+        issuer: 'Cisco Networking Academy',
+        label: t('certs.status.progress'),
+        status: 'progress',
+        detail: t('certs.itn.scholarship'),
+      },
+      {
+        name: 'AWS Certified Cloud Practitioner',
+        issuer: 'AWS',
+        label: t('certs.status.preparing'),
+        status: 'progress',
+        detail: '',
+      },
+      {
+        name: 'CCST Cybersecurity',
+        issuer: 'Cisco',
+        label: t('certs.status.preparing'),
+        status: 'progress',
+        detail: '',
+      },
+      {
+        name: t('certs.irsi.name'),
+        issuer: 'IRSI',
+        label: t('certs.status.accepted'),
+        status: 'accepted',
+        detail: '2027',
+      },
+    ],
+  };
+}

@@ -6,9 +6,11 @@ interface TerminalData {
   name: string;
   role: string;
   about: string[];
+  experience: { title: string; period: string; duties: string[] }[];
   skills: { title: string; items: string[] }[];
   projects: { title: string; tools: string[]; demo?: string; repo?: string }[];
-  certs: { name: string; issuer: string; label: string }[];
+  certs: { name: string; issuer: string; label: string; detail: string }[];
+  credly: string;
   contact: { email: string; github: string; linkedin: string };
   help: { name: string; text: string }[];
   text: {
@@ -18,6 +20,8 @@ interface TerminalData {
     switching: string;
     demo: string;
     repo: string;
+    employer: string;
+    credly: string;
   };
 }
 
@@ -28,6 +32,7 @@ const aliases: Record<string, string> = {
   sobre: 'about',
   'sobre-mi': 'about',
   'sobre-mí': 'about',
+  experiencia: 'experience',
   habilidades: 'skills',
   proyectos: 'projects',
   certificaciones: 'certs',
@@ -97,6 +102,14 @@ if (root && dataEl) {
     about() {
       data.about.forEach((line) => print([line]));
     },
+    experience() {
+      print([data.text.employer], 'out-title');
+      for (const role of data.experience) {
+        print([ok(), span(role.title, 'out-title')]);
+        print([span(role.period, 'out-tag')]);
+        role.duties.forEach((duty) => print([duty]));
+      }
+    },
     skills() {
       for (const group of data.skills) {
         print([group.title], 'out-title');
@@ -115,8 +128,10 @@ if (root && dataEl) {
     },
     certs() {
       for (const cert of data.certs) {
-        print([span(`[${cert.label}]`, 'out-key'), `${cert.name} — ${cert.issuer}`]);
+        const summary = [cert.name, cert.issuer, cert.detail].filter(Boolean).join(' · ');
+        print([span(`[${cert.label}]`, 'out-key'), summary]);
       }
+      print([link(data.text.credly, data.credly)]);
     },
     contact() {
       const { email, github, linkedin } = data.contact;

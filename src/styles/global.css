@@ -1,25 +1,24 @@
-/* Midnight palette: near-black base, violet → cyan accent, green for terminal details.
-   Older components still use --blue/--surface-deep/etc., so those names are kept. */
+/* Azul noche y lavanda: brand colors with green, yellow and red reserved for status. */
 :root {
-  --bg: #090b10; /* same as the brand's dark background */
-  --surface: #12141c;
-  --surface-deep: #0e1017;
-  --surface-raised: #181b25;
+  --bg: #0b1120;
+  --surface: #1e293b;
+  --surface-deep: #111a2d;
+  --surface-raised: #273449;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
-  --ink: #a1a7b6;
-  --ink-strong: #f3f4f8;
+  --ink: #bac6d7;
+  --ink-strong: #f8fafc;
   --ink-muted: #4b5263; /* decorative only, never text */
 
-  --accent: #a78bfa; /* violet: brand, links */
-  --accent-2: #22d3ee; /* cyan: data, secondary */
+  --accent: #c0affc;
+  --accent-2: #7dd3fc;
   --blue: var(--accent);
   --cyan: var(--accent-2);
-  --purple: #c4b5fd;
+  --purple: var(--accent);
   --green: #4ade80;
   --yellow: #fbbf24;
   --red: #f87171;
-  --grad: linear-gradient(120deg, #a78bfa 0%, #22d3ee 100%);
+  --grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
 
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -57,7 +56,7 @@ body {
 }
 
 ::selection {
-  background: rgba(167, 139, 250, 0.35);
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
   color: var(--ink-strong);
 }
 
@@ -68,8 +67,8 @@ body {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(640px 420px at 12% -8%, rgba(167, 139, 250, 0.2), transparent 70%),
-    radial-gradient(560px 400px at 92% 6%, rgba(34, 211, 238, 0.12), transparent 70%);
+    radial-gradient(640px 420px at 12% -8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+    radial-gradient(560px 400px at 92% 6%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 70%);
 }
 
 .bg-fx::after {
@@ -170,7 +169,7 @@ input:focus-visible {
 .btn-primary {
   background: var(--grad);
   border-color: transparent;
-  color: #0a0b10;
+  color: var(--bg);
 }
 
 .btn-primary:hover {
@@ -190,8 +189,8 @@ input:focus-visible {
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(167, 139, 250, 0.25);
-  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--purple);
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -226,11 +225,11 @@ input:focus-visible {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(167, 139, 250, 0.14), transparent 65%);
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 65%);
 }
 
 .hover-lift:hover {
-  --card-border: rgba(167, 139, 250, 0.45);
+  --card-border: color-mix(in srgb, var(--accent) 45%, transparent);
   translate: 0 -4px;
 }
 

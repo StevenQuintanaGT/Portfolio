@@ -1,6 +1,5 @@
 ---
 import SectionTitle from './SectionTitle.astro';
-import { getProjects } from '../lib/projects';
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -9,12 +8,10 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const projectCount = String((await getProjects(lang)).length).padStart(2, '0');
-
-const facts = [
-  { label: t('about.fact.base'), value: 'Guatemala', sub: t('about.fact.baseSub') },
-  { label: t('about.fact.next'), value: 'IRSI 2027', sub: t('about.fact.nextSub'), accent: true },
-  { label: t('about.fact.projects'), value: projectCount, sub: t('about.fact.projectsSub') },
+const education = [
+  { title: t('education.degree'), school: t('education.degree.school'), period: t('education.degree.period') },
+  { title: t('education.accounting'), school: 'Instituto Privado de Educación Diversificada El Porvenir', period: '2019–2021' },
+  { title: t('education.technician'), school: 'Academia de Computación ACCESA', period: '2016–2017' },
 ];
 ---
 
@@ -26,16 +23,20 @@ const facts = [
         <p class="file" aria-hidden="true"><span class="prompt">$</span> cat about.md</p>
         <p>{t('about.p1')}</p>
         <p>{t('about.p2')}</p>
+        <p class="languages">{t('about.languages')}</p>
       </div>
-      {
-        facts.map((fact) => (
-          <div class="card hover-lift fact">
-            <span class="label">{fact.label}</span>
-            <span class:list={['value', { 'grad-text': fact.accent }]}>{fact.value}</span>
-            <span class="sub">{fact.sub}</span>
-          </div>
-        ))
-      }
+      <div class="card hover-lift">
+        <h3>{t('education.heading')}</h3>
+        <ul class="education">
+          {education.map(({ title, school, period }) => (
+            <li>
+              <strong>{title}</strong>
+              <span>{school}</span>
+              <span>{period}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -48,11 +49,7 @@ const facts = [
 
   @media (min-width: 760px) {
     .bento {
-      grid-template-columns: 1.6fr 1fr;
-    }
-
-    .story {
-      grid-row: span 3;
+      grid-template-columns: 1fr 1fr;
     }
   }
 
@@ -70,39 +67,38 @@ const facts = [
   }
 
   .file {
-    margin-bottom: auto;
-    padding-bottom: 24px;
+    margin-bottom: 24px;
     font-family: var(--font-mono);
     font-size: 0.8rem;
   }
 
-  .story p:last-child {
-    margin-bottom: 0;
-  }
-
-  .fact {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent-2);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .value {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1.2;
+  .languages {
+    margin: auto 0 0;
+    padding-top: 12px;
     color: var(--ink-strong);
+    font-size: 0.9rem;
   }
 
-  .sub {
+  .education {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .education li {
+    display: grid;
+    gap: 2px;
     font-size: 0.9rem;
+  }
+
+  .education li + li {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .education strong {
+    color: var(--ink-strong);
+    font-size: 1rem;
   }
 </style>

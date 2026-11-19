@@ -20,6 +20,7 @@ const onBlog = Astro.url.pathname.startsWith(blog.replace(/\/$/, ''));
 
 const links = [
   { href: `${home}#about`, label: t('nav.about') },
+  { href: `${home}#experience`, label: t('nav.experience') },
   { href: `${home}#skills`, label: t('nav.skills') },
   { href: `${home}#projects`, label: t('nav.projects') },
   { href: `${home}#certs`, label: t('nav.certs') },
@@ -71,7 +72,7 @@ const links = [
     padding: 8px 8px 8px 12px;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: rgba(14, 16, 23, 0.72);
+    background: color-mix(in srgb, var(--surface-deep) 72%, transparent);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     backdrop-filter: blur(14px) saturate(140%);
   }
@@ -123,7 +124,7 @@ const links = [
 
   .links a {
     display: block;
-    padding: 6px 12px;
+    padding: 6px 9px;
     border-radius: 999px;
     color: var(--ink);
     text-decoration: none;
@@ -142,7 +143,7 @@ const links = [
   .links a:global(.active),
   .links a[aria-current='page'] {
     color: var(--ink-strong);
-    background: rgba(167, 139, 250, 0.16);
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
   }
 
   .lang {
