@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Nav from '../Nav.astro';
 import Footer from '../Footer.astro';
+import Icon from '../Icon.astro';
 import PostMeta from './PostMeta.astro';
 import TagList from './TagList.astro';
 import { blogUrl, postUrl, type Post } from '../../lib/blog';
@@ -19,7 +20,8 @@ const { lang, post } = Astro.props;
 const t = useTranslations(lang);
 const otherLang: Lang = lang === 'en' ? 'es' : 'en';
 const { title, description, date, updated, tags } = post.data;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const sections = headings.filter(({ depth }) => depth === 2);
 ---
 
 <Base
@@ -37,61 +39,278 @@ const { Content } = await render(post);
 >
   <Nav lang={lang} switchUrl={postUrl(otherLang, post)} />
   <main class="container">
-    <article class="post" lang={post.data.lang}>
+    <article class:list={['post', { 'post-with-toc': sections.length > 1 }]} lang={post.data.lang}>
       <header class="post-header">
-        <a class="crumb" href={blogUrl(lang)}>{t('nav.blog')}</a>
+        <a class="crumb" href={blogUrl(lang)}>
+          <Icon name="arrow-left" size={14} />
+          <span>{t('nav.blog')}</span>
+        </a>
         <h1>{title}</h1>
+        {description && <p class="dek">{description}</p>}
         <PostMeta lang={lang} post={post} />
         <TagList lang={lang} tags={tags} />
       </header>
 
-      <div class="prose">
-        <Content />
-      </div>
+      {sections.length > 1 && (
+        <aside class="post-sidebar" lang={lang}>
+          <details class="post-toc" data-post-toc>
+            <summary>{t('blog.onThisPage')}</summary>
+            <nav aria-label={t('blog.onThisPage')}>
+              <ol>
+                {sections.map(({ slug, text }) => (
+                  <li><a href={`#${encodeURIComponent(slug)}`} lang={post.data.lang}>{text}</a></li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        </aside>
+      )}
 
-      <footer class="post-footer">
-        <a class="btn" href={blogUrl(lang)}>{t('blog.back')}</a>
-      </footer>
+      <div class="post-flow">
+        <div class="prose" data-post-reading data-controls-lang={lang}
+          data-copy={t('blog.copyCode')}
+          data-copied={t('blog.codeCopied')}
+          data-copy-failed={t('blog.copyFailed')}
+          data-enlarge={t('blog.enlargeImage')}
+          data-enlarge-label={t('blog.enlargeLabel')}
+          data-scroll-table={t('blog.scrollTable')}>
+          <Content />
+        </div>
+
+        <footer class="post-footer" lang={lang}>
+          <a class="btn" href={blogUrl(lang)}>
+            <Icon name="arrow-left" size={15} />
+            {t('blog.back')}
+          </a>
+        </footer>
+      </div>
     </article>
+    <dialog class="image-viewer" aria-label={t('blog.imageView')} data-image-viewer>
+      <div class="viewer-controls">
+        <button class="btn btn-sm" type="button" data-image-size aria-pressed="false">{t('blog.originalImage')}</button>
+        <button class="btn btn-sm" type="button" data-image-close autofocus>{t('blog.closeImage')}</button>
+      </div>
+      <div class="viewer-body" data-image-body></div>
+    </dialog>
   </main>
   <Footer lang={lang} />
 </Base>
 
 <script>
+  import '../../scripts/post-reading';
   import '../../scripts/mermaid';
 </script>
 
 <style>
   .post {
-    max-width: 760px;
     margin-inline: auto;
-    padding: clamp(40px, 6vw, 84px) 0 60px;
+    padding: clamp(32px, 5vw, 72px) 0 60px;
+  }
+
+  .post-header,
+  .post-flow,
+  .post-sidebar {
+    width: 100%;
+    min-width: 0;
+    max-width: 45rem;
+    margin-inline: auto;
   }
 
   .post-header {
     display: grid;
-    gap: 16px;
-    margin-bottom: 36px;
-    padding-bottom: 26px;
+    gap: 14px;
+    margin-bottom: clamp(24px, 4vw, 42px);
+    padding-bottom: clamp(22px, 3vw, 32px);
     border-bottom: 1px solid var(--line);
   }
 
   .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    justify-self: start;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgb(10 15 25 / 0.72);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--ink);
     text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
   }
 
   .crumb:hover {
-    color: var(--blue);
+    border-color: rgb(192 175 252 / 0.45);
+    background: rgb(192 175 252 / 0.1);
+    color: var(--ink-strong);
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(2rem, 5vw, 3.55rem);
-    letter-spacing: -0.06em;
-    text-wrap: balance;
+    font-size: clamp(2rem, 4.5vw, 3.7rem);
+    line-height: 1.08;
+    letter-spacing: -0.052em;
+    text-wrap: pretty;
+  }
+
+  .dek {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.05rem, 1.7vw, 1.23rem);
+    line-height: 1.58;
+    text-wrap: pretty;
+  }
+
+  .post-sidebar {
+    margin-bottom: 25px;
+  }
+
+  .post-toc {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgb(10 15 25 / 0.82);
+    box-shadow: inset 0 1px 0 rgb(248 250 252 / 0.045), 0 12px 28px rgb(0 0 0 / 0.22);
+    backdrop-filter: blur(12px);
+  }
+
+  .post-toc summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 15px;
+    border-radius: var(--radius-lg);
+    color: var(--ink-strong);
+    font-size: 0.9rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .post-toc summary::-webkit-details-marker { display: none; }
+
+  .post-toc summary::after {
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    color: var(--accent);
+    content: '';
+    transform: rotate(45deg) translate(-2px, -2px);
+  }
+
+  .post-toc[open] summary::after { transform: rotate(225deg); }
+
+  .post-toc nav {
+    max-height: min(56dvh, 31rem);
+    overflow: auto;
+    padding: 2px 9px 10px;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .post-toc ol {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .post-toc a {
+    display: block;
+    padding: 6px 8px 6px 10px;
+    border-inline-start: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .post-toc a:focus-visible { outline-offset: -2px; }
+
+  .post-toc a:hover,
+  .post-toc a[aria-current='location'] {
+    border-inline-start-color: var(--accent);
+    background: rgb(192 175 252 / 0.09);
+    color: var(--ink-strong);
+  }
+
+  @media (min-width: 960px) {
+    .post-with-toc {
+      display: grid;
+      grid-template-columns: minmax(0, 45rem) minmax(12rem, 16rem);
+      column-gap: clamp(26px, 4vw, 64px);
+      justify-content: center;
+    }
+
+    .post-with-toc .post-header { grid-area: 1 / 1; }
+    .post-with-toc .post-flow { grid-area: 2 / 1; }
+
+    .post-sidebar {
+      position: sticky;
+      top: 96px;
+      grid-area: 1 / 2 / 3 / 3;
+      align-self: start;
+      margin: 34px 0 0;
+    }
+
+    .post-toc nav { max-height: min(calc(100dvh - 182px), 36rem); }
+  }
+
+  .image-viewer {
+    width: min(1080px, calc(100% - 22px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    padding: clamp(10px, 2vw, 20px);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface-deep);
+    color: var(--ink);
+  }
+
+  .image-viewer::backdrop { background: rgb(4 6 13 / 0.85); }
+
+  .viewer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .viewer-controls button { cursor: pointer; }
+
+  .viewer-controls button[aria-pressed='true'] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .viewer-body {
+    max-height: calc(100dvh - 135px);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .viewer-body:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .viewer-body :global(img) {
+    display: block;
+    width: 100%;
+    max-height: calc(100dvh - 135px);
+    object-fit: contain;
+  }
+
+  .viewer-body[data-full-size] :global(img) {
+    width: auto;
+    max-height: none;
   }
 
   .post-footer {

@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import SectionTitle from './SectionTitle.astro';
 import { getExperience, useTranslations, type Lang } from '../i18n/ui';
 
@@ -12,37 +13,69 @@ const t = useTranslations(lang);
 
 <section id="experience" class="section">
   <div class="container">
-    <SectionTitle title={t('experience.heading')} />
-    <p class="employer">{t('experience.employer')}</p>
-    <ol class="panel timeline" data-reveal>
-      {getExperience(lang).map(({ title, period, duties }, index) => (
-        <li class="role" data-timeline-stop data-timeline-active={index === 0 || undefined}>
-          <span class="marker" aria-hidden="true"></span>
-          <p class="period">{period}</p>
-          <div>
-            <h3>{title}</h3>
-            <ul>
-              {duties.map((duty) => <li>{duty}</li>)}
-            </ul>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <SectionTitle title={t('experience.heading')} eyebrow="history --work" />
+    <div class="panel experience-shell" data-reveal>
+      <div class="employer-bar">
+        <span class="employer-icon" aria-hidden="true">
+          <Icon name="briefcase" size={16} />
+        </span>
+        <p class="employer">{t('experience.employer')}</p>
+      </div>
+      <ol class="timeline">
+        {getExperience(lang).map(({ title, period, duties }, index) => (
+          <li class="role" data-timeline-stop data-timeline-active={index === 0 || undefined}>
+            <span class="marker" aria-hidden="true"></span>
+            <p class="period"><span>{period}</span></p>
+            <div class="role-body">
+              <h3>{title}</h3>
+              <ul>
+                {duties.map((duty) => <li>{duty}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
   </div>
 </section>
 
 <style>
+  .experience-shell {
+    overflow: hidden;
+  }
+
+  .employer-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px clamp(20px, 3vw, 32px);
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(90deg, rgb(192 175 252 / 0.08), rgb(125 211 252 / 0.03));
+  }
+
+  .employer-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgb(192 175 252 / 0.25);
+    border-radius: var(--radius-sm);
+    background: rgb(10 15 25 / 0.72);
+    color: var(--accent);
+  }
+
   .employer {
-    margin: -12px 0 20px;
-    color: var(--ink);
-    font-size: 1rem;
+    margin: 0;
+    color: var(--ink-strong);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
   .timeline {
-    --track-x: clamp(17px, 2.8vw, 35px);
-    --row-padding: clamp(20px, 3vw, 32px);
-    --marker-y: calc(var(--row-padding) + 0.68rem);
-    overflow: hidden;
+    --track-x: clamp(20px, 3vw, 35px);
+    --row-padding: clamp(22px, 3vw, 34px);
+    --marker-y: calc(var(--row-padding) + 0.9rem);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -52,8 +85,12 @@ const t = useTranslations(lang);
     position: relative;
     isolation: isolate;
     display: grid;
-    gap: 10px;
-    padding: var(--row-padding) var(--row-padding) var(--row-padding) calc(var(--track-x) + 21px);
+    gap: 12px;
+    padding: var(--row-padding) var(--row-padding) var(--row-padding) calc(var(--track-x) + 24px);
+  }
+
+  .role + .role {
+    border-top: 1px solid rgb(178 191 219 / 0.08);
   }
 
   .role::before,
@@ -78,20 +115,20 @@ const t = useTranslations(lang);
     background: var(--grad);
     transform: scaleY(var(--segment-progress, 0));
     transform-origin: top;
-    box-shadow: 0 0 10px rgb(192 175 252 / 0.45);
+    box-shadow: 0 0 12px rgb(192 175 252 / 0.5);
   }
 
   .role[data-timeline-active] {
-    background: radial-gradient(ellipse at 12% 15%, rgb(147 116 232 / 0.14), transparent 72%);
+    background: radial-gradient(ellipse 65% 85% at 10% 15%, rgb(147 116 232 / 0.12), transparent 72%);
   }
 
   .marker {
     position: absolute;
     z-index: 2;
     inset: var(--marker-y) auto auto var(--track-x);
-    width: 10px;
-    height: 10px;
-    border: 1px solid var(--accent);
+    width: 11px;
+    height: 11px;
+    border: 1.5px solid var(--accent);
     border-radius: 50%;
     background: var(--surface-deep);
     transform: translate(-50%, -50%);
@@ -99,7 +136,7 @@ const t = useTranslations(lang);
 
   .role[data-timeline-active] .marker {
     background: var(--accent);
-    box-shadow: 0 0 0 5px rgb(192 175 252 / 0.12), 0 0 15px rgb(192 175 252 / 0.34);
+    box-shadow: 0 0 0 5px rgb(192 175 252 / 0.14), 0 0 16px rgb(192 175 252 / 0.38);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -108,35 +145,62 @@ const t = useTranslations(lang);
     }
   }
 
-  @media (min-width: 760px) {
+  @media (min-width: 780px) {
     .role {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 3.1fr);
-      gap: 20px;
+      grid-template-columns: minmax(0, 14.5rem) minmax(0, 1fr);
+      gap: 24px;
     }
   }
 
   h3 {
-    margin: 0 0 12px;
-    font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+    margin: 0 0 14px;
+    font-size: clamp(1.22rem, 2.1vw, 1.5rem);
+    letter-spacing: -0.025em;
   }
 
   .period {
     margin: 0;
+    padding-top: 2px;
+  }
+
+  .period span {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgb(10 15 25 / 0.72);
     color: var(--accent-2);
-    font: 0.875rem/1.6 var(--font-mono);
+    font: 0.78rem/1.5 var(--font-mono);
+  }
+
+  .role[data-timeline-active] .period span {
+    border-color: rgb(125 211 252 / 0.3);
+    background: rgb(125 211 252 / 0.1);
   }
 
   ul {
+    display: grid;
+    gap: 8px;
     max-width: 66ch;
     margin: 0;
-    padding-inline-start: 1.15em;
+    padding: 0;
+    list-style: none;
   }
 
-  ul li + li {
-    margin-top: 7px;
+  ul li {
+    position: relative;
+    padding-inline-start: 18px;
+    line-height: 1.62;
   }
 
-  ul li::marker {
-    color: var(--ink-muted);
+  ul li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: '›';
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 700;
   }
 </style>

@@ -23,7 +23,7 @@ página.
 | **Secciones** | Perfil y educación, experiencia profesional, habilidades, proyectos con enlaces, certificaciones y formación, y contacto. |
 | **Blog** | Artículos en Markdown, filtro por etiquetas, tiempo de lectura, código resaltado con Shiki (`one-dark-pro`) y feed RSS. |
 | **SEO** | `<title>`, descripción, `canonical`, `hreflang` y Open Graph en todas las páginas. Las imágenes de vista previa (PNG de 1200×630) se generan en el build. |
-| **Navegación** | El menú flotante marca la sección actual y se despliega en pantallas pequeñas. Las animaciones se pueden pausar desde la terminal y respetan la preferencia de movimiento reducido. |
+| **Navegación** | El menú flotante marca la sección actual y se despliega en pantallas pequeñas. Las animaciones respetan la preferencia de movimiento reducido. |
 
 ## Tecnologías
 

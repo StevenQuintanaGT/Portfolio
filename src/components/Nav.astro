@@ -1,5 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import Icon from './Icon.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -38,6 +39,7 @@ const links = [
       ))}
     </ul>
     <a class="lang" href={switchUrl} hreflang={otherLang} lang={otherLang} title={t('nav.switch')}>
+      <Icon name="globe" size={14} />
       <span class="visually-hidden">{t('nav.switch')} </span>{otherLang.toUpperCase()}
     </a>
     <details class="menu" data-nav-menu>
@@ -92,27 +94,35 @@ const links = [
     align-items: center;
     width: calc(100% - 2 * var(--gutter));
     max-width: calc(var(--max-width) - 2 * var(--gutter));
-    min-height: 60px;
+    min-height: 58px;
     gap: 8px;
-    padding: 6px 9px 6px 13px;
-    border: 1px solid var(--line-strong);
+    padding: 6px 8px 6px 14px;
+    border: 1px solid rgb(178 191 219 / 0.22);
     border-radius: 999px;
-    background: rgb(12 15 26 / 0.84);
-    box-shadow: 0 9px 26px rgb(0 0 0 / 0.28), inset 0 1px rgb(248 250 252 / 0.045);
-    backdrop-filter: blur(16px);
+    background: rgb(10 14 24 / 0.82);
+    box-shadow:
+      0 12px 32px rgb(0 0 0 / 0.36),
+      inset 0 1px 0 rgb(248 250 252 / 0.07);
+    backdrop-filter: blur(18px);
     pointer-events: auto;
   }
 
   .brand {
     display: inline-flex;
+    align-items: center;
     margin-inline-end: auto;
     border-radius: var(--radius-sm);
+    transition: opacity 0.2s ease;
+  }
+
+  .brand:hover {
+    opacity: 0.9;
   }
 
   .brand img {
     display: block;
     width: auto;
-    height: clamp(26px, 8.5vw, 36px);
+    height: clamp(26px, 8.5vw, 34px);
   }
 
   .links {
@@ -125,8 +135,8 @@ const links = [
   .desktop {
     display: none;
     align-items: center;
-    gap: 2px;
-    margin-inline-end: 10px;
+    gap: 3px;
+    margin-inline-end: 8px;
   }
 
   .links a,
@@ -134,7 +144,8 @@ const links = [
   summary {
     display: flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 38px;
+    border: 1px solid transparent;
     border-radius: 999px;
     color: var(--ink);
     text-decoration: none;
@@ -143,22 +154,32 @@ const links = [
 
   .links a {
     position: relative;
-    padding-inline: 10px;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    padding-inline: 12px;
+    font-weight: 500;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   }
 
-  .links a:hover,
+  .links a:hover {
+    color: var(--ink-strong);
+    background: rgb(192 175 252 / 0.08);
+  }
+
   .links a[aria-current] {
     color: var(--ink-strong);
-    background: rgb(192 175 252 / 0.13);
+    border-color: rgb(192 175 252 / 0.26);
+    background: rgb(192 175 252 / 0.14);
   }
 
   .lang,
   summary {
-    padding-inline: 10px;
+    gap: 6px;
+    padding-inline: 12px;
     border: 1px solid var(--line);
+    background: rgb(16 22 36 / 0.7);
     color: var(--ink-strong);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
   .lang {
@@ -167,7 +188,9 @@ const links = [
 
   .lang:hover,
   summary:hover {
-    border-color: var(--accent);
+    border-color: rgb(192 175 252 / 0.5);
+    background: var(--surface-raised);
+    color: var(--accent);
   }
 
   .menu {
@@ -187,19 +210,26 @@ const links = [
   .menu-icon {
     width: 14px;
     height: 8px;
-    border-block: 1px solid currentColor;
+    border-block: 1.5px solid currentColor;
   }
 
   .mobile {
     position: absolute;
     inset-block-start: calc(100% + 12px);
     inset-inline-end: 0;
-    min-width: 192px;
+    display: grid;
+    gap: 2px;
+    min-width: 210px;
     padding: 6px;
     border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: rgb(12 16 28 / 0.96);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(248 250 252 / 0.06);
+  }
+
+  .mobile a {
     border-radius: var(--radius-md);
-    background: #0f1422;
-    box-shadow: 0 12px 32px rgb(0 0 0 / 0.42);
   }
 
   .progress {
@@ -207,30 +237,12 @@ const links = [
     inset: 0 0 auto;
     height: 2px;
     background: var(--grad);
-    box-shadow: 0 0 10px rgb(192 175 252 / 0.34);
+    box-shadow: 0 0 12px rgb(192 175 252 / 0.45);
     transform: scaleX(0);
     transform-origin: left;
-  }
-
-  .desktop a::after {
-    position: absolute;
-    inset: auto 10px 4px;
-    height: 1px;
-    content: '';
-    background: var(--grad);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  .desktop a[aria-current]::after {
-    transform: scaleX(1);
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .desktop a::after {
-      transition: transform 0.3s ease;
-    }
-
     .menu[open] .mobile {
       animation: menu-in 0.2s ease-out both;
     }

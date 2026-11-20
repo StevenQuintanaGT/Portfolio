@@ -1,5 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import Icon from './Icon.astro';
 import { site } from '../config';
 import { getProjects } from '../lib/projects';
 import { getCredentials, getExperience, skills, useTranslations, type Lang } from '../i18n/ui';
@@ -76,16 +77,37 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
       <h1 class="rise" style="--i: 1">
         {givenName} <span>{familyName.join(' ')}</span>
       </h1>
-      <p class="role rise" style="--i: 2">{t('hero.role')}</p>
+      <p class="role rise" style="--i: 2"><span class="role-prefix" aria-hidden="true">//</span> {t('hero.role')}</p>
       <p class="tagline rise" style="--i: 3">{t('hero.tagline')}</p>
       <div class="actions rise" style="--i: 4">
-        <a class="btn btn-primary" href="#projects">{t('hero.cta.projects')}</a>
-        <a class="btn" href="#contact">{t('hero.cta.contact')}</a>
+        <a class="btn btn-primary" href="#projects">
+          {t('hero.cta.projects')}
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a class="btn" href="#contact">
+          <Icon name="mail" size={16} />
+          {t('hero.cta.contact')}
+        </a>
       </div>
       <ul class="socials rise" style="--i: 5">
-        <li><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li>
+          <a href={site.github} target="_blank" rel="noopener noreferrer">
+            <Icon name="github" size={15} />
+            <span>GitHub</span>
+          </a>
+        </li>
+        <li>
+          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+            <Icon name="linkedin" size={15} />
+            <span>LinkedIn</span>
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`}>
+            <Icon name="mail" size={15} />
+            <span>{site.email}</span>
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -93,11 +115,6 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
       <div class="bar">
         <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="window-title" aria-hidden="true">steven@msquintana: ~</span>
-        <button class="motion-toggle" type="button" hidden data-motion-toggle
-          aria-label={t('motion.pause')} title={t('motion.pause')}
-          data-pause-label={t('motion.pause')} data-play-label={t('motion.play')}>
-          <span aria-hidden="true"></span>
-        </button>
       </div>
       <div class="body">
         <div class="signal" data-terminal-signal aria-hidden="true">
@@ -223,51 +240,62 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
 
   h1 {
     width: fit-content;
-    margin: 0 0 17px;
+    margin: 0 0 18px;
     color: var(--ink-strong);
-    font-size: clamp(3.75rem, 8.7vw, 7rem);
+    font-size: clamp(3.4rem, 7.6vw, 6.4rem);
     font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.068em;
+    line-height: 0.96;
+    letter-spacing: -0.055em;
   }
 
   h1 span {
     display: block;
-    padding-bottom: 0.05em;
-    background: linear-gradient(106deg, #dbcbff 0%, #b9a0fc 48%, #7dd3fc 100%);
+    padding-bottom: 0.06em;
+    background: linear-gradient(106deg, #e2d4ff 0%, #c0affc 46%, #7dd3fc 100%);
     background-clip: text;
     color: transparent;
   }
 
   .role {
-    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
     color: var(--accent-2);
     font: 0.875rem/1.5 var(--font-mono);
+    letter-spacing: 0.01em;
+  }
+
+  .role-prefix {
+    color: var(--ink-muted);
   }
 
   .tagline {
-    max-width: 39ch;
-    margin-bottom: 24px;
-    font-size: clamp(1.025rem, 1.6vw, 1.2rem);
+    max-width: 41ch;
+    margin-bottom: 26px;
+    color: var(--ink);
+    font-size: clamp(1.025rem, 1.55vw, 1.175rem);
+    line-height: 1.65;
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
   }
 
   .availability {
     display: inline-flex;
     align-items: center;
     gap: 9px;
-    margin: 0 0 19px;
-    padding: 5px 11px;
-    border: 1px solid rgb(134 239 172 / 0.21);
+    margin: 0 0 20px;
+    padding: 5px 13px;
+    border: 1px solid rgb(74 222 128 / 0.28);
     border-radius: 999px;
-    background: rgb(37 108 81 / 0.15);
-    color: #a7edba;
+    background: rgb(22 101 52 / 0.22);
+    box-shadow: inset 0 1px 0 rgb(134 239 172 / 0.1);
+    color: #b7f5ca;
     font: 0.8125rem/1.45 var(--font-mono);
   }
 
@@ -278,12 +306,13 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
     height: 7px;
     border-radius: 50%;
     background: var(--green);
+    box-shadow: 0 0 10px rgb(74 222 128 / 0.65);
   }
 
   .socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px 17px;
+    gap: 8px 18px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -291,15 +320,20 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
   }
 
   .socials a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     color: var(--ink-muted);
-    text-decoration-color: transparent;
-    text-underline-offset: 4px;
-    transition: color 0.22s ease, text-decoration-color 0.22s ease;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   .socials a:hover {
+    color: var(--ink-strong);
+  }
+
+  .socials a:hover :global(.icon-svg) {
     color: var(--accent);
-    text-decoration-color: currentColor;
   }
 
   .terminal {
@@ -316,9 +350,9 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
 
   .bar {
     display: grid;
-    grid-template-columns: 45px minmax(0, 1fr) 34px;
+    grid-template-columns: 45px minmax(0, 1fr) 45px;
     align-items: center;
-    min-height: 48px;
+    min-height: 46px;
     gap: 4px;
     padding: 5px 15px;
     border-bottom: 1px solid var(--line);
@@ -351,39 +385,6 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
     white-space: nowrap;
   }
 
-  .motion-toggle {
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    background: rgb(7 10 18 / 0.35);
-    color: var(--ink);
-    cursor: pointer;
-  }
-
-  .motion-toggle:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .motion-toggle span {
-    display: inline-block;
-    width: 9px;
-    height: 11px;
-    border-inline: 2px solid currentColor;
-    vertical-align: middle;
-  }
-
-  :global(html[data-motion='paused']) .motion-toggle span {
-    width: 0;
-    height: 0;
-    border: solid transparent;
-    border-width: 6px 0 6px 9px;
-    border-inline-start-color: currentColor;
-    transform: translateX(1px);
-  }
-
   .body {
     position: relative;
     isolation: isolate;
@@ -403,11 +404,11 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
 
   .signal img {
     position: absolute;
-    inset: 50% 16% auto auto;
-    width: clamp(60px, 10vw, 126px);
+    inset: 50% 14% auto auto;
+    width: clamp(58px, 9.5vw, 114px);
     height: auto;
     transform: translateY(-50%);
-    opacity: 0.21;
+    opacity: 0.13;
   }
 
   .signal span {
@@ -438,16 +439,18 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
     display: grid;
     gap: 7px;
     margin: 0;
+    padding-inline-start: 14px;
+    border-inline-start: 2px solid rgb(192 175 252 / 0.32);
   }
 
   .whoami div {
     display: grid;
-    grid-template-columns: 5ch minmax(0, 1fr);
+    grid-template-columns: 5.5ch minmax(0, 1fr);
     gap: 12px;
   }
 
   .whoami dt {
-    color: var(--ink-muted);
+    color: var(--accent-2);
   }
 
   .whoami dd {
@@ -465,6 +468,8 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
     max-height: 216px;
     overflow-y: auto;
     margin-bottom: 12px;
+    padding-inline-end: 4px;
+    scrollbar-width: thin;
   }
 
   .term-log:empty {
@@ -513,16 +518,18 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
   .term-form {
     display: flex;
     align-items: center;
-    min-height: 45px;
+    min-height: 44px;
     gap: 10px;
-    padding: 8px 11px;
+    padding: 8px 12px;
     border: 1px solid var(--line-strong);
-    border-radius: var(--radius-sm);
-    background: var(--bg);
+    border-radius: var(--radius-md);
+    background: rgb(7 10 18 / 0.85);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .term-form:focus-within {
-    border-color: var(--accent);
+    border-color: rgb(192 175 252 / 0.65);
+    box-shadow: 0 0 0 3px rgb(192 175 252 / 0.12);
   }
 
   .term-input {
@@ -544,23 +551,25 @@ const toolkit = ['Linux', ...skills.security, 'Docker', 'GitHub', 'Cloudflare', 
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
-    margin-top: 13px;
+    margin-top: 12px;
   }
 
   .term-chip {
-    min-height: 34px;
-    padding: 4px 9px;
+    min-height: 32px;
+    padding: 4px 11px;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: rgb(162 145 233 / 0.09);
+    background: rgb(192 175 252 / 0.07);
     color: var(--ink);
-    font: 0.8125rem/1.4 var(--font-mono);
+    font: 0.78rem/1.4 var(--font-mono);
     cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
   .term-chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: rgb(192 175 252 / 0.5);
+    background: rgb(192 175 252 / 0.14);
+    color: var(--ink-strong);
   }
 
   .term-clear {

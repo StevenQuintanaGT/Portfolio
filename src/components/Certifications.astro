@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import SectionTitle from './SectionTitle.astro';
 import { site } from '../config';
 import { getCredentials, useTranslations, type Lang } from '../i18n/ui';
@@ -24,7 +25,7 @@ const filters = [
 <section id="certs" class="section">
   <div class="container">
     <div class="cert-head">
-      <SectionTitle title={t('certs.heading')} />
+      <SectionTitle title={t('certs.heading')} eyebrow="verify --certs" />
       <div class="filters" data-cert-filters role="group" aria-label={t('certs.filter.label')} hidden>
         {filters.map(({ id, title }) => (
           <button type="button" data-cert-filter={id} aria-controls="credential-grid" aria-pressed={id === 'all'}>
@@ -35,23 +36,30 @@ const filters = [
     </div>
     <div class="grid" id="credential-grid" data-cert-view="all">
       {groups.map(({ id, title, credentials }) => (
-        <div data-cert-group={id}>
-          <h3>{title}</h3>
+        <div class="cert-col" data-cert-group={id}>
+          <div class="col-head">
+            <h3>{title}</h3>
+            <span class="count" aria-hidden="true">{credentials.length}</span>
+          </div>
           <ul class="panel list" data-reactive>
             {credentials.map(({ name, issuer, status, label, detail }) => (
               <li class="item">
-                <h4>{name}</h4>
+                <div class="item-top">
+                  <h4>{name}</h4>
+                  <span class={`status status-${status}`}>{label}</span>
+                </div>
                 <p class="metadata">
-                  <span>{issuer}</span>
-                  {detail && <span>{detail}</span>}
+                  <span class="issuer">{issuer}</span>
+                  {detail && <span class="detail">{detail}</span>}
                 </p>
-                <span class={`status status-${status}`}>{label}</span>
               </li>
             ))}
           </ul>
           {id === 'earned' && (
             <a class="btn btn-sm credly" href={site.credly} target="_blank" rel="noopener noreferrer">
+              <Icon name="award" size={15} />
               {t('certs.credly')}
+              <Icon name="arrow-up-right" size={14} />
             </a>
           )}
         </div>
@@ -86,7 +94,7 @@ const filters = [
   .cert-head {
     display: grid;
     gap: 16px;
-    margin-bottom: clamp(25px, 4vw, 44px);
+    margin-bottom: clamp(26px, 4vw, 44px);
   }
 
   .cert-head :global(.section-heading) { margin-bottom: 0; }
@@ -94,32 +102,33 @@ const filters = [
   .filters {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px;
     width: fit-content;
-    padding: 5px;
+    padding: 4px;
     border: 1px solid var(--line);
-    border-radius: 22px;
-    background: var(--surface-deep);
+    border-radius: 999px;
+    background: rgb(10 15 25 / 0.85);
   }
 
   .filters[hidden] { display: none; }
 
   .filters button {
     min-height: 36px;
-    padding: 5px 12px;
+    padding: 5px 14px;
     border: 1px solid transparent;
     border-radius: 999px;
     background: transparent;
     color: var(--ink);
-    font: 0.875rem/1.4 var(--font-sans);
+    font: 500 0.85rem/1.4 var(--font-sans);
     cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   }
 
-  .filters button:hover { color: var(--accent); }
+  .filters button:hover { color: var(--ink-strong); }
 
   .filters button[aria-pressed='true'] {
-    border-color: rgb(192 175 252 / 0.24);
-    background: rgb(192 175 252 / 0.13);
+    border-color: rgb(192 175 252 / 0.3);
+    background: rgb(192 175 252 / 0.14);
     color: var(--ink-strong);
   }
 
@@ -128,10 +137,10 @@ const filters = [
     gap: 28px;
   }
 
-  @media (min-width: 760px) {
+  @media (min-width: 780px) {
     .grid[data-cert-view='all'] {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
   }
 
@@ -143,7 +152,7 @@ const filters = [
   }
 
   .grid[data-cert-view]:not([data-cert-view='all']) {
-    grid-template-columns: minmax(0, 750px);
+    grid-template-columns: minmax(0, 820px);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -156,9 +165,31 @@ const filters = [
     from { opacity: 0.35; transform: translateY(7px); }
   }
 
-  h3 {
+  .col-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 14px;
-    font-size: 1.25rem;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-deep);
+    color: var(--accent-2);
+    font: 0.75rem/1 var(--font-mono);
   }
 
   .list {
@@ -169,49 +200,100 @@ const filters = [
   }
 
   .item {
+    display: grid;
+    gap: 8px;
     padding: 18px 20px;
     transition: background 0.22s ease;
   }
 
-  .item:hover { background: rgb(192 175 252 / 0.04); }
+  .item:hover { background: rgb(192 175 252 / 0.045); }
 
   .item + .item {
     border-top: 1px solid var(--line);
   }
 
+  .item-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px 14px;
+  }
+
   h4 {
-    margin: 0 0 5px;
-    font-size: 1.08rem;
+    flex: 1 1 200px;
+    margin: 0;
+    font-size: 1.04rem;
+    line-height: 1.35;
   }
 
   .metadata {
-    display: grid;
-    margin: 0 0 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+  }
+
+  .issuer {
     color: var(--ink);
-    font-size: 0.875rem;
+  }
+
+  .detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  .detail::before {
+    content: '·';
+    color: var(--line-strong);
   }
 
   .status {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    padding: 3px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
     background: var(--surface-raised);
-    font: 0.8125rem/1.5 var(--font-mono);
+    font: 0.75rem/1.4 var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
   }
 
   .status-done {
+    border-color: rgb(74 222 128 / 0.28);
+    background: rgb(74 222 128 / 0.09);
     color: var(--green);
   }
 
   .status-progress {
+    border-color: rgb(251 191 36 / 0.28);
+    background: rgb(251 191 36 / 0.09);
     color: var(--yellow);
   }
 
   .status-accepted {
+    border-color: rgb(125 211 252 / 0.28);
+    background: rgb(125 211 252 / 0.09);
     color: var(--accent-2);
   }
 
   .credly {
-    margin-top: 14px;
+    margin-top: 16px;
   }
 </style>

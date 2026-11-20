@@ -1,10 +1,12 @@
 ---
+import Icon from './Icon.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
 import { projectAnchor } from '../lib/projects';
 
 interface Props {
   lang: Lang;
   projectId: string;
+  index?: number;
   title: string;
   category?: string;
   cover?: string;
@@ -17,47 +19,83 @@ interface Props {
   featured?: boolean;
 }
 
-const { lang, projectId, title, category, cover, highlights, problem, result, tools, repo, demo, featured = false } = Astro.props;
+const {
+  lang,
+  projectId,
+  index,
+  title,
+  category,
+  cover,
+  highlights,
+  problem,
+  result,
+  tools,
+  repo,
+  demo,
+  featured = false,
+} = Astro.props;
 const t = useTranslations(lang);
+const num = index ? String(index).padStart(2, '0') : undefined;
 ---
 
 <article id={projectAnchor(projectId)} class:list={['panel project', { featured, 'with-cover': cover }]} data-reveal data-reactive>
   <div class="content">
-    <div>
-      {category && <p class="category">{category}</p>}
+    <div class="header">
+      <div class="meta-row">
+        {num && <span class="project-num" aria-hidden="true">{num}</span>}
+        {category && <p class="category">{category}</p>}
+      </div>
       <h3>{title}</h3>
     </div>
-    <div class="description">
-      <p>{problem}</p>
-      {!highlights && <p>{result}</p>}
+
+    {highlights ? (
+      <>
+        <div class="description">
+          <p>{problem}</p>
+        </div>
+        <div class="highlights">
+          {highlights.map(({ title, detail }, idx) => (
+            <details name={`${projectId}-highlights`} open={idx === 0}>
+              <summary>{title}<span aria-hidden="true"></span></summary>
+              <p>{detail}</p>
+            </details>
+          ))}
+        </div>
+      </>
+    ) : (
+      <div class="case-grid">
+        <div class="case-block">
+          <span class="case-label">{t('projects.problem')}</span>
+          <p>{problem}</p>
+        </div>
+        <div class="case-block case-outcome">
+          <span class="case-label">{t('projects.result')}</span>
+          <p>{result}</p>
+        </div>
+      </div>
+    )}
+
+    <div class="card-footer">
+      <ul class="tag-list" aria-label={t('projects.tools')}>
+        {tools.map((tool) => <li class="tag">{tool}</li>)}
+      </ul>
+      {(repo || demo) && (
+        <div class="actions">
+          {demo && (
+            <a class="btn btn-primary btn-sm" href={demo} target="_blank" rel="noopener noreferrer">
+              {t('projects.demo')}
+              <Icon name="arrow-up-right" size={15} />
+            </a>
+          )}
+          {repo && (
+            <a class="btn btn-sm" href={repo} target="_blank" rel="noopener noreferrer">
+              <Icon name="github" size={15} />
+              {t('projects.repo')}
+            </a>
+          )}
+        </div>
+      )}
     </div>
-    {highlights && (
-      <div class="highlights">
-        {highlights.map(({ title, detail }, index) => (
-          <details name={`${projectId}-highlights`} open={index === 0}>
-            <summary>{title}<span aria-hidden="true"></span></summary>
-            <p>{detail}</p>
-          </details>
-        ))}
-      </div>
-    )}
-    <ul class="tag-list" aria-label={t('projects.tools')}>
-      {tools.map((tool) => <li class="tag">{tool}</li>)}
-    </ul>
-    {(repo || demo) && (
-      <div class="actions">
-        {demo && (
-          <a class="btn btn-primary btn-sm" href={demo} target="_blank" rel="noopener noreferrer">
-            {t('projects.demo')}
-          </a>
-        )}
-        {repo && (
-          <a class="btn btn-sm" href={repo} target="_blank" rel="noopener noreferrer">
-            {t('projects.repo')}
-          </a>
-        )}
-      </div>
-    )}
   </div>
   {cover && (
     <div class="cover">
@@ -79,52 +117,124 @@ const t = useTranslations(lang);
   }
 
   .project:target {
-    border-color: rgb(192 175 252 / 0.5);
-    box-shadow: 0 0 28px rgb(192 175 252 / 0.12);
+    border-color: rgb(192 175 252 / 0.55);
+    box-shadow: 0 0 32px rgb(192 175 252 / 0.16);
   }
 
   .content {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: clamp(20px, 3vw, 34px);
+    gap: 20px;
+    padding: clamp(22px, 3vw, 34px);
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .project-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border: 1px solid rgb(192 175 252 / 0.25);
+    border-radius: 999px;
+    background: rgb(192 175 252 / 0.09);
+    color: var(--accent);
+    font: 0.75rem/1.4 var(--font-mono);
   }
 
   .category {
-    margin-bottom: 8px;
+    margin: 0;
+    padding: 2px 10px;
+    border: 1px solid rgb(125 211 252 / 0.24);
+    border-radius: 999px;
+    background: rgb(125 211 252 / 0.08);
     color: var(--accent-2);
-    font: 0.8125rem/1.5 var(--font-mono);
+    font: 0.75rem/1.5 var(--font-mono);
   }
 
   h3 {
     margin: 0;
-    font-size: clamp(1.43rem, 2.6vw, 1.85rem);
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    letter-spacing: -0.03em;
   }
 
   .featured h3 {
-    font-size: clamp(1.95rem, 4vw, 2.9rem);
-    letter-spacing: -0.055em;
+    font-size: clamp(1.9rem, 3.8vw, 2.75rem);
+    letter-spacing: -0.05em;
   }
 
   .featured {
-    border-color: rgb(184 164 254 / 0.24);
-    background: radial-gradient(ellipse at 14% 0%, rgb(178 149 252 / 0.1), transparent 68%), var(--panel-fill);
+    border-color: rgb(192 175 252 / 0.28);
+    background:
+      radial-gradient(ellipse 65% 55% at 10% 0%, rgb(178 149 252 / 0.12), transparent 68%),
+      var(--panel-fill);
   }
 
   .description p {
     margin: 0;
+    color: var(--ink);
+    font-size: 1rem;
   }
 
-  .description p + p {
-    margin-top: 8px;
+  .case-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .case-block {
+    display: grid;
+    gap: 5px;
+  }
+
+  .case-block p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.62;
+  }
+
+  .case-label {
+    color: var(--ink-muted);
+    font: 0.72rem/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-outcome {
+    padding: 12px 14px;
+    border: 1px solid rgb(192 175 252 / 0.14);
+    border-inline-start: 2px solid var(--accent-2);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: rgb(10 15 25 / 0.65);
+  }
+
+  .case-outcome .case-label {
+    color: var(--accent-2);
+  }
+
+  .case-outcome p {
+    color: #d6dfee;
   }
 
   .highlights {
     border-block: 1px solid var(--line);
   }
 
+  .highlights details {
+    transition: background-color 0.2s ease;
+  }
+
   .highlights details + details {
     border-top: 1px solid var(--line);
+  }
+
+  .highlights details[open] {
+    background: rgb(192 175 252 / 0.045);
   }
 
   .highlights summary {
@@ -151,7 +261,7 @@ const t = useTranslations(lang);
   }
 
   .highlights details[open] summary {
-    padding-inline: 10px;
+    padding-inline: 12px;
     box-shadow: inset 2px 0 var(--accent);
   }
 
@@ -174,22 +284,31 @@ const t = useTranslations(lang);
   .highlights details[open] summary span::after { transform: none; }
 
   .highlights p {
-    margin: 0 0 12px 10px;
+    margin: 0 12px 14px;
+    font-size: 0.9375rem;
+  }
+
+  .card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: auto;
+    gap: 10px;
   }
 
   .cover {
     position: relative;
     order: -1;
     width: 100%;
-    min-height: 168px;
-    aspect-ratio: 2.1;
+    min-height: 190px;
+    aspect-ratio: 2.05;
     background: var(--surface-raised);
     overflow: hidden;
   }
@@ -207,7 +326,7 @@ const t = useTranslations(lang);
     position: absolute;
     inset: 0;
     content: '';
-    background: linear-gradient(135deg, rgb(109 89 164 / 0.14), transparent 52%, rgb(10 14 23 / 0.34));
+    background: linear-gradient(135deg, rgb(109 89 164 / 0.16), transparent 50%, rgb(7 10 18 / 0.42));
     pointer-events: none;
   }
 
@@ -249,7 +368,7 @@ const t = useTranslations(lang);
     }
 
     .featured.with-cover {
-      grid-template-columns: minmax(0, 1.14fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     }
 
     .featured .cover {

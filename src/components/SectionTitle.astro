@@ -1,27 +1,53 @@
 ---
 interface Props {
   title: string;
+  eyebrow?: string;
 }
 
-const { title } = Astro.props;
+const { title, eyebrow } = Astro.props;
 ---
 
-<h2 class="section-heading" data-reveal>{title}</h2>
+<div class="section-heading" data-reveal>
+  {eyebrow && (
+    <p class="eyebrow" aria-hidden="true">
+      <span class="prompt">$</span> {eyebrow}
+    </p>
+  )}
+  <h2>{title}</h2>
+</div>
 
 <style>
   .section-heading {
-    display: flex;
-    align-items: center;
-    gap: clamp(10px, 2vw, 26px);
     margin: 0 0 clamp(24px, 4vw, 44px);
   }
 
-  .section-heading::before {
-    flex: 0 0 clamp(12px, 2vw, 23px);
-    height: 2px;
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 3px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgb(10 15 25 / 0.72);
+    color: var(--accent-2);
+    font: 0.75rem/1.4 var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2vw, 22px);
+    margin: 0;
+  }
+
+  h2::before {
+    flex: 0 0 clamp(14px, 2vw, 24px);
+    height: 3px;
     border-radius: 999px;
     content: '';
     background: var(--grad);
-    box-shadow: 0 0 11px rgb(192 175 252 / 0.31);
+    box-shadow: 0 0 14px rgb(192 175 252 / 0.42);
   }
 </style>

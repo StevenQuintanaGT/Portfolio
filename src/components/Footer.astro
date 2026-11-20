@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { site } from '../config';
 import { useTranslations, type Lang } from '../i18n/ui';
 
@@ -13,16 +14,23 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="container inner">
-    <p>© {year} {site.name}</p>
-    <p>{t('footer.built')}</p>
-    <a href="#" class="top">{t('footer.top')}</a>
+    <p class="identity">
+      <img src="/brand/symbol.svg" alt="" width="20" height="20" />
+      <span>© {year} {site.name}</span>
+    </p>
+    <p class="stack">{t('footer.built')}</p>
+    <a href="#" class="top">
+      <span>{t('footer.top')}</span>
+      <Icon name="arrow-up" size={14} />
+    </a>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding: 22px 0;
+    padding: 26px 0;
     border-top: 1px solid var(--line);
+    background: rgb(7 10 18 / 0.65);
     color: var(--ink-muted);
     font-size: 0.875rem;
   }
@@ -32,7 +40,7 @@ const year = new Date().getFullYear();
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 8px 24px;
+    gap: 12px 24px;
   }
 
   p {
@@ -40,12 +48,40 @@ const year = new Date().getFullYear();
     max-width: none;
   }
 
-  .top {
+  .identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     color: var(--ink);
+  }
+
+  .identity img {
+    display: block;
+    opacity: 0.85;
+  }
+
+  .stack {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgb(16 20 32 / 0.6);
+    color: var(--ink);
+    font-size: 0.8125rem;
     text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
   }
 
   .top:hover {
+    border-color: rgb(192 175 252 / 0.45);
+    background: var(--surface-raised);
     color: var(--ink-strong);
   }
 </style>

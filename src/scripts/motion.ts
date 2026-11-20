@@ -1,32 +1,14 @@
 import { setupHeroField } from './hero-field';
 
 const prefersMotion = window.matchMedia('(prefers-reduced-motion: no-preference)');
-const motionToggle = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
 const playHeroField = setupHeroField();
-const pausePreference = 'portfolio-motion-paused';
-let paused = false;
 
-try {
-  paused = localStorage.getItem(pausePreference) === 'true';
-} catch {
-  // The control still works when storage is unavailable.
-}
-
-const allowsMotion = () => prefersMotion.matches && !paused;
+const allowsMotion = () => prefersMotion.matches;
 
 function syncMotion() {
   const playing = allowsMotion();
   document.documentElement.dataset.motion = playing ? 'playing' : 'paused';
   playHeroField?.(playing);
-
-  if (motionToggle) {
-    motionToggle.hidden = !prefersMotion.matches;
-    const label = playing ? motionToggle.dataset.pauseLabel : motionToggle.dataset.playLabel;
-    if (label) {
-      motionToggle.setAttribute('aria-label', label);
-      motionToggle.title = label;
-    }
-  }
 }
 
 async function heroIntro() {
@@ -154,16 +136,6 @@ function setupScrollProgress() {
 }
 
 const refreshScroll = setupScrollProgress();
-motionToggle?.addEventListener('click', () => {
-  paused = !paused;
-  syncMotion();
-  refreshScroll();
-  try {
-    localStorage.setItem(pausePreference, String(paused));
-  } catch {
-    // The setting applies to the current page even without storage.
-  }
-});
 prefersMotion.addEventListener('change', () => {
   syncMotion();
   refreshScroll();

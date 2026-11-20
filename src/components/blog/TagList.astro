@@ -27,10 +27,12 @@ const { lang, tags } = Astro.props;
 <style>
   .tag-link {
     text-decoration: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
   .tag-link:hover {
-    border-color: var(--purple);
+    border-color: rgb(192 175 252 / 0.45);
+    background: rgb(192 175 252 / 0.1);
+    color: var(--ink-strong);
   }
 </style>

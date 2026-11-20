@@ -1,4 +1,5 @@
 ---
+import Icon, { type IconName } from './Icon.astro';
 import SectionTitle from './SectionTitle.astro';
 import { skills, useTranslations, type Lang } from '../i18n/ui';
 import { getPosts, postUrl } from '../lib/blog';
@@ -18,37 +19,35 @@ function projectLink(slug: string) {
   return project && { href: `#${projectAnchor(project.id)}`, title: project.data.title };
 }
 
-// Simple line icons (24×24, stroke = currentColor)
-const icons = {
-  shield: 'M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z M9 12l2 2 4-4',
-  server: 'M4 4h16v6H4z M4 14h16v6H4z M8 7h.01 M8 17h.01',
-  cloud: 'M7 18h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z',
-};
-
-const groups = [
+const groups: {
+  id: 'security' | 'systems' | 'cloud';
+  title: string;
+  items: readonly string[];
+  icon: IconName;
+  related?: { href: string; title: string };
+}[] = [
   {
+    id: 'security',
     title: t('skills.security'),
     items: [...skills.security, t('skills.ipv4')],
-    icon: icons.shield,
+    icon: 'shield',
     related: dnsGuide && { href: postUrl(lang, dnsGuide), title: t('skills.dnsGuide') },
   },
-  { title: t('skills.systems'), items: skills.systems, icon: icons.server, related: projectLink('hypr-dotfiles') },
-  { title: t('skills.cloud'), items: skills.cloud, icon: icons.cloud, related: projectLink('domain-email') },
+  { id: 'systems', title: t('skills.systems'), items: skills.systems, icon: 'server', related: projectLink('hypr-dotfiles') },
+  { id: 'cloud', title: t('skills.cloud'), items: skills.cloud, icon: 'cloud', related: projectLink('domain-email') },
 ];
 ---
 
 <section id="skills" class="section">
   <div class="container">
-    <SectionTitle title={t('skills.heading')} />
+    <SectionTitle title={t('skills.heading')} eyebrow="which --all" />
     <div class="grid">
       {
         groups.map((group) => (
-          <div class="panel skill-card" data-reveal data-reactive>
+          <div class:list={['panel skill-card', `tone-${group.id}`]} data-reveal data-reactive>
             <div class="head">
               <span class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d={group.icon} />
-                </svg>
+                <Icon name={group.icon} size={20} />
               </span>
               <h3>{group.title}</h3>
             </div>
@@ -59,7 +58,10 @@ const groups = [
             </ul>
             {group.related && (
               <div class="related">
-                <a href={group.related.href}>{group.related.title}</a>
+                <a href={group.related.href}>
+                  <span>{group.related.title}</span>
+                  <Icon name="arrow-right" size={15} class="arrow" />
+                </a>
               </div>
             )}
           </div>
@@ -72,10 +74,10 @@ const groups = [
 <style>
   .grid {
     display: grid;
-    gap: 14px;
+    gap: 16px;
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 820px) {
     .grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -85,56 +87,87 @@ const groups = [
   }
 
   .skill-card {
+    --card-accent: var(--accent);
     display: flex;
     flex-direction: column;
-    padding: clamp(18px, 2.5vw, 28px);
+    padding: clamp(20px, 2.5vw, 28px);
+    border-top-color: color-mix(in srgb, var(--card-accent) 34%, transparent);
+  }
+
+  .tone-systems {
+    --card-accent: var(--accent-2);
+  }
+
+  .tone-cloud {
+    --card-accent: #9de8c4;
   }
 
   .head {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .icon {
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     flex: none;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 30%, transparent);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--card-accent) 11%, var(--surface-deep));
+    color: var(--card-accent);
+  }
+
+  .related {
+    margin-top: auto;
+    padding-top: 22px;
+  }
+
+  .related a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 12px;
     border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    background: var(--surface-raised);
-    color: var(--accent);
+    border-radius: var(--radius-md);
+    background: rgb(10 15 25 / 0.6);
+    color: var(--ink);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .related a :global(.arrow) {
+    color: var(--card-accent);
+    transition: transform 0.22s var(--ease-out);
+  }
+
+  .related a:hover {
+    border-color: color-mix(in srgb, var(--card-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--card-accent) 9%, var(--surface-deep));
+    color: var(--ink-strong);
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .icon { transition: transform 0.3s var(--ease-out); }
 
     :global(html[data-motion='playing']) .skill-card:is(:hover, :focus-within) .icon {
-      transform: translateY(-3px) rotate(-8deg);
+      transform: translateY(-3px) rotate(-6deg);
+    }
+
+    .related a:hover :global(.arrow) {
+      transform: translateX(3px);
     }
   }
-
-  .related {
-    margin-top: auto;
-    padding-top: 18px;
-  }
-
-  .related a {
-    display: block;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
-    font-size: 0.875rem;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-  }
-
-  .related a:hover { color: var(--ink-strong); }
 
   h3 {
     margin: 0;
     font-size: 1.15rem;
+    letter-spacing: -0.02em;
   }
 </style>

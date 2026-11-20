@@ -1,8 +1,9 @@
 ---
+import Icon from '../Icon.astro';
 import PostMeta from './PostMeta.astro';
 import TagList from './TagList.astro';
 import { postUrl, type Post } from '../../lib/blog';
-import type { Lang } from '../../i18n/ui';
+import { useTranslations, type Lang } from '../../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -10,41 +11,91 @@ interface Props {
 }
 
 const { lang, post } = Astro.props;
+const t = useTranslations(lang);
+const url = postUrl(lang, post);
 ---
 
-<article class="panel post-card" data-reveal>
+<article class="panel post-card" data-reveal data-reactive>
   <PostMeta lang={lang} post={post} />
   <h2 lang={post.data.lang}>
-    <a href={postUrl(lang, post)}>{post.data.title}</a>
+    <a href={url}>{post.data.title}</a>
   </h2>
   <p class="description" lang={post.data.lang}>{post.data.description}</p>
-  <TagList lang={lang} tags={post.data.tags} />
+  <div class="card-bottom">
+    <TagList lang={lang} tags={post.data.tags} />
+    <a class="read-more" href={url} tabindex="-1" aria-hidden="true">
+      <span>{t('blog.readMore')}</span>
+      <Icon name="arrow-right" size={14} class="arrow" />
+    </a>
+  </div>
 </article>
 
 <style>
   .post-card {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: clamp(20px, 3vw, 30px);
+    gap: 14px;
+    padding: clamp(22px, 3vw, 30px);
+    border-radius: var(--radius-xl);
+    transition: border-color 0.25s ease, transform 0.25s var(--ease-out), box-shadow 0.25s ease;
   }
 
   h2 {
     margin: 0;
-    font-size: clamp(1.3rem, 2.3vw, 1.65rem);
+    font-size: clamp(1.28rem, 2.2vw, 1.58rem);
+    line-height: 1.24;
+    letter-spacing: -0.03em;
     text-wrap: pretty;
   }
 
   h2 a {
     color: var(--ink-strong);
     text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   h2 a:hover {
-    color: var(--blue);
+    color: var(--accent);
   }
 
   .description {
     margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+
+  .card-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    color: var(--accent);
+    font: 500 0.85rem/1.4 var(--font-mono);
+    text-decoration: none;
+  }
+
+  .read-more :global(.arrow) {
+    transition: transform 0.22s var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @media (hover: hover) and (pointer: fine) {
+      .post-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .post-card:hover .read-more :global(.arrow) {
+        transform: translateX(3px);
+      }
+    }
   }
 </style>
