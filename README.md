@@ -128,6 +128,8 @@ Si una imagen `![[...]]` no está junto al `index.md`, el build se detiene y dic
 Los bloques ` ```mermaid ` se dibujan como diagramas con los colores del sitio ([`src/scripts/mermaid.ts`](src/scripts/mermaid.ts)).
 Mermaid solo se descarga en los artículos que tienen un diagrama.
 
+Los *callouts* de Obsidian (`> [!note]`, `> [!tip]`, `> [!important]`, `> [!warning]`, `> [!danger]`, `> [!bug]`, incluidos los plegables `[!note]+` / `[!note]-`) se transforman automáticamente en bloques destacados con ícono y color según su tipo ([`src/lib/callouts.mjs`](src/lib/callouts.mjs)).
+
 ## Estructura
 
 ```

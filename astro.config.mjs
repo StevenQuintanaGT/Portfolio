@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import { wikilinks } from './src/lib/wikilinks.mjs';
+import { callouts } from './src/lib/callouts.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -25,8 +26,8 @@ export default defineConfig({
     },
   },
   markdown: {
-    // Astro's default Markdown processor, plus Obsidian ![[image]] and [[note]] support
-    processor: satteri({ mdastPlugins: [wikilinks] }),
+    // Astro's default Markdown processor, plus Obsidian wikilinks (![[img]], [[note]]) and callouts (> [!note])
+    processor: satteri({ mdastPlugins: [wikilinks], hastPlugins: [callouts] }),
     // Mermaid blocks are drawn as diagrams in the browser (src/scripts/mermaid.ts), not highlighted
     syntaxHighlight: { type: 'shiki', excludeLangs: ['math', 'mermaid'] },
     shikiConfig: {
