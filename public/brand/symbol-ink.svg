@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img">
-  <title>Steven Quintana — Enlace compacto</title>
-<g>
-    <path fill="#0B1120" d="M35 12L79 12L82 15.5L70 29L45.5 29L29 45L45.5 62L28 62L14 47.5L14 32.5Z"/>
-    <path fill="#0B1120" d="M61 84L17 84L14 80.5L26 67L50.5 67L67 51L50.5 34L68 34L82 48.5L82 63.5Z"/>
+  <title>Steven Quintana — Enlace compacto v2 (Tinta)</title>
+  <g>
+    <path fill="#0B1120" d="M82 11L34 11L14 31L14 43L31 60L51 60L28 37L40 25L68 25Z"/>
+    <path fill="#0B1120" d="M14 85L62 85L82 65L82 53L65 36L45 36L68 59L56 71L28 71Z"/>
   </g>
 </svg>

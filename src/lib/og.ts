@@ -9,15 +9,16 @@ export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
 const PAD = 48;
 
-// Same palette as global.css (solid colors: satori has no transparency on borders here)
+// Same palette as Enlace compacto v2 / global.css
 const c = {
-  bg: '#070a12',
-  surface: '#0e1421',
-  line: '#293242',
-  ink: '#b4bfd1',
-  inkStrong: '#f8fafc',
-  accent: '#c0affc',
-  green: '#4ade80',
+  bg: '#070B14',
+  surface: '#0F172A',
+  line: '#24324B',
+  ink: '#94A3B8',
+  inkStrong: '#F8FAFC',
+  accent: '#A78BFA',
+  cyan: '#22D3EE',
+  green: '#34D399',
 };
 
 export interface OgCard {
@@ -104,27 +105,36 @@ export async function renderOgImage(card: OgCard) {
         borderRadius: 20,
         overflow: 'hidden',
       },
+      // Brand top accent bar
+      h('div', {
+        display: 'flex',
+        flexShrink: 0,
+        width: '100%',
+        height: 4,
+        background: `linear-gradient(90deg, ${c.accent}, ${c.cyan})`,
+      }),
       // Title bar
       h(
         'div',
         {
           display: 'flex',
+          flexShrink: 0,
           alignItems: 'center',
           gap: 12,
-          padding: '20px 28px',
+          padding: '18px 28px',
           borderBottom: `2px solid ${c.line}`,
         },
-        h('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: c.accent }, '>_'),
+        h('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: c.cyan }, '>_'),
         h('div', { display: 'flex', fontSize: 22, color: c.ink }, 'steven@msquintana: ~'),
       ),
       // Body
       h(
         'div',
-        { display: 'flex', flexDirection: 'column', flex: 1, padding: '44px 56px 40px' },
+        { display: 'flex', flexDirection: 'column', flex: 1, padding: '32px 52px 32px' },
         h(
           'div',
-          { display: 'flex', fontSize: 28, color: c.ink, marginBottom: 24 },
-          h('span', { color: c.green, marginRight: 16 }, '$'),
+          { display: 'flex', fontSize: 26, color: c.ink, marginBottom: 16 },
+          h('span', { color: c.green, marginRight: 14 }, '$'),
           card.command,
         ),
         h(
@@ -135,7 +145,7 @@ export async function renderOgImage(card: OgCard) {
             fontWeight: 700,
             lineHeight: 1.15,
             color: c.inkStrong,
-            maxHeight: 260,
+            maxHeight: 220,
             overflow: 'hidden',
           },
           card.title,
@@ -145,12 +155,12 @@ export async function renderOgImage(card: OgCard) {
             'div',
             {
               display: 'flex',
-              marginTop: 24,
+              marginTop: 18,
               fontFamily: 'Inter',
-              fontSize: 30,
-              lineHeight: 1.4,
+              fontSize: 28,
+              lineHeight: 1.38,
               color: c.ink,
-              maxHeight: 84,
+              maxHeight: 80,
               overflow: 'hidden',
             },
             card.subtitle,
@@ -158,27 +168,27 @@ export async function renderOgImage(card: OgCard) {
         // Footer: tags on the left, logo and domain on the right
         h(
           'div',
-          { display: 'flex', alignItems: 'center', marginTop: 'auto', gap: 16 },
+          { display: 'flex', alignItems: 'center', marginTop: 'auto', paddingTop: 16, gap: 16 },
           h(
             'div',
-            { display: 'flex', gap: 12, flexWrap: 'wrap', flex: 1 },
-            ...(card.tags ?? []).slice(0, 4).map((tag) =>
+            { display: 'flex', gap: 10, flex: 1, overflow: 'hidden' },
+            ...(card.tags ?? []).slice(0, 3).map((tag) =>
               h(
                 'div',
                 {
                   display: 'flex',
-                  padding: '6px 14px',
+                  padding: '5px 13px',
                   border: `2px solid ${c.line}`,
                   borderRadius: 8,
-                  fontSize: 22,
+                  fontSize: 20,
                   color: c.accent,
                 },
                 `#${tag}`,
               ),
             ),
           ),
-          { type: 'img', props: { src: logo, width: 64, height: 64 } },
-          h('div', { display: 'flex', fontSize: 28, fontWeight: 700, color: c.accent }, 'msquintana.com'),
+          { type: 'img', props: { src: logo, width: 52, height: 52 } },
+          h('div', { display: 'flex', fontSize: 26, fontWeight: 700, color: c.accent }, 'msquintana.com'),
         ),
       ),
     ),

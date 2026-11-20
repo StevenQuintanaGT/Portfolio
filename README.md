@@ -10,7 +10,7 @@
 
 </div>
 
-Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa la paleta Azul noche y lavanda, tipografía Space Grotesk y una
+Sitio estático de una sola página, con un blog de artículos y write-ups técnicos. Usa la identidad **Enlace compacto v2** (paleta Noche abisal, violeta enlace y cian señal), tipografía Space Grotesk y una
 estética de terminal. Está en **inglés** (`/`) y **español** (`/es/`), y el botón EN / ES cambia de idioma en cualquier
 página.
 
@@ -164,4 +164,4 @@ aparte, que no hay que tocar.
 
 ---
 
-Hecho por [Steven Quintana](https://msquintana.com) · Paleta Azul noche y lavanda.
+Hecho por [Steven Quintana](https://msquintana.com) · Identidad Enlace compacto v2 (Noche abisal, violeta enlace y cian señal).

@@ -1,36 +1,58 @@
-/* Azul noche y lavanda. Keep the brightest colors on text, controls and status. */
+/* Enlace compacto v2 — Noche abisal, violeta enlace y cian señal. */
 :root {
-  --bg: #070a12;
-  --surface: #101420;
-  --surface-deep: #0a0f19;
-  --surface-raised: #151e2e;
-  --line: rgba(178, 191, 219, 0.15);
-  --line-strong: rgba(178, 191, 219, 0.29);
-  --ink: #b4bfd1;
-  --ink-strong: #f8fafc;
-  --ink-muted: #909cb2;
+  /* Official brand tokens (from marca/tokens.css) */
+  --mq-bg: #070B14;
+  --mq-surface: #0F172A;
+  --mq-surface-2: #172238;
+  --mq-border: #24324B;
+  --mq-violet: #A78BFA;
+  --mq-violet-soft: #C4B5FD;
+  --mq-violet-deep: #7C3AED;
+  --mq-cyan: #22D3EE;
+  --mq-cyan-soft: #67E8F9;
+  --mq-cyan-deep: #0284C7;
+  --mq-text: #F8FAFC;
+  --mq-text-muted: #94A3B8;
+  --mq-success: #34D399;
+  --mq-warning: #FBBF24;
+  --mq-danger: #FB7185;
 
-  --accent: #c0affc;
-  --accent-2: #7dd3fc;
-  --accent-soft: rgb(192 175 252 / 0.12);
-  --accent-2-soft: rgb(125 211 252 / 0.11);
-  --glass: rgb(12 16 28 / 0.78);
+  /* Site semantic tokens */
+  --bg: var(--mq-bg);
+  --surface: var(--mq-surface);
+  --surface-deep: #0B1120;
+  --surface-raised: var(--mq-surface-2);
+  --line: rgb(148 163 184 / 0.16);
+  --line-strong: #24324B;
+  --ink: #CBD5E1;
+  --ink-strong: var(--mq-text);
+  --ink-muted: var(--mq-text-muted);
+
+  --accent: var(--mq-violet);
+  --accent-soft-hex: var(--mq-violet-soft);
+  --accent-deep: var(--mq-violet-deep);
+  --accent-2: var(--mq-cyan);
+  --accent-2-soft-hex: var(--mq-cyan-soft);
+  --accent-2-deep: var(--mq-cyan-deep);
+  --accent-soft: rgb(167 139 250 / 0.13);
+  --accent-2-soft: rgb(34 211 238 / 0.12);
+  --glass: rgb(11 17 32 / 0.8);
   --blue: var(--accent);
   --purple: var(--accent);
-  --green: #4ade80;
-  --yellow: #fbbf24;
-  --red: #f87171;
-  --grad: linear-gradient(120deg, var(--accent), var(--accent-2));
-  --panel-fill: linear-gradient(155deg, #14192b 0%, #0c101b 74%);
+  --green: var(--mq-success);
+  --yellow: var(--mq-warning);
+  --red: var(--mq-danger);
+  --grad: linear-gradient(90deg, var(--mq-violet) 0%, var(--mq-cyan) 100%);
+  --panel-fill: linear-gradient(155deg, #131d33 0%, #0b1120 74%);
   --ease-out: cubic-bezier(0.2, 0.72, 0.2, 1);
 
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Bahnschrift', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'FiraCode Nerd Font', 'Cascadia Mono', ui-monospace, monospace;
+  --font-sans: 'Inter', 'Segoe UI Variable Text', system-ui, -apple-system, sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
   --radius-xl: 24px;
 
   --gutter: clamp(16px, 4vw, 40px);
@@ -65,17 +87,17 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 68% 52% at 6% -2%, rgb(86 58 158 / 0.22) 0%, transparent 74%),
-    radial-gradient(ellipse 62% 50% at 94% 16%, rgb(41 112 168 / 0.17) 0%, transparent 76%),
-    radial-gradient(ellipse 50% 42% at 50% 100%, rgb(104 78 182 / 0.1) 0%, transparent 75%),
-    linear-gradient(160deg, #080b14 0%, var(--bg) 56%, #080d17 100%);
+    radial-gradient(ellipse 68% 52% at 6% -2%, rgb(124 58 237 / 0.2) 0%, transparent 74%),
+    radial-gradient(ellipse 62% 50% at 94% 16%, rgb(2 132 199 / 0.19) 0%, transparent 76%),
+    radial-gradient(ellipse 52% 44% at 52% 100%, rgb(167 139 250 / 0.09) 0%, transparent 75%),
+    linear-gradient(160deg, #070B14 0%, var(--bg) 56%, #081020 100%);
 }
 
 .site-atmosphere::after {
   position: absolute;
   inset: 0;
   content: '';
-  background: radial-gradient(circle at center, rgb(192 175 252 / 0.11) 0.65px, transparent 1px) 0 0 / 24px 24px;
+  background: radial-gradient(circle at center, rgb(148 163 184 / 0.14) 0.7px, transparent 1px) 0 0 / 24px 24px;
   mask-image: radial-gradient(ellipse 85% 75% at 50% 18%, #000 10%, transparent 82%);
 }
 
@@ -164,7 +186,7 @@ a {
   pointer-events: none;
   border-radius: inherit;
   background: radial-gradient(360px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
-      rgb(176 154 255 / 0.16), transparent 72%);
+      rgb(167 139 250 / 0.16), transparent 72%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -182,7 +204,7 @@ a {
   padding: 10px 18px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: rgb(16 20 32 / 0.85);
+  background: rgb(15 23 42 / 0.85);
   box-shadow: inset 0 1px 0 rgb(248 250 252 / 0.05);
   color: var(--ink-strong);
   font-size: 0.9375rem;
@@ -192,7 +214,7 @@ a {
 }
 
 .btn:hover {
-  border-color: rgb(192 175 252 / 0.55);
+  border-color: rgb(34 211 238 / 0.55);
   background: var(--surface-raised);
   box-shadow: inset 0 1px 0 rgb(248 250 252 / 0.08), 0 8px 22px rgb(0 0 0 / 0.26);
 }
@@ -202,15 +224,15 @@ a {
   border-color: transparent;
   color: var(--bg);
   box-shadow:
-    0 8px 24px rgb(148 133 249 / 0.24),
+    0 8px 24px rgb(167 139 250 / 0.22),
     inset 0 1px 0 rgb(255 255 255 / 0.55);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(120deg, #ded0ff, #ade6ff);
+  background: linear-gradient(90deg, var(--mq-violet-soft) 0%, var(--mq-cyan-soft) 100%);
   border-color: transparent;
   box-shadow:
-    0 10px 28px rgb(164 148 252 / 0.34),
+    0 10px 28px rgb(34 211 238 / 0.28),
     inset 0 1px 0 rgb(255 255 255 / 0.65);
 }
 
@@ -226,7 +248,7 @@ a {
   padding: 4px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
-  background: rgb(10 15 25 / 0.85);
+  background: rgb(11 17 32 / 0.85);
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 0.8rem;

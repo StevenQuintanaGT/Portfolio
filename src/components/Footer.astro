@@ -14,10 +14,11 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="container inner">
-    <p class="identity">
-      <img src="/brand/symbol.svg" alt="" width="20" height="20" />
-      <span>© {year} {site.name}</span>
-    </p>
+    <div class="identity">
+      <img class="mark" src="/brand/symbol.svg" alt="" width="22" height="22" />
+      <img class="signature" src="/brand/signature.svg" alt="msquintana" width="480" height="110" />
+      <span class="copy">© {year} {site.name}</span>
+    </div>
     <p class="stack">{t('footer.built')}</p>
     <a href="#" class="top">
       <span>{t('footer.top')}</span>
@@ -28,9 +29,9 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    padding: 26px 0;
-    border-top: 1px solid var(--line);
-    background: rgb(7 10 18 / 0.65);
+    padding: 28px 0;
+    border-top: 1px solid var(--line-strong);
+    background: rgb(7 11 20 / 0.78);
     color: var(--ink-muted);
     font-size: 0.875rem;
   }
@@ -40,7 +41,7 @@ const year = new Date().getFullYear();
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 12px 24px;
+    gap: 14px 24px;
   }
 
   p {
@@ -49,20 +50,34 @@ const year = new Date().getFullYear();
   }
 
   .identity {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 9px;
+    gap: 10px 12px;
     color: var(--ink);
   }
 
-  .identity img {
+  .mark {
     display: block;
-    opacity: 0.85;
+    flex: none;
+  }
+
+  .signature {
+    display: block;
+    width: auto;
+    height: 22px;
+  }
+
+  .copy {
+    padding-inline-start: 12px;
+    border-inline-start: 1px solid var(--line-strong);
+    color: var(--ink-muted);
+    font-size: 0.8125rem;
   }
 
   .stack {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .top {
@@ -70,9 +85,9 @@ const year = new Date().getFullYear();
     align-items: center;
     gap: 6px;
     padding: 5px 12px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     border-radius: 999px;
-    background: rgb(16 20 32 / 0.6);
+    background: rgb(15 23 42 / 0.75);
     color: var(--ink);
     font-size: 0.8125rem;
     text-decoration: none;
@@ -80,7 +95,7 @@ const year = new Date().getFullYear();
   }
 
   .top:hover {
-    border-color: rgb(192 175 252 / 0.45);
+    border-color: rgb(34 211 238 / 0.55);
     background: var(--surface-raised);
     color: var(--ink-strong);
   }
