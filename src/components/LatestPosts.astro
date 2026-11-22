@@ -1,0 +1,58 @@
+---
+import Icon from './Icon.astro';
+import SectionTitle from './SectionTitle.astro';
+import PostCard from './blog/PostCard.astro';
+import { blogUrl, getPosts } from '../lib/blog';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const posts = (await getPosts()).slice(0, 2);
+---
+
+{posts.length > 0 && (
+  <section id="blog" class="section">
+    <div class="container">
+      <div class="latest-head">
+        <SectionTitle title={t('latest.heading')} eyebrow="ls -t ~/blog" />
+        <a class="btn btn-sm all-link" href={blogUrl(lang)}>
+          <span>{t('latest.all')}</span>
+          <Icon name="arrow-right" size={14} />
+        </a>
+      </div>
+      <div class="grid">
+        {posts.map((post) => <PostCard lang={lang} post={post} />)}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .latest-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: clamp(26px, 4vw, 44px);
+  }
+
+  .latest-head :global(.section-heading) {
+    margin-bottom: 0;
+  }
+
+  .grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

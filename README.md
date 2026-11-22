@@ -19,7 +19,7 @@ página.
 | Parte | Qué hace |
 | --- | --- |
 | **Inicio** | Presenta el perfil, una terminal interactiva y un fondo de circuitos que reacciona al cursor. |
-| **Terminal interactiva** | Comandos `help`, `whoami`, `about`, `experience`, `skills`, `projects`, `certs`, `contact`, `lang` y `clear`, con alias en español, historial (↑ ↓) y autocompletado con Tab. |
+| **Terminal interactiva** | Comandos `help`, `whoami`, `about`, `experience`, `skills`, `projects`, `certs`, `blog`, `contact`, `lang` y `clear`, con alias en español, historial (↑ ↓) y autocompletado con Tab. |
 | **Secciones** | Perfil y educación, experiencia profesional, habilidades, proyectos con enlaces, certificaciones y formación, y contacto. |
 | **Blog** | Artículos en Markdown, filtro por etiquetas, tiempo de lectura, código resaltado con Shiki (`one-dark-pro`) y feed RSS. |
 | **SEO** | `<title>`, descripción, `canonical`, `hreflang` y Open Graph en todas las páginas. Las imágenes de vista previa (PNG de 1200×630) se generan en el build. |

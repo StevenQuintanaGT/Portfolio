@@ -7,7 +7,7 @@ import Footer from '../Footer.astro';
 import Icon from '../Icon.astro';
 import PostMeta from './PostMeta.astro';
 import TagList from './TagList.astro';
-import { blogUrl, postUrl, type Post } from '../../lib/blog';
+import { blogUrl, getPosts, postUrl, type Post } from '../../lib/blog';
 import { useTranslations, type Lang } from '../../i18n/ui';
 import '../../styles/prose.css';
 
@@ -22,6 +22,11 @@ const otherLang: Lang = lang === 'en' ? 'es' : 'en';
 const { title, description, date, updated, tags } = post.data;
 const { Content, headings } = await render(post);
 const sections = headings.filter(({ depth }) => depth === 2);
+
+const allPosts = await getPosts();
+const currentIndex = allPosts.findIndex((entry) => entry.id === post.id);
+const newerPost = currentIndex > 0 ? allPosts[currentIndex - 1] : undefined;
+const olderPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : undefined;
 ---
 
 <Base
@@ -78,6 +83,30 @@ const sections = headings.filter(({ depth }) => depth === 2);
         </div>
 
         <footer class="post-footer" lang={lang}>
+          {(newerPost || olderPost) && (
+            <nav class="post-pager" aria-label={t('blog.more')}>
+              {newerPost ? (
+                <a class="panel pager-link" href={postUrl(lang, newerPost)}>
+                  <span class="pager-label">
+                    <Icon name="arrow-left" size={14} />
+                    {t('blog.prev')}
+                  </span>
+                  <strong lang={newerPost.data.lang}>{newerPost.data.title}</strong>
+                </a>
+              ) : (
+                <div aria-hidden="true"></div>
+              )}
+              {olderPost && (
+                <a class="panel pager-link pager-next" href={postUrl(lang, olderPost)}>
+                  <span class="pager-label">
+                    {t('blog.next')}
+                    <Icon name="arrow-right" size={14} />
+                  </span>
+                  <strong lang={olderPost.data.lang}>{olderPost.data.title}</strong>
+                </a>
+              )}
+            </nav>
+          )}
           <a class="btn" href={blogUrl(lang)}>
             <Icon name="arrow-left" size={15} />
             {t('blog.back')}
@@ -314,8 +343,60 @@ const sections = headings.filter(({ depth }) => depth === 2);
   }
 
   .post-footer {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
     margin-top: 48px;
-    padding-top: 24px;
+    padding-top: 28px;
     border-top: 1px solid var(--line);
+  }
+
+  .post-pager {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .post-pager {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s var(--ease-out);
+  }
+
+  .pager-link:hover {
+    border-color: rgb(167 139 250 / 0.48);
+  }
+
+  .pager-next {
+    text-align: end;
+    align-items: flex-end;
+  }
+
+  .pager-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-2);
+    font: 0.75rem/1.4 var(--font-mono);
+  }
+
+  .pager-link strong {
+    color: var(--ink-strong);
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    line-height: 1.35;
+  }
+
+  .pager-link:hover strong {
+    color: var(--accent);
   }
 </style>

@@ -34,6 +34,15 @@ export default defineConfig({
       // Same palette as the rest of the site
       theme: 'one-dark-pro',
       wrap: false,
+      langAlias: {
+        gitignore: 'txt',
+      },
+    },
+  },
+  // Emit external script files so strict `script-src 'self'` CSP in public/_headers works without 'unsafe-inline'
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
     },
   },
 });

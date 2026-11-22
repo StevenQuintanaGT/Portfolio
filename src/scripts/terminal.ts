@@ -3,12 +3,14 @@
 
 interface TerminalData {
   otherLangUrl: string;
+  blogUrl: string;
   name: string;
   role: string;
   about: string[];
   experience: { title: string; period: string; duties: string[] }[];
   skills: { title: string; items: string[] }[];
   projects: { title: string; tools: string[]; demo?: string; repo?: string }[];
+  posts: { title: string; url: string; tags: string[] }[];
   certs: { name: string; issuer: string; label: string; detail: string }[];
   credly: string;
   contact: { email: string; github: string; linkedin: string };
@@ -22,6 +24,7 @@ interface TerminalData {
     repo: string;
     employer: string;
     credly: string;
+    allPosts: string;
     sections: Record<string, string>;
   };
 }
@@ -37,6 +40,10 @@ const aliases: Record<string, string> = {
   habilidades: 'skills',
   proyectos: 'projects',
   certificaciones: 'certs',
+  articulos: 'blog',
+  artículos: 'blog',
+  posts: 'blog',
+  notas: 'blog',
   contacto: 'contact',
   idioma: 'lang',
   es: 'lang',
@@ -135,6 +142,15 @@ if (root && dataEl) {
         print([span(`[${cert.label}]`, 'out-key'), summary]);
       }
       print([link(data.text.credly, data.credly)]);
+    },
+    blog() {
+      for (const post of data.posts) {
+        print([ok(), link(post.title, post.url)]);
+        if (post.tags.length > 0) {
+          print(['    ', span(post.tags.map((tag) => `#${tag}`).join(' '), 'out-tag')]);
+        }
+      }
+      print([link(data.text.allPosts, data.blogUrl)], 'out-link');
     },
     contact() {
       const { email, github, linkedin } = data.contact;

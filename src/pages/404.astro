@@ -1,0 +1,196 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { useTranslations } from '../i18n/ui';
+
+const tEn = useTranslations('en');
+const tEs = useTranslations('es');
+---
+
+<Base
+  lang="en"
+  title={`${tEn('notFound.title')} — Steven Quintana`}
+  description={tEn('notFound.text')}
+  alternates={{}}
+>
+  <Nav lang="en" />
+  <main class="container not-found">
+    <section class="panel error-card" data-reactive>
+      <div class="bar">
+        <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="window-title" aria-hidden="true">steven@msquintana: ~</span>
+      </div>
+      <div
+        class="body"
+        data-not-found
+        data-es-title={`${tEs('notFound.title')} — Steven Quintana`}
+        data-es-heading={tEs('notFound.heading')}
+        data-es-text={tEs('notFound.text')}
+        data-es-home={tEs('notFound.home')}
+        data-es-blog={tEs('notFound.blog')}
+      >
+        <p class="cmd">
+          <span class="prompt">$</span> cd <span data-missing-path>/404</span>
+        </p>
+        <p class="err">
+          bash: cd: <span data-missing-path>/404</span>: No such file or directory
+        </p>
+        <div class="summary">
+          <p class="code" aria-hidden="true">404</p>
+          <h1 data-nf-heading>{tEn('notFound.heading')}</h1>
+          <p class="text" data-nf-text>{tEn('notFound.text')}</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="/" data-nf-home>
+              <Icon name="arrow-left" size={16} />
+              <span>{tEn('notFound.home')}</span>
+            </a>
+            <a class="btn" href="/blog/" data-nf-blog>
+              <span>{tEn('notFound.blog')}</span>
+              <Icon name="arrow-right" size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer lang="en" />
+</Base>
+
+<script>
+  const box = document.querySelector<HTMLElement>('[data-not-found]');
+  if (box) {
+    const path = window.location.pathname || '/404';
+    box.querySelectorAll<HTMLElement>('[data-missing-path]').forEach((el) => {
+      el.textContent = path;
+    });
+
+    if (path === '/es' || path.startsWith('/es/')) {
+      document.documentElement.lang = 'es';
+      if (box.dataset.esTitle) document.title = box.dataset.esTitle;
+      const heading = box.querySelector<HTMLElement>('[data-nf-heading]');
+      const text = box.querySelector<HTMLElement>('[data-nf-text]');
+      const home = box.querySelector<HTMLAnchorElement>('[data-nf-home]');
+      const blog = box.querySelector<HTMLAnchorElement>('[data-nf-blog]');
+      if (heading && box.dataset.esHeading) heading.textContent = box.dataset.esHeading;
+      if (text && box.dataset.esText) text.textContent = box.dataset.esText;
+      if (home) {
+        home.href = '/es/';
+        const span = home.querySelector('span');
+        if (span && box.dataset.esHome) span.textContent = box.dataset.esHome;
+      }
+      if (blog) {
+        blog.href = '/es/blog/';
+        const span = blog.querySelector('span');
+        if (span && box.dataset.esBlog) span.textContent = box.dataset.esBlog;
+      }
+    }
+  }
+</script>
+
+<style>
+  .not-found {
+    display: grid;
+    place-items: center;
+    min-height: calc(100dvh - 180px);
+    padding-block: clamp(44px, 7vw, 88px);
+  }
+
+  .error-card {
+    width: min(700px, 100%);
+    overflow: hidden;
+    border-color: rgb(167 139 250 / 0.28);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(150deg, #131d35 0%, #090f1d 68%);
+    box-shadow:
+      0 26px 75px rgb(0 0 0 / 0.55),
+      0 0 55px rgb(124 58 237 / 0.14),
+      inset 0 1px 0 rgb(196 181 253 / 0.12);
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: 45px minmax(0, 1fr) 45px;
+    align-items: center;
+    min-height: 46px;
+    padding: 5px 15px;
+    border-bottom: 1px solid var(--line-strong);
+    background: linear-gradient(90deg, rgb(167 139 250 / 0.1), rgb(34 211 238 / 0.05));
+  }
+
+  .window-lights {
+    display: flex;
+    gap: 6px;
+  }
+
+  .window-lights i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f4819c;
+  }
+
+  .window-lights i:nth-child(2) { background: #f8c889; }
+  .window-lights i:nth-child(3) { background: #8ce4ac; }
+
+  .window-title {
+    color: var(--ink);
+    font: 0.8rem/1.4 var(--font-mono);
+    text-align: center;
+  }
+
+  .body {
+    padding: clamp(22px, 4vw, 40px);
+  }
+
+  .cmd,
+  .err {
+    margin: 0 0 8px;
+    max-width: none;
+    font: 0.9rem/1.6 var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+
+  .cmd {
+    color: var(--ink-strong);
+  }
+
+  .err {
+    color: var(--red);
+  }
+
+  .summary {
+    margin-top: 26px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .code {
+    margin: 0 0 6px;
+    background: var(--grad);
+    background-clip: text;
+    color: transparent;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+
+  .text {
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>
