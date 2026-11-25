@@ -37,9 +37,12 @@ export const ui = {
     'about.heading': 'About me',
     'about.languages': 'Spanish (native) · English (intermediate)',
     'education.heading': 'Education',
+    'education.masters': 'Master’s in Information Security',
+    'education.masters.school': 'Universidad Mariano Gálvez de Guatemala',
+    'education.masters.period': 'Starting in 2027',
     'education.degree': 'Information Systems Engineering and Computer Science',
     'education.degree.school': 'Universidad Mariano Gálvez de Guatemala · Jutiapa campus',
-    'education.degree.period': 'Started in 2022 · Coursework completed',
+    'education.degree.period': '2022–2026 · Coursework completed',
     'education.accounting': 'Technical diploma in accounting with a computing focus',
     'education.technician': 'Computer technician',
     'experience.heading': 'Professional experience',
@@ -80,7 +83,7 @@ export const ui = {
     'term.switching': 'Switching to Spanish…',
 
     'about.p1':
-      'I completed the coursework for Information Systems Engineering and Computer Science at Universidad Mariano Gálvez de Guatemala (Jutiapa campus).',
+      'I completed the coursework for Information Systems Engineering and Computer Science at Universidad Mariano Gálvez de Guatemala (Jutiapa campus), and I am starting a Master’s in Information Security in 2027.',
     'about.p2':
       'I work with Linux, Nmap and Docker. I use AWS and Cloudflare, and manage the DNS, email routing and hosting for this portfolio.',
 
@@ -180,9 +183,12 @@ export const ui = {
     'about.heading': 'Sobre mí',
     'about.languages': 'Español (nativo) · Inglés (intermedio)',
     'education.heading': 'Educación',
+    'education.masters': 'Maestría en Seguridad Informática',
+    'education.masters.school': 'Universidad Mariano Gálvez de Guatemala',
+    'education.masters.period': 'Inicio en 2027',
     'education.degree': 'Ingeniería en Sistemas de Información y Ciencias de la Computación',
     'education.degree.school': 'Universidad Mariano Gálvez de Guatemala · Campus Jutiapa',
-    'education.degree.period': 'Ingreso en 2022 · Pensum cerrado',
+    'education.degree.period': '2022–2026 · Pensum cerrado',
     'education.accounting': 'Perito Contador con orientación en computación',
     'education.technician': 'Técnico en Computación',
     'experience.heading': 'Experiencia profesional',
@@ -223,7 +229,7 @@ export const ui = {
     'term.switching': 'Cambiando a inglés…',
 
     'about.p1':
-      'Cerré el pensum de Ingeniería en Sistemas de Información y Ciencias de la Computación en la Universidad Mariano Gálvez de Guatemala, campus Jutiapa.',
+      'Cerré el pensum de Ingeniería en Sistemas de Información y Ciencias de la Computación en la Universidad Mariano Gálvez de Guatemala, campus Jutiapa, y en 2027 inicio la Maestría en Seguridad Informática.',
     'about.p2':
       'Trabajo con Linux, Nmap y Docker. Uso AWS y Cloudflare, y administro el DNS, el enrutamiento de correo y el alojamiento de este portafolio.',
 

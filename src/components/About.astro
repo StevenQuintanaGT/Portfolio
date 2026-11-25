@@ -10,7 +10,8 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const education = [
-  { title: t('education.degree'), school: t('education.degree.school'), period: t('education.degree.period'), current: true },
+  { title: t('education.masters'), school: t('education.masters.school'), period: t('education.masters.period'), current: true },
+  { title: t('education.degree'), school: t('education.degree.school'), period: t('education.degree.period'), current: false },
   { title: t('education.accounting'), school: 'Instituto Privado de Educación Diversificada El Porvenir', period: '2019–2021', current: false },
   { title: t('education.technician'), school: 'Academia de Computación ACCESA', period: '2016–2017', current: false },
 ];
@@ -179,6 +180,7 @@ const education = [
 
   .education li:nth-child(2) { --reveal-delay: 75ms; }
   .education li:nth-child(3) { --reveal-delay: 145ms; }
+  .education li:nth-child(4) { --reveal-delay: 215ms; }
 
   .edu-period {
     width: fit-content;
