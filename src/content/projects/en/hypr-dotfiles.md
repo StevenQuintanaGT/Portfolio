@@ -1,8 +1,9 @@
 ---
-title: Hypr-Dotfiles
-problem: Keep my Arch Linux + Hyprland setup reproducible and versioned instead of configuring it by hand every time.
-result: My desktop configuration lives in a Git repository and can be restored on a fresh install.
-tools: [Arch Linux, Hyprland, Bash, Git]
+title: Arch Linux Environment (Dotfiles)
+category: Linux · Archived
+problem: I needed a reproducible way to manage my daily Arch Linux workstation with versioned dotfiles and shell scripts instead of reconfiguring the system by hand on every fresh install.
+result: Versioned the full system configuration and setup scripts in Git so it could be restored on clean installs. The repository is kept as an archive (no longer actively maintained) as practical evidence of hands-on Linux and Bash administration.
+tools: [Arch Linux, Bash, Git, Dotfiles]
 order: 4
 repo: https://github.com/StevenQuintanaGT/Hypr-Dotfiles
 ---
