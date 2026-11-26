@@ -14,9 +14,10 @@ const projects = defineCollection({
     category: z.string().optional(),
     cover: z.string().optional(),
     highlights: z.array(z.object({ title: z.string(), detail: z.string() })).min(1).optional(),
-    // Source code and live site/download. Each one shows as a button when set.
+    // Source code, live site/download, and optional blog post slug. Each one shows as a button when set.
     repo: z.string().url().optional(),
     demo: z.string().url().optional(),
+    article: z.string().optional(),
     order: z.number().default(99),
     // Drafts stay hidden until you fill them in.
     draft: z.boolean().default(false),

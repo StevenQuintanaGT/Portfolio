@@ -35,7 +35,7 @@ export const ui = {
     'hero.status': 'Open to work',
 
     'about.heading': 'About me',
-    'about.languages': 'Spanish (native) · English (intermediate)',
+    'about.languages': 'Spanish (native) · English (technical)',
     'education.heading': 'Education',
     'education.masters': 'Master’s in Information Security',
     'education.masters.school': 'Universidad Mariano Gálvez de Guatemala',
@@ -99,6 +99,7 @@ export const ui = {
     'projects.result': 'Outcome',
     'projects.demo': 'Live site',
     'projects.repo': 'Source code',
+    'projects.article': 'Read write-up',
 
     'certs.earned': 'Earned credentials',
     'certs.training': 'Ongoing training & scholarships',
@@ -181,7 +182,7 @@ export const ui = {
     'hero.status': 'Disponible para trabajar',
 
     'about.heading': 'Sobre mí',
-    'about.languages': 'Español (nativo) · Inglés (intermedio)',
+    'about.languages': 'Español (nativo) · Inglés (técnico)',
     'education.heading': 'Educación',
     'education.masters': 'Maestría en Seguridad Informática',
     'education.masters.school': 'Universidad Mariano Gálvez de Guatemala',
@@ -245,6 +246,7 @@ export const ui = {
     'projects.result': 'Resultado',
     'projects.demo': 'Ver sitio',
     'projects.repo': 'Código fuente',
+    'projects.article': 'Leer artículo',
 
     'certs.earned': 'Credenciales obtenidas',
     'certs.training': 'Formación en curso y becas',
@@ -315,7 +317,14 @@ export function useTranslations(lang: Lang) {
 export const skills = {
   security: ['Nmap', 'Cisco Packet Tracer'],
   systems: ['Linux (Ubuntu, Fedora, Arch)', 'Windows Server', 'Bash', 'Docker', 'Git & GitHub'],
-  cloud: ['Cloudflare Pages', 'Cloudflare DNS', 'Cloudflare Email Routing', 'AWS'],
+  cloud: [
+    'Cloudflare Pages',
+    'Cloudflare Workers',
+    'Cloudflare Access (Zero Trust)',
+    'Cloudflare DNS',
+    'Cloudflare Email Routing',
+    'AWS',
+  ],
 } as const;
 
 export function getExperience(lang: Lang) {

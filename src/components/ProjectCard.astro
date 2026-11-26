@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
+import { blogUrl } from '../lib/blog';
 import { projectAnchor } from '../lib/projects';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
   tools: string[];
   repo?: string;
   demo?: string;
+  article?: string;
   featured?: boolean;
 }
 
@@ -32,10 +34,12 @@ const {
   tools,
   repo,
   demo,
+  article,
   featured = false,
 } = Astro.props;
 const t = useTranslations(lang);
 const num = index ? String(index).padStart(2, '0') : undefined;
+const articleHref = article ? blogUrl(lang, `${article}/`) : undefined;
 ---
 
 <article id={projectAnchor(projectId)} class:list={['panel project', { featured, 'with-cover': cover }]} data-reveal data-reactive>
@@ -79,12 +83,18 @@ const num = index ? String(index).padStart(2, '0') : undefined;
       <ul class="tag-list" aria-label={t('projects.tools')}>
         {tools.map((tool) => <li class="tag">{tool}</li>)}
       </ul>
-      {(repo || demo) && (
+      {(repo || demo || articleHref) && (
         <div class="actions">
           {demo && (
             <a class="btn btn-primary btn-sm" href={demo} target="_blank" rel="noopener noreferrer">
               {t('projects.demo')}
               <Icon name="arrow-up-right" size={15} />
+            </a>
+          )}
+          {articleHref && (
+            <a class:list={['btn btn-sm', { 'btn-primary': !demo }]} href={articleHref}>
+              {t('projects.article')}
+              <Icon name="arrow-right" size={15} />
             </a>
           )}
           {repo && (
@@ -363,7 +373,8 @@ const num = index ? String(index).padStart(2, '0') : undefined;
   }
 
   @media (min-width: 760px) {
-    .featured {
+    .featured,
+    .project:not(.featured):last-child:nth-child(even) {
       grid-column: 1 / -1;
     }
 

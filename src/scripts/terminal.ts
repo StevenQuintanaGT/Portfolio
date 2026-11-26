@@ -9,7 +9,7 @@ interface TerminalData {
   about: string[];
   experience: { title: string; period: string; duties: string[] }[];
   skills: { title: string; items: string[] }[];
-  projects: { title: string; tools: string[]; demo?: string; repo?: string }[];
+  projects: { title: string; tools: string[]; demo?: string; article?: string; repo?: string }[];
   posts: { title: string; url: string; tags: string[] }[];
   certs: { name: string; issuer: string; label: string; detail: string }[];
   credly: string;
@@ -21,6 +21,7 @@ interface TerminalData {
     sudo: string;
     switching: string;
     demo: string;
+    article: string;
     repo: string;
     employer: string;
     credly: string;
@@ -130,10 +131,18 @@ if (root && dataEl) {
       for (const project of data.projects) {
         print([ok(), span(project.title, 'out-title')]);
         print(['    ', span(project.tools.join(' · '), 'out-tag')]);
-        const links: Part[] = ['    '];
-        if (project.demo) links.push(link(data.text.demo, project.demo), '  ');
-        if (project.repo) links.push(link(data.text.repo, project.repo));
-        if (links.length > 1) print(links);
+        const items: Node[] = [];
+        if (project.demo) items.push(link(data.text.demo, project.demo));
+        if (project.article) items.push(link(data.text.article, project.article));
+        if (project.repo) items.push(link(data.text.repo, project.repo));
+        if (items.length > 0) {
+          const links: Part[] = ['    '];
+          items.forEach((item, index) => {
+            if (index > 0) links.push('  ');
+            links.push(item);
+          });
+          print(links);
+        }
       }
     },
     certs() {

@@ -79,6 +79,7 @@ tools: [Arch Linux, Hyprland, Bash, Git]
 order: 3                     # posición en la lista
 repo: https://github.com/…   # opcional: botón "Código fuente"
 demo: https://…              # opcional: botón "Ver sitio"
+article: slug-del-articulo   # opcional: botón "Leer artículo" del blog
 cover: /projects/imagen.webp # opcional: imagen decorativa en public/projects/
 highlights:                 # opcional: características que se pueden desplegar
   - title: Instalación

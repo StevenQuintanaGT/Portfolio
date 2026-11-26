@@ -1,8 +1,9 @@
 ---
 title: Personal portfolio and domain
+category: Infrastructure · Web hardening
 problem: I wanted a single place to share my projects and articles and receive email at my own domain.
-result: I built this portfolio with Astro and published it on Cloudflare Pages. I manage the DNS records for msquintana.com and route email through Cloudflare Email Routing.
-tools: [Astro, Cloudflare Pages, Cloudflare DNS, Cloudflare Email Routing]
-order: 2
+result: Built this portfolio with Astro on Cloudflare Pages, manage DNS and email through Cloudflare Email Routing, and hardened the site with a strict CSP without inline scripts, HSTS preload, COOP, Permissions-Policy, and security.txt.
+tools: [Astro, Cloudflare Pages, Cloudflare DNS, Cloudflare Email Routing, CSP / HSTS]
+order: 3
 repo: https://github.com/StevenQuintanaGT/Portfolio
 ---

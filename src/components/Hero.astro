@@ -36,6 +36,7 @@ const terminalData = {
     title: data.title,
     tools: data.tools,
     demo: data.demo,
+    article: data.article ? blogUrl(lang, `${data.article}/`) : undefined,
     repo: data.repo,
   })),
   posts: posts.slice(0, 5).map((post) => ({
@@ -53,6 +54,7 @@ const terminalData = {
     sudo: t('term.sudo'),
     switching: t('term.switching'),
     demo: t('projects.demo'),
+    article: t('projects.article'),
     repo: t('projects.repo'),
     employer: t('experience.employer'),
     credly: t('certs.credly'),
