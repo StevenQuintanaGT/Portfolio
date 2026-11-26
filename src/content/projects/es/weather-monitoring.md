@@ -1,7 +1,7 @@
 ---
 title: AgroClima Jalapa
 category: Proyecto de graduación · Android
-cover: /projects/agroclima-jalapa.webp
+promo: agroclima
 highlights:
   - title: Pronóstico por parcela
     detail: La app revisa el pronóstico de cada parcela cada tres horas.

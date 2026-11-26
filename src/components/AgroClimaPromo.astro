@@ -1,0 +1,531 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  class="promo-player"
+  data-agroclima-promo
+  role="region"
+  aria-label={t('projects.promo.label')}
+>
+  <div class="promo-viewport" data-promo-viewport>
+    <div class="promo-wrap" data-promo-wrap>
+      <div class="promo-stage" data-promo-stage>
+        <div class="abs bg-dark"></div>
+        <div class="abs blob blob1" data-promo-el="blob1"></div>
+        <div class="abs blob blob2" data-promo-el="blob2"></div>
+        <canvas class="abs rain" data-promo-el="rain" width="960" height="540"></canvas>
+
+        <!-- Escena 1: preguntas -->
+        <div class="abs center line" data-promo-el="l1"></div>
+        <div class="abs center line" data-promo-el="l2"></div>
+        <div class="abs center line" data-promo-el="l3"></div>
+
+        <!-- Escena 2: dato -->
+        <div class="abs center stat" data-promo-el="stat">0 %</div>
+        <div class="abs center stat-txt" data-promo-el="statTxt">
+          de los productores de Jalapa señala la <b class="accent">sequía</b> o la <b class="accent">helada</b> como lo que más ha dañado su cosecha
+        </div>
+        <div class="abs center stat-src" data-promo-el="statSrc">
+          Encuesta a 122 productores de los siete municipios · 2026
+        </div>
+
+        <!-- Escena 3: logo -->
+        <div class="abs ring" data-promo-el="ring"></div>
+        <div class="abs appicon logo" data-promo-el="logo">
+          <svg width="170" height="170" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 15.5h10.2a3.8 3.8 0 0 0 .4-7.58A5.5 5.5 0 0 0 7.1 8.6 3.5 3.5 0 0 0 7 15.5z" />
+            <path d="M9 18.2l-.8 2.3M12.4 18.2l-.8 2.3M15.8 18.2l-.8 2.3" />
+          </svg>
+        </div>
+        <div class="abs center word" data-promo-el="word">
+          AgroClima <span class="accent">Jalapa</span>
+        </div>
+        <div class="abs center tag-line" data-promo-el="tag"></div>
+
+        <!-- Escena 4: app -->
+        <div class="abs bg-light" data-promo-el="bgLight"></div>
+        <div class="abs feat" data-promo-el="feat">
+          <div class="fitem" data-promo-feat="0">
+            <div class="fnum">01 · PRONÓSTICO</div>
+            <div class="ftitle">El clima de <span class="moss-dark">su</span> parcela</div>
+            <div class="fsub">Clima actual, hora por hora y para cinco días, en el punto exacto de su terreno.</div>
+          </div>
+          <div class="fitem" data-promo-feat="1">
+            <div class="fnum">02 · MAPA</div>
+            <div class="ftitle">Vea dónde va a llover</div>
+            <div class="fsub">Capas de lluvia, nubes, calor y viento sobre todo el departamento.</div>
+          </div>
+          <div class="fitem" data-promo-feat="2">
+            <div class="fnum">03 · ALERTAS</div>
+            <div class="ftitle">Avisos antes de que pase</div>
+            <div class="fsub">Cada 3 horas revisa el pronóstico según su cultivo y su etapa, y le dice qué hacer.</div>
+          </div>
+          <div class="fitem" data-promo-feat="3">
+            <div class="fnum">04 · REPORTES</div>
+            <div class="ftitle">Todo queda registrado</div>
+            <div class="fsub">Resumen de su parcela en pantalla, PDF, Excel o CSV.</div>
+          </div>
+        </div>
+        <div class="abs dots" data-promo-el="dots">
+          <div class="dot" data-promo-dot="0"></div>
+          <div class="dot" data-promo-dot="1"></div>
+          <div class="dot" data-promo-dot="2"></div>
+          <div class="dot" data-promo-dot="3"></div>
+        </div>
+        <div class="abs phone" data-promo-el="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <img data-promo-screen="0" src="/projects/agroclima/s0.webp" alt="Panel principal" width="416" height="901" loading="lazy" decoding="async" />
+            <img data-promo-screen="1" src="/projects/agroclima/s1.webp" alt="Mapa del clima" width="416" height="901" loading="lazy" decoding="async" />
+            <img data-promo-screen="2" src="/projects/agroclima/s2.webp" alt="Detalle de alerta" width="416" height="901" loading="lazy" decoding="async" />
+            <img data-promo-screen="3" src="/projects/agroclima/s3.webp" alt="Reportes" width="416" height="901" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <div class="abs notif" data-promo-el="notif">
+          <div class="ic">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 15.5h10.2a3.8 3.8 0 0 0 .4-7.58A5.5 5.5 0 0 0 7.1 8.6 3.5 3.5 0 0 0 7 15.5z" />
+              <path d="M9 18.2l-.8 2.3M12.4 18.2l-.8 2.3M15.8 18.2l-.8 2.3" />
+            </svg>
+          </div>
+          <div>
+            <div class="t1">AgroClima Jalapa · ahora</div>
+            <div class="t2"><span class="badge">PELIGRO</span>Puede caer helada</div>
+            <div class="t3">Mañana en la madrugada puede bajar a −1 °C. Toque para ver qué hacer.</div>
+          </div>
+        </div>
+
+        <!-- Escena 5: semáforo -->
+        <div class="abs center sem-title" data-promo-el="semTitle">Un aviso que se entiende de un vistazo</div>
+        <div class="abs sem-row" data-promo-el="semRow">
+          <div class="pill" data-promo-pill="0">
+            <div class="c pill-normal"></div>
+            <div>
+              <div class="n pill-normal-txt">NORMAL</div>
+              <div class="d">Dentro de lo que aguanta el cultivo</div>
+            </div>
+          </div>
+          <div class="pill" data-promo-pill="1">
+            <div class="c pill-warn"></div>
+            <div>
+              <div class="n pill-warn-txt">PRECAUCIÓN</div>
+              <div class="d">Se acerca al límite: prepárese</div>
+            </div>
+          </div>
+          <div class="pill" data-promo-pill="2">
+            <div class="c pill-danger"></div>
+            <div>
+              <div class="n pill-danger-txt">PELIGRO</div>
+              <div class="d">Supera el umbral: actúe hoy</div>
+            </div>
+          </div>
+        </div>
+        <div class="abs chips" data-promo-el="chips">
+          <div class="chip" data-promo-chip>Lluvia intensa</div>
+          <div class="chip" data-promo-chip>Helada</div>
+          <div class="chip" data-promo-chip>Sequía</div>
+          <div class="chip" data-promo-chip>Viento</div>
+          <div class="chip" data-promo-chip>Calor</div>
+          <div class="chip" data-promo-chip>Humedad</div>
+        </div>
+
+        <!-- Escena 6: cierre -->
+        <div class="abs bg-end" data-promo-el="bgEnd"></div>
+        <div class="abs end-logo" data-promo-el="endLogo">
+          <div class="appicon">
+            <svg width="112" height="112" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 15.5h10.2a3.8 3.8 0 0 0 .4-7.58A5.5 5.5 0 0 0 7.1 8.6 3.5 3.5 0 0 0 7 15.5z" />
+              <path d="M9 18.2l-.8 2.3M12.4 18.2l-.8 2.3M15.8 18.2l-.8 2.3" />
+            </svg>
+          </div>
+          <div class="end-word">AgroClima <span class="accent">Jalapa</span></div>
+        </div>
+        <div class="abs center end-cta" data-promo-el="endCta">Descárguela gratis</div>
+        <div class="abs end-url" data-promo-el="endUrl">stevenquintanagt.github.io/Pag_Agroclima</div>
+        <div class="abs center end-meta" data-promo-el="endMeta">Para Android 8.0 o superior · Sin costo para el productor</div>
+        <div class="abs center end-foot" data-promo-el="endFoot">
+          PROYECTO DE GRADUACIÓN · UNIVERSIDAD MARIANO GÁLVEZ DE GUATEMALA, CAMPUS JUTIAPA
+        </div>
+      </div>
+    </div>
+
+    <div class="promo-controls">
+      <button
+        type="button"
+        class="promo-btn"
+        data-promo-toggle
+        data-label-play={t('projects.promo.play')}
+        data-label-pause={t('projects.promo.pause')}
+        aria-label={t('projects.promo.pause')}
+      >
+        <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="5" width="4" height="14" rx="1" />
+          <rect x="14" y="5" width="4" height="14" rx="1" />
+        </svg>
+        <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7 5.5v13l11-6.5z" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="promo-btn"
+        data-promo-fullscreen
+        aria-label={t('projects.promo.fullscreen')}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="promo-progress" aria-hidden="true">
+      <span data-promo-progress></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/agroclima-promo';
+</script>
+
+<style>
+  .promo-player {
+    --g900: #0E3B12;
+    --g800: #1B5E20;
+    --g700: #2E7D32;
+    --moss: #8CC152;
+    --mossD: #558B2F;
+    --promo-bg: #F6F7F3;
+    --promo-ink: #1F2A1F;
+    --promo-muted: #5D6B5D;
+    --amber: #F9A825;
+    --promo-red: #C62828;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promo-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--g900);
+    user-select: none;
+    contain: layout paint style;
+  }
+
+  .promo-viewport:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+
+  .promo-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1920px;
+    height: 1080px;
+    margin-left: -960px;
+    margin-top: -540px;
+    transform-origin: center center;
+  }
+
+  .promo-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    font-family: Inter, "Segoe UI", Calibri, Arial, sans-serif;
+    color: #fff;
+    background: var(--g900);
+    line-height: normal;
+    text-align: left;
+    contain: layout paint style;
+  }
+
+  .abs { position: absolute; }
+  .center { left: 0; right: 0; text-align: center; }
+
+  .bg-dark {
+    inset: 0;
+    background: radial-gradient(1200px 800px at 50% 45%, #22702A 0%, #1B5E20 35%, #0E3B12 100%);
+  }
+
+  .rain { inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .blob { border-radius: 50%; pointer-events: none; }
+  .blob1 {
+    width: 920px;
+    height: 920px;
+    margin: -110px 0 0 -110px;
+    background: radial-gradient(circle, rgba(140, 193, 82, 0.35) 0%, rgba(140, 193, 82, 0.2) 38%, rgba(140, 193, 82, 0) 70%);
+  }
+  .blob2 {
+    width: 820px;
+    height: 820px;
+    margin: -110px 0 0 -110px;
+    background: radial-gradient(circle, rgba(46, 125, 50, 0.35) 0%, rgba(46, 125, 50, 0.2) 38%, rgba(46, 125, 50, 0) 70%);
+  }
+  .bg-light { inset: 0; background: var(--promo-bg); }
+  .bg-end {
+    inset: 0;
+    background: radial-gradient(1200px 800px at 50% 45%, #22702A 0%, #1B5E20 40%, #0E3B12 100%);
+  }
+
+  .line { font-weight: 800; font-size: 96px; letter-spacing: -2px; line-height: 1.1; top: 430px; }
+  .line :global(.w) { display: inline-block; white-space: pre; }
+  .accent, .line :global(.accent) { color: var(--moss); }
+  .moss-dark { color: var(--mossD); }
+
+  .stat { top: 250px; font-weight: 800; font-size: 260px; letter-spacing: -8px; color: var(--moss); line-height: 1; }
+  .stat-txt { top: 560px; font-size: 48px; font-weight: 500; line-height: 1.3; padding: 0 300px; }
+  .stat-src { top: 760px; font-size: 26px; color: rgba(255, 255, 255, 0.7); }
+
+  .appicon {
+    width: 260px;
+    height: 260px;
+    border-radius: 72px;
+    background: linear-gradient(160deg, #2F7A33, #1B5E20);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo { left: 830px; top: 250px; }
+  .ring {
+    left: 960px;
+    top: 380px;
+    width: 780px;
+    height: 780px;
+    box-sizing: border-box;
+    border: 7px solid var(--moss);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.333);
+  }
+  .word { top: 560px; font-size: 120px; font-weight: 800; letter-spacing: -3px; }
+  .tag-line { top: 720px; font-size: 44px; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
+
+  /* Escena de funciones */
+  .feat { left: 170px; top: 300px; width: 880px; color: var(--promo-ink); }
+  .fnum { font-size: 30px; font-weight: 700; color: var(--mossD); letter-spacing: 3px; }
+  .ftitle { font-size: 88px; font-weight: 800; letter-spacing: -2.5px; line-height: 1.02; color: var(--g800); margin-top: 18px; }
+  .fsub { font-size: 38px; line-height: 1.35; color: var(--promo-muted); margin-top: 28px; max-width: 820px; }
+  .fitem { position: absolute; left: 0; top: 0; width: 880px; }
+  .dots { left: 170px; top: 860px; display: flex; gap: 16px; }
+  .dot { width: 16px; height: 16px; border-radius: 8px; background: #C9D3C2; }
+
+  .phone {
+    left: 1180px;
+    top: 70px;
+    width: 452px;
+    height: 940px;
+    border-radius: 64px;
+    background: #111;
+    box-shadow: 0 50px 120px rgba(20, 40, 20, 0.35), 0 0 0 3px #2a2a2a inset;
+  }
+
+  .screen {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 416px;
+    height: 904px;
+    border-radius: 48px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .screen img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 416px;
+    height: 901px;
+    object-fit: cover;
+    max-width: none;
+  }
+
+  .notch {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    width: 22px;
+    height: 22px;
+    margin-left: -11px;
+    border-radius: 50%;
+    background: #000;
+    z-index: 5;
+  }
+
+  .notif {
+    left: 1130px;
+    top: 140px;
+    width: 552px;
+    border-radius: 30px;
+    background: rgba(30, 32, 30, 0.92);
+    color: #fff;
+    padding: 26px 30px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    display: flex;
+    gap: 22px;
+    z-index: 20;
+    box-sizing: border-box;
+  }
+
+  .notif .ic {
+    flex: 0 0 74px;
+    height: 74px;
+    border-radius: 20px;
+    background: #1B5E20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .notif .t1 { font-size: 22px; color: rgba(255, 255, 255, 0.7); }
+  .notif .t2 { font-size: 28px; font-weight: 700; margin-top: 6px; line-height: 1.2; }
+  .notif .t3 { font-size: 24px; color: rgba(255, 255, 255, 0.85); margin-top: 6px; line-height: 1.3; }
+  .badge {
+    display: inline-block;
+    background: var(--promo-red);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 999px;
+    margin-right: 8px;
+    vertical-align: 2px;
+  }
+
+  /* Semáforo */
+  .sem-title { top: 200px; font-size: 84px; font-weight: 800; letter-spacing: -2px; color: var(--g800); }
+  .sem-row { left: 0; right: 0; top: 400px; display: flex; justify-content: center; gap: 40px; }
+  .pill {
+    width: 520px;
+    height: 220px;
+    border-radius: 40px;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(30, 60, 30, 0.14);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 0 40px;
+    box-sizing: border-box;
+    color: var(--promo-ink);
+  }
+  .pill .c { flex: 0 0 100px; height: 100px; border-radius: 50%; }
+  .pill-normal { background: #2E7D32; }
+  .pill-warn { background: #F9A825; }
+  .pill-danger { background: #C62828; }
+  .pill .n { font-size: 44px; font-weight: 800; letter-spacing: 1px; }
+  .pill-normal-txt { color: #2E7D32; }
+  .pill-warn-txt { color: #B7791F; }
+  .pill-danger-txt { color: #C62828; }
+  .pill .d { font-size: 26px; color: var(--promo-muted); margin-top: 6px; line-height: 1.25; }
+  .chips { left: 0; right: 0; top: 720px; display: flex; justify-content: center; gap: 22px; }
+  .chip {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--g800);
+    background: rgba(140, 193, 82, 0.28);
+    padding: 16px 30px;
+    border-radius: 999px;
+  }
+
+  /* Cierre */
+  .end-logo { left: 0; right: 0; top: 170px; display: flex; justify-content: center; align-items: center; gap: 40px; }
+  .end-logo .appicon { width: 170px; height: 170px; border-radius: 48px; }
+  .end-word { font-size: 96px; font-weight: 800; letter-spacing: -3px; }
+  .end-cta { top: 430px; font-size: 64px; font-weight: 700; }
+  .end-url {
+    top: 560px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--moss);
+    color: var(--g900);
+    font-size: 46px;
+    font-weight: 800;
+    padding: 26px 54px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .end-meta { top: 720px; font-size: 32px; color: rgba(255, 255, 255, 0.85); }
+  .end-foot { top: 960px; font-size: 24px; color: rgba(255, 255, 255, 0.6); letter-spacing: 1px; }
+
+  /* Subtle player controls */
+  .promo-controls {
+    position: absolute;
+    right: 10px;
+    bottom: 12px;
+    z-index: 30;
+    display: flex;
+    gap: 6px;
+    opacity: 0.72;
+    transition: opacity 0.2s ease;
+  }
+
+  .promo-viewport:hover .promo-controls,
+  .promo-viewport:focus-within .promo-controls {
+    opacity: 1;
+  }
+
+  .promo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 999px;
+    background: rgb(10 22 12 / 0.72);
+    color: #fff;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .promo-btn:hover {
+    border-color: rgb(140 193 82 / 0.7);
+    background: rgb(14 59 18 / 0.92);
+  }
+
+  .promo-btn .icon-play { display: none; }
+  .promo-player[data-state='paused'] .promo-btn .icon-pause { display: none; }
+  .promo-player[data-state='paused'] .promo-btn .icon-play { display: block; }
+
+  .promo-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    height: 3px;
+    background: rgb(255 255 255 / 0.14);
+    pointer-events: none;
+  }
+
+  .promo-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--moss);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+</style>

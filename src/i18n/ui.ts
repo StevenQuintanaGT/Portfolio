@@ -100,6 +100,10 @@ export const ui = {
     'projects.demo': 'Live site',
     'projects.repo': 'Source code',
     'projects.article': 'Read write-up',
+    'projects.promo.label': 'AgroClima Jalapa animated preview',
+    'projects.promo.play': 'Play animation',
+    'projects.promo.pause': 'Pause animation',
+    'projects.promo.fullscreen': 'Toggle fullscreen',
 
     'certs.earned': 'Earned credentials',
     'certs.training': 'Ongoing training & scholarships',
@@ -247,6 +251,10 @@ export const ui = {
     'projects.demo': 'Ver sitio',
     'projects.repo': 'Código fuente',
     'projects.article': 'Leer artículo',
+    'projects.promo.label': 'Vista previa animada de AgroClima Jalapa',
+    'projects.promo.play': 'Reproducir animación',
+    'projects.promo.pause': 'Pausar animación',
+    'projects.promo.fullscreen': 'Pantalla completa',
 
     'certs.earned': 'Credenciales obtenidas',
     'certs.training': 'Formación en curso y becas',

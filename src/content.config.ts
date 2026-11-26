@@ -13,6 +13,7 @@ const projects = defineCollection({
     tools: z.array(z.string()),
     category: z.string().optional(),
     cover: z.string().optional(),
+    promo: z.enum(['agroclima']).optional(),
     highlights: z.array(z.object({ title: z.string(), detail: z.string() })).min(1).optional(),
     // Source code, live site/download, and optional blog post slug. Each one shows as a button when set.
     repo: z.string().url().optional(),

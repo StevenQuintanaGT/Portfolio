@@ -1,7 +1,7 @@
 ---
 title: AgroClima Jalapa
 category: Graduation project · Android
-cover: /projects/agroclima-jalapa.webp
+promo: agroclima
 highlights:
   - title: Plot forecast
     detail: The app checks the weather forecast for each plot every three hours.
